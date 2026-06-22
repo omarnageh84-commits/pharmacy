@@ -1,28 +1,25 @@
-let allData = []; // متغير لتخزين البيانات
+let allData = [];
 
-// 1. جلب البيانات من اللينك اللي بعته
+// 1. جلب البيانات من الشيت
 Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv', {
     download: true,
     header: true,
     complete: function(results) {
-        // بننظف البيانات ونجمعها
-        allData = processData(results.data);
+        // دمج البيانات المتكررة في كارت واحد
+        allData = mergeData(results.data);
         renderCards(allData);
     }
 });
 
-// 2. دالة دمج البيانات لنفس المرض (عشان ميبقاش فيه كروت مكررة)
-function processData(data) {
+// 2. دمج البيانات (الصدفية في سطر واحد بدل 5 سطور)
+function mergeData(data) {
     const merged = {};
     data.forEach(item => {
-        // trim() عشان نتخلص من أي مسافات زائدة في أسماء الأعمدة
         const name = item['اسم التحليل / المرض'] ? item['اسم التحليل / المرض'].trim() : 'غير معروف';
-        
-        if (!merged[name]) { 
-            merged[name] = { ...item }; 
+        if (!merged[name]) {
+            merged[name] = { ...item };
         } else {
-            // بنضم البيانات لبعضها لو نفس الاسم متكرر
-            for(let key in item) {
+            for (let key in item) {
                 if (item[key] && !merged[name][key]) merged[name][key] = item[key];
             }
         }
@@ -30,7 +27,7 @@ function processData(data) {
     return Object.values(merged);
 }
 
-// 3. تشغيل البحث
+// 3. البحث الذكي
 document.getElementById('search-input').addEventListener('input', function(e) {
     const term = e.target.value.toLowerCase();
     const filtered = allData.filter(item => 
@@ -39,41 +36,38 @@ document.getElementById('search-input').addEventListener('input', function(e) {
     renderCards(filtered);
 });
 
-// 4. دالة العرض المحدثة
+// 4. عرض الكروت
 function renderCards(data) {
     const container = document.getElementById('cards-container');
     container.innerHTML = '';
+    
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
         
-        // التحقق من نوع البيانات (تحليل ولا مرض)
+        // التحقق مما إذا كان تحليل أو مرض
         const isAnalysis = !item['التحليل المناسب'] || item['التحليل المناسب'].trim() === "";
 
-        let htmlContent = `<h2>${item['اسم التحليل / المرض'] || ''}</h2>`;
+        let html = `<h2>${item['اسم التحليل / المرض'] || ''}</h2>`;
         
         if (isAnalysis) {
-            htmlContent += `
-                <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
-                <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
-                <p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
-                <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>
-                <p><strong>الوطي:</strong> ${item['الوطي'] || ''}</p>
-            `;
+            html += `<p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
+                     <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
+                     <p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
+                     <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>
+                     <p><strong>الوطي:</strong> ${item['الوطي'] || ''}</p>`;
         } else {
-            htmlContent += `
-                <p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
-                <p><strong>التحليل المناسب:</strong> ${item['التحليل المناسب'] || ''}</p>
-                <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
-                <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
-            `;
+            html += `<p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
+                     <p><strong>التحليل المناسب:</strong> ${item['التحليل المناسب'] || ''}</p>
+                     <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
+                     <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>`;
         }
 
         if (item['رابط الصور']) {
-            htmlContent += `<img src="${item['رابط الصور']}" alt="صورة المرض" style="width:100px; display:block; margin:10px auto;">`;
+            html += `<img src="${item['رابط الصور']}" style="max-width:100px; display:block; margin:10px auto;">`;
         }
 
-        card.innerHTML = htmlContent;
+        card.innerHTML = html;
         container.appendChild(card);
     });
 }
