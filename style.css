@@ -1,39 +1,50 @@
-/* تنسيق الكارت المبهج */
+/* تنسيق الصفحة الأساسي */
+body {
+    background-color: #f0f7f4; /* خلفية هادية جداً */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+/* تقسيم الكروت لعمودين */
+#cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* عمودين قد بعض */
+    gap: 20px; /* فواصل بين الكروت */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* تنسيق الكارت المبهج (ألوان صيدلية) */
 .card {
-    /* خلفية تدرج لون هادي ومبهج */
-    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-    border-radius: 25px; /* تدوير أكبر للزوايا */
-    padding: 25px;
-    margin: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* ظل عشان الكارت "يطير" */
-    border: 3px solid #ff9a9e; /* إطار ملون */
-    transition: transform 0.3s ease;
+    background: linear-gradient(135deg, #e0f7fa, #e8f5e9); /* تدرج أزرق وأخضر فاتح */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    border: 2px solid #a5d6a7; /* إطار أخضر فاتح */
+    transition: 0.3s;
 }
 
-/* حركة بسيطة لما الماوس يجي على الكارت */
+/* حركة عند الماوس */
 .card:hover {
-    transform: scale(1.03);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-/* تنسيق العنوان الرئيسي */
-.card h2 {
-    color: #ff6b6b; /* لون مبهج للعناوين */
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    border-bottom: 2px dashed #ff9a9e;
+/* الخطوط والعناوين */
+h2 {
+    color: #2e7d32; /* أخضر غامق للعنوان */
+    border-bottom: 2px solid #81c784;
     padding-bottom: 10px;
 }
 
-/* تنسيق النقط (الـ bullets) */
-.card ul {
-    list-style-type: none; /* شيلنا النقط التقليدية */
-    padding: 0;
+p {
+    color: #37474f; /* أزرق غامق للنصوص */
+    line-height: 1.6;
 }
 
-.card li {
-    background: rgba(255, 255, 255, 0.5);
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
-    border-left: 5px solid #4ecdc4; /* لمسة لون تانية للصيدلية */
+/* التجاوب مع الموبايل */
+@media (max-width: 600px) {
+    #cards-container {
+        grid-template-columns: 1fr; /* على الموبايل كارت واحد بس */
+    }
 }
