@@ -1,91 +1,95 @@
-/* تصفير الهوامش */
+/* تنسيق الصفحة الأساسي */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* خلفية الصفحة كاملة */
 body {
     background-color: #f4f9f8;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 10px;
 }
 
-/* تصميم الهيدر الجديد (مبهج واحترافي) */
+/* تصميم الهيدر المبهج */
 .main-header {
     text-align: center;
-    background: linear-gradient(135deg, #00b4db, #0083b0); /* تدرج أزرق مبهج */
+    background: linear-gradient(135deg, #00b4db, #0083b0);
     color: white;
-    padding: 25px 15px;
-    border-radius: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .main-title {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 5px;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 .sub-title {
-    font-size: 16px;
-    letter-spacing: 2px;
+    font-size: 14px;
+    opacity: 0.9;
     margin-bottom: 15px;
-    opacity: 0.95;
 }
 
-/* شريط البحث المودرن */
 .search-box input {
-    width: 95%;
-    max-width: 350px;
-    padding: 12px 20px;
+    width: 90%;
+    max-width: 300px;
+    padding: 10px;
     border: none;
-    border-radius: 25px;
-    font-size: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    outline: none;
+    border-radius: 20px;
     text-align: center;
-    color: #333;
+    outline: none;
 }
 
-/* تقسيم الكروت لـ كارتين عمودي جنب بعض على الموبايل والكمبيوتر */
+/* تقسيم الكروت لعمودين */
 #cards-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* عمودين متساويين */
-    gap: 10px; /* فواصل صغيرة ومناسبة للشاشة */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
-/* تصميم الكارت الفاتح المبهج */
+/* تصميم الكارت */
 .card {
-    background: linear-gradient(135deg, #ffffff, #edfcf9); /* أبيض مائل للأخضر الفاتح */
-    border-radius: 15px;
-    padding: 12px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-    border-right: 4px solid #00b4db; /* خط جانبي أزرق ينور الكارت */
-    display: flex;
-    flex-direction: column;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-right: 4px solid #0083b0;
 }
 
-/* عناوين الكروت */
 .card h2 {
-    font-size: 15px;
+    font-size: 14px;
     color: #0083b0;
-    margin-bottom: 8px;
-    border-bottom: 1px dashed #a5d6a7;
-    padding-bottom: 4px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
 }
 
-/* نصوص البيانات جوه الكارت */
 .card p {
-    font-size: 12px;
+    font-size: 11px;
     color: #455a64;
-    line-height: 1.5;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    line-height: 1.4;
 }
 
 .card strong {
-    color: #2e7d32; /* اللون الأخضر للـ العناوين الجانبية */
+    color: #2e7d32;
+}
+
+/* تحجيم الصور داخل الكروت */
+.card img {
+    display: block;
+    max-width: 100px; /* تصغير الصورة */
+    height: auto;
+    margin: 10px auto;
+    border-radius: 8px;
+}
+
+/* التجاوب مع الموبايل (لو الشاشة صغيرة جداً) */
+@media (max-width: 480px) {
+    #cards-container {
+        grid-template-columns: 1fr; /* كارت واحد في العمود على الموبايلات الصغيرة */
+    }
 }
