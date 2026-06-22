@@ -1,8 +1,23 @@
-// دالة عرض الكروت
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+
+// جلب البيانات من الشيت
+function fetchData() {
+    Papa.parse(sheetUrl, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            renderCards(results.data); // عرض البيانات لما تخلص تحميل
+        }
+    });
+}
+
+// استدعاء الدالة أول ما الصفحة تفتح
+fetchData();
+
+// دالة العرض اللي إنت كتبتها (زي ما هي)
 function renderCards(data) {
     const container = document.getElementById('cards-container');
-    container.innerHTML = ''; // فضي الكونتينر قبل العرض
-
+    container.innerHTML = '';
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
