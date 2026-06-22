@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موسوعة صيدلية زينهم</title>
+    <title>وإذا مرضت فهو يشفين - OMAR</title>
     <link rel="stylesheet" href="style.css">
+    <!-- مكتبة قراءة الشيت -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <!-- ملف تحويل الموقع لأبلكيشن موبايل -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0083b0">
 </head>
 <body>
 
-    <header>
-        <h1>💊 موسوعة صيدلية زينهم</h1>
-        <input type="text" id="search-input" placeholder="ابحث عن دواء أو مرض...">
+    <header class="main-header">
+        <h1 class="main-title">وإذا مرضت فهو يشفين</h1>
+        <h2 class="sub-title">OMAR</h2>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="ابحث عن مرض أو تحليل...">
+        </div>
     </header>
 
-    <div id="cards-container">
-        </div>
+    <main id="cards-container">
+        <!-- الكروت المبهجة هتظهر هنا عمودين جنب بعض -->
+    </main>
 
     <script src="script.js"></script>
 </body>
