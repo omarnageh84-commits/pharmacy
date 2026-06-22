@@ -1,0 +1,16 @@
+{
+  "short_name": "OMAR APP",
+  "name": "وإذا مرضت فهو يشفين",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/883/883356.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#f4f9f8",
+  "theme-color": "#0083b0",
+  "display": "standalone",
+  "orientation": "portrait"
+}
