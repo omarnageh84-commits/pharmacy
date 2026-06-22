@@ -1,19 +1,29 @@
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+
+Papa.parse(sheetUrl, {
+    download: true,
+    header: true,
+    complete: function(results) {
+        renderCards(results.data);
+    }
+});
+
 function renderCards(data) {
     const container = document.getElementById('cards-container');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     data.forEach(item => {
-        // بننظف المفاتيح من أي مسافات زايدة
+        // تنظيف المفاتيح من أي مسافات مخفية
         const cleanItem = {};
         for(let key in item) { cleanItem[key.trim()] = item[key]; }
-        
+
         const card = document.createElement('div');
         card.className = 'card';
 
-        // بنشوف هل ده تحليل ولا مرض؟
+        // المنطق: لو "التحليل المناسب" فاضي يبقى ده تحليل، غير كدة يبقى مرض
         const isAnalysis = !cleanItem['التحليل المناسب'] || cleanItem['التحليل المناسب'].trim() === "";
 
-        let htmlContent = `<h2>${cleanItem['اسم التحليل / المرض'] || 'بدون اسم'}</h2>`;
+        let htmlContent = `<h2>${cleanItem['اسم التحليل / المرض'] || ''}</h2>`;
 
         if (isAnalysis) {
             htmlContent += `
