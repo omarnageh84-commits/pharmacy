@@ -3,7 +3,7 @@
     --bg-color: #f0f7f4;
 }
 
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: var(--bg-color); color: #222; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 100px; background-color: var(--bg-color); color: #222; }
 
 h2 { text-align: center; color: var(--main-color); margin-bottom: 20px; }
 
