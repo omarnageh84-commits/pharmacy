@@ -3,11 +3,11 @@
     --bg-color: #f0f7f4;
 }
 
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 100px; background-color: var(--bg-color); color: #222; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background-color: var(--bg-color); color: #222; }
 
-h2 { text-align: center; color: var(--main-color); margin-bottom: 20px; }
+h2 { text-align: center; color: var(--main-color); margin-bottom: 10px; }
 
-input { width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto; padding: 15px; border: 3px solid var(--main-color); border-radius: 50px; }
+input { width: 90%; max-width: 300px; display: block; margin: 0 auto 30px auto; padding: 15px; border: 3px solid var(--main-color); border-radius: 50px; }
 
 /* الجزء ده هو اللي بيظبط الشاشة للكمبيوتر والموبايل */
 #cards-zone { 
