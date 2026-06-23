@@ -1,4 +1,4 @@
-// دمج ذكي بيجمع النصوص مش بس بياخد أول سطر
+// دالة دمج البيانات الذكية
 function mergeData(data) {
     const merged = {};
     data.forEach(item => {
@@ -6,9 +6,10 @@ function mergeData(data) {
         if (!merged[name]) {
             merged[name] = { ...item };
         } else {
+            // ندمج كل الخانات اللي فيها بيانات
             for (let key in item) {
-                // هنا بنجمع النصوص بدل ما نستبدلها
                 if (item[key] && item[key].trim() !== "") {
+                    // إذا كانت الخانة موجودة بالفعل، نضيف عليها الكلام الجديد
                     if (merged[name][key] && merged[name][key] !== item[key]) {
                         merged[name][key] += " " + item[key];
                     } else {
@@ -21,7 +22,7 @@ function mergeData(data) {
     return Object.values(merged);
 }
 
-// عرض الكروت المحدث
+// دالة عرض الكروت
 function renderCards(data) {
     const container = document.getElementById('cards-container');
     container.innerHTML = '';
@@ -35,6 +36,7 @@ function renderCards(data) {
 
         let html = `<h2>${item['اسم التحليل / المرض'] || ''}</h2>`;
         
+        // عرض البيانات حسب النوع
         if (isAnalysis) {
             html += `<p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
                      <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
