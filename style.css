@@ -1,30 +1,77 @@
-/* 1. زيادة عرض الكروت (توسيع الكارت) */
+/* تعاريف الألوان الأساسية عشان نستخدمها في أي مكان */
+:root {
+    --main-color: #2e7d32; /* اللون الأخضر الصيدلي */
+    --bg-color: #f0f7f4;   /* لون خلفية الصفحة */
+    --card-bg: #ffffff;    /* لون خلفية الكارت */
+}
+
+/* تنسيق الصفحة الأساسي */
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 20px; 
+    background: var(--bg-color); 
+    color: #333; 
+}
+
+/* تنسيق العنوان الرئيسي */
+h2 { text-align: center; color: var(--main-color); }
+
+/* تنسيق مربع البحث */
+input { 
+    width: 100%; 
+    max-width: 600px; 
+    display: block; 
+    margin: 20px auto; 
+    padding: 15px; 
+    border: 2px solid var(--main-color); 
+    border-radius: 25px; 
+}
+
+/* تنظيم الكروت في شكل شبكي (Grid) */
 #cards-zone { 
     display: grid; 
     gap: 20px; 
-    /* خليت الـ minmax تبدأ من 350px بدل 250px عشان الكارت يفرش بالعرض */
+    /* عرض الكارت الواحد لا يقل عن 350 بكسل */
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
 }
 
-/* 2. تقليل طول الكارت */
+/* تنسيق الكارت نفسه (هنا السر في الشكل اللي إنت عايزه) */
 .card { 
     background: var(--card-bg); 
-    /* قللنا الـ padding عشان الكارت يبقى مضغوط (أقصر) */
-    padding: 12px; 
-    border-radius: 12.5px; 
-    box-shadow: 0 4px 12.5px rgba(0,0,0,0.1); 
-    border-top: 12.5px solid var(--main-color);
+    padding: 15px; /* مسافة داخلية */
+    border-radius: 15px; /* تدوير زوايا الكارت */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* ظل خفيف للكارت */
+    /* الجزء ده هو اللي بيعمل الخط الأخضر العريض فوق الكارت */
+    border-top: 8px solid var(--main-color); 
+    display: flex;
+    flex-direction: column;
 }
 
-/* 3. تقليل المساحات بين السطور عشان الطول يقل أكتر */
-p { 
-    margin: 5px 0; /* قللنا الهامش بين الفقرات */
-    line-height: 1.4; /* قللنا المسافة بين السطور */
-    font-size: 13px; /* ممكن تصغر الخط شوية عشان الكلام ياخد مساحة أقل */
-}
-
+/* تنسيق عنوان المرض داخل الكارت */
 h3 { 
+    color: var(--main-color); 
     margin-top: 0; 
-    padding-bottom: 5px; /* قللنا المسافة تحت العنوان */
-    font-size: 18px;
+    border-bottom: 1px solid #eee; /* خط فاصل خفيف */
+    padding-bottom: 10px; 
+}
+
+/* تنسيق الفقرات النصية */
+p { 
+    margin: 5px 0; 
+    line-height: 1.4; 
+    font-size: 14px; 
+}
+
+/* تنسيق الكلمات المميزة (مثل: ماهو، السبب) */
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
+}
+
+/* تنسيق الصورة لو موجودة */
+.card img { 
+    width: 100%; 
+    height: auto; 
+    border-radius: 8px; 
+    margin-top: 10px; 
 }
