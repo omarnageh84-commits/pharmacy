@@ -1,48 +1,25 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>موسوعة صيدلية زينهم</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f9f8; padding: 20px; text-align: center; }
-        #cards-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px; }
-        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-right: 8px solid #0083b0; text-align: right; }
-        input { width: 80%; padding: 15px; border-radius: 25px; border: 1px solid #ddd; margin-bottom: 20px; }
-    </style>
+<style>
+  body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
+  .card { 
+    background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-right: 5px solid #2c3e50; 
+  }
+  h3 { color: #2c3e50; margin-top: 0; }
+  p { margin: 5px 0; font-size: 14px; }
+  .tag { background: #e0e0e0; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+</style>
 </head>
 <body>
 
-    <h1>موسوعة صيدلية زينهم 💊</h1>
-    <input type="text" id="search" placeholder="ابحث باسم المرض أو التحليل...">
-    <div id="cards-container">جاري تحميل البيانات...</div>
+<div class="card">
+  <h3>مرض مناعي ذاتي (صدفية)</h3>
+  <p><strong>التحليل:</strong> محدد التشخيص الصدفية</p>
+  <p><strong>العلاج:</strong> مرهم Daivobet، كريمات Salibet و Betaval، مرطبات Atoderm/Lipikar</p>
+  <p><strong>نصيحة:</strong> <span class="tag">غير معدي</span> | تعرض للشمس + نظام غذائي أوميجا 3</p>
+</div>
 
-    <script>
-        const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-
-        Papa.parse(url, {
-            download: true, header: true,
-            complete: function(results) {
-                const container = document.getElementById('cards-container');
-                container.innerHTML = '';
-                results.data.forEach(d => {
-                    // هنا بيقرأ بالاسم مش بالرقم، فلو غيرت ترتيب الأعمدة مش هيفرق
-                    const name = d['الاسم / التحليل'];
-                    if (!name) return; 
-
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <h2>${name}</h2>
-                        <p><strong>الحالة:</strong> ${d['الحالة'] || ''}</p>
-                        <p><strong>ماهو:</strong> ${d['ماهو'] || ''}</p>
-                        <p><strong>العلاج:</strong> ${d['العلاج الصيدلي والطبيعي'] || ''}</p>
-                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; border-radius:10px;">` : ''}
-                    `;
-                    container.appendChild(card);
-                });
-            }
-        });
-    </script>
 </body>
 </html>
