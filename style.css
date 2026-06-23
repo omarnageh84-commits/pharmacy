@@ -14,7 +14,7 @@ input { width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto; 
     display: grid; 
     gap: 20px; 
     /* لو الشاشة صغيرة الموبايل ياخد 100%، لو كبيرة الكمبيوتر ياخد 400px */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(min(50%, 400px), 1fr)); 
 }
 
 .card { 
