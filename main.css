@@ -1,15 +1,22 @@
-#cards-zone { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-    gap: 20px; 
-    padding: 20px;
-}
-
 .card { 
     background: white; 
-    padding: 20px; 
-    border-radius: 15px; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-    border-top: 10px solid; 
+    padding: 25px; /* زودنا الـ Padding عشان الكارت يبقى أريح */
+    border-radius: 20px; 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
+    border-top: 20px solid; /* كبرنا الخط اللي فوق */
     transition: transform 0.2s;
+    min-height: 400px; /* حد أدنى لطول الكارت عشان البيانات متبقاش مزنوقة */
+}
+
+/* عشان الخط يبقى أوضح في المعلومات الكتير */
+p { 
+    margin: 12px 0; 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+}
+
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
+    display: block; /* عشان الليبل يظهر فوق المعلومة أو جنبها بوضوح */
 }
