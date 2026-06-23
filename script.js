@@ -1,17 +1,4 @@
-let allData = [];
-
-// 1. جلب البيانات من الشيت
-Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv', {
-    download: true,
-    header: true,
-    complete: function(results) {
-        // دمج البيانات المتكررة في كارت واحد
-        allData = mergeData(results.data);
-        renderCards(allData);
-    }
-});
-
-// 2. دمج البيانات (الصدفية في سطر واحد بدل 5 سطور)
+// دمج ذكي بيجمع النصوص مش بس بياخد أول سطر
 function mergeData(data) {
     const merged = {};
     data.forEach(item => {
@@ -20,23 +7,21 @@ function mergeData(data) {
             merged[name] = { ...item };
         } else {
             for (let key in item) {
-                if (item[key] && !merged[name][key]) merged[name][key] = item[key];
+                // هنا بنجمع النصوص بدل ما نستبدلها
+                if (item[key] && item[key].trim() !== "") {
+                    if (merged[name][key] && merged[name][key] !== item[key]) {
+                        merged[name][key] += " " + item[key];
+                    } else {
+                        merged[name][key] = item[key];
+                    }
+                }
             }
         }
     });
     return Object.values(merged);
 }
 
-// 3. البحث الذكي
-document.getElementById('search-input').addEventListener('input', function(e) {
-    const term = e.target.value.toLowerCase();
-    const filtered = allData.filter(item => 
-        item['اسم التحليل / المرض'] && item['اسم التحليل / المرض'].toLowerCase().includes(term)
-    );
-    renderCards(filtered);
-});
-
-// 4. عرض الكروت
+// عرض الكروت المحدث
 function renderCards(data) {
     const container = document.getElementById('cards-container');
     container.innerHTML = '';
@@ -45,13 +30,14 @@ function renderCards(data) {
         const card = document.createElement('div');
         card.className = 'card';
         
-        // التحقق مما إذا كان تحليل أو مرض
-        const isAnalysis = !item['التحليل المناسب'] || item['التحليل المناسب'].trim() === "";
+        // التحقق: هل ده تحليل؟ (لو خانة "ماهو" فاضية)
+        const isAnalysis = !item['ماهو'] || item['ماهو'].trim() === "";
 
         let html = `<h2>${item['اسم التحليل / المرض'] || ''}</h2>`;
         
         if (isAnalysis) {
-            html += `<p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
+            html += `<p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
+                     <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
                      <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
                      <p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
                      <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>
