@@ -14,7 +14,7 @@
 <div id="cards-zone"></div>
 
 <script>
-    // لينك الشيت بتاعك مع كود الكاش عشان التحديثات تظهر فوراً
+    // لينك الشيت مع كود الكاش عشان التحديثات تظهر فوراً
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv&cache=' + new Date().getTime();
     let allData = [];
 
@@ -46,7 +46,7 @@
                     <p><span class="label">السبب:</span> ${item.السبب || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    ${item['رابط الصور'] ? `<a href="${item['رابط الصور']}" target="_blank" style="color:${randomColor}">🖼️ عرض الصورة</a>` : ''}
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" style="width:100%; border-radius:10px; margin-top:10px; border: 2px solid #eee;">` : ''}
                 </div>
             `;
         });
