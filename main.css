@@ -1,29 +1,63 @@
-:root { --main-color: #2e7d32; --bg-color: #f4f7f6; }
-
-body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; }
-h2 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
-
-#searchInput {
-    width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto;
-    padding: 15px 25px; border: 2px solid var(--main-color);
-    border-radius: 50px; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    outline: none; text-align: center;
+:root {
+    --main-color: #2e7d32;
+    --bg-color: #f4f7f6;
 }
+
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    background-color: var(--bg-color); 
+    margin: 0; 
+    padding: 20px; 
+}
+
+h2 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
 
 #cards-zone { 
     display: grid; 
-    grid-template-columns: 1fr 1fr; /* إجبار كارتين */
-    gap: 25px; max-width: 1000px; margin: 0 auto; padding: 20px;
+    /* 2 كارت جنب بعض دايماً */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px; 
+    max-width: 1000px; 
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .card { 
-    background: white; padding: 25px; border-radius: 10px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 8px solid; 
+    background: white; 
+    padding: 25px; 
+    border-radius: 10px; /* زوايا مربعة شيك */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    border-top: 8px solid; /* سمك الخط اللي فوق */
+    transition: all 0.3s ease; /* حركة ناعمة للكارت */
 }
 
-p { margin: 10px 0; font-size: 1rem; color: #333; }
-.label { font-weight: bold; color: var(--main-color); display: block; }
+/* عشان الكارت ينور لما تقف عليه بالماوس */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 
-@media (max-width: 768px) {
-    #cards-zone { grid-template-columns: 1fr; } /* موبايل = كارت واحد */
+h3 { margin-top: 0; font-size: 1.4rem; }
+
+p { margin: 12px 0; font-size: 1.05rem; line-height: 1.6; color: #333; }
+
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
+    display: block; 
+}
+
+.card-image-container { text-align: center; margin-top: 20px; }
+.card-image-container img { 
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 5px; 
+    border: 1px solid #ddd; 
+}
+
+/* تنسيق الموبايل (عشان الكلام ميزنقش) */
+@media (max-width: 600px) {
+    #cards-zone {
+        grid-template-columns: 1fr; /* في الموبايل كارت واحد عشان القراءة */
+    }
 }
