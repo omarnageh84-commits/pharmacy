@@ -20,19 +20,20 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             text-align: right; 
             border-right: 6px solid #0083b0;
-            aspect-ratio: 1 / 1; /* كارت مربع */
-            overflow-y: auto; 
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
         }
         .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .card p { font-size: 13px; color: #333; margin: 5px 0; line-height: 1.4; }
+        .card p { font-size: 13px; color: #333; margin: 4px 0; line-height: 1.4; }
         input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <h1>موسوعة صيدلية زينهم 💊</h1>
-    <input type="text" id="search-input" placeholder="اكتب اسم المرض أو التحليل هنا...">
-    <div id="cards-container">جاري تحميل الأدوية...</div>
+    <input type="text" id="search-input" placeholder="ابحث باسم المرض أو التحليل...">
+    <div id="cards-container">جاري تحميل البيانات...</div>
 
     <script>
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
@@ -43,34 +44,36 @@
             complete: function(results) {
                 const container = document.getElementById('cards-container');
                 container.innerHTML = '';
-                
-                // تصفية الصفوف الفاضية
-                results.data.forEach(d => {
-                    const name = d['اسم التحليل / المرض']?.trim();
+                const grouped = {};
+
+                // تجميع البيانات بناءً على "الاسم"
+                results.data.forEach(row => {
+                    let name = row['الاسم / التحليل']?.trim();
                     if (!name) return;
 
+                    if (!grouped[name]) {
+                        grouped[name] = row;
+                    } else {
+                        // دمج البيانات في حال وجود أكثر من صف لنفس المرض
+                        for (let key in row) {
+                            if (row[key] && !grouped[name][key]) {
+                                grouped[name][key] = row[key];
+                            }
+                        }
+                    }
+                });
+
+                Object.values(grouped).forEach(d => {
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h2>${name}</h2>
+                        <h2>${d['الاسم / التحليل'] || ''}</h2>
+                        <p><strong>الحالة:</strong> ${d['الحالة'] || ''}</p>
                         <p><strong>ماهو:</strong> ${d['ماهو'] || ''}</p>
-                        <p><strong>العلاج:</strong> ${d['العلاج الصيدلي والطبيعي'] || ''}</p>
-                        <p><strong>التحليل:</strong> ${d['التحليل المناسب'] || ''}</p>
-                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-top:5px;">` : ''}
-                    `;
-                    container.appendChild(card);
-                });
-            }
-        });
-
-        // البحث الذكي
-        document.getElementById('search-input').addEventListener('input', function(e) {
-            const term = e.target.value.trim().toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                const title = card.querySelector('h2').innerText.toLowerCase();
-                card.style.display = title.includes(term) ? 'block' : 'none';
-            });
-        });
-    </script>
-</body>
-</html>
+                        <p><strong>التحليل:</strong> ${d['التحليل'] || ''}</p>
+                        <p><strong>العلاج:</strong> ${d['العلاج'] || ''}</p>
+                        <p><strong>معدي:</strong> ${d['معدي'] || ''}</p>
+                        <p><strong>الطبيعي:</strong> ${d['الطبيعي'] || ''}</p>
+                        <p><strong>العالي:</strong> ${d['العالي'] || ''}</p>
+                        <p><strong>الوطي:</strong> ${d['الوطي'] || ''}</p>
+                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; height:150px; object-fit:contain; margin
