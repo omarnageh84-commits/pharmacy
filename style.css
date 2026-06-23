@@ -11,9 +11,9 @@
     background: var(--card-bg); 
     /* قللنا الـ padding عشان الكارت يبقى مضغوط (أقصر) */
     padding: 12px; 
-    border-radius: 15px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    border-top: 15px solid var(--main-color);
+    border-radius: 12.5px; 
+    box-shadow: 0 4px 12.5px rgba(0,0,0,0.1); 
+    border-top: 12.5px solid var(--main-color);
 }
 
 /* 3. تقليل المساحات بين السطور عشان الطول يقل أكتر */
