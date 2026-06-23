@@ -1,88 +1,30 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>موسوعة صيدلية زينهم</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f4f9f8; padding: 20px; }
-        h1 { color: #0083b0; }
-        #cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
-        .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: right; border-right: 5px solid #0083b0; }
-        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; }
-        .card p { font-size: 14px; color: #333; margin: 5px 0; white-space: pre-line; }
-        input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
+// ... (جزء التجميع هو اللي هيتغير)
 
-    <h1>موسوعة صيدلية زينهم</h1>
-    <input type="text" id="search-input" placeholder="ابحث عن اسم المرض أو التحليل...">
-    <div id="cards-container">جاري تحميل البيانات... 💊</div>
+for (let i = 1; i < results.data.length; i++) {
+    let row = results.data[i];
+    let name = row[0]?.trim();
 
-    <script>
-        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+    if (!name || name === "") {
+        name = lastKnownName;
+    } else {
+        lastKnownName = name;
+    }
 
-        Papa.parse(sheetUrl, {
-            download: true,
-            header: false,
-            complete: function(results) {
-                const container = document.getElementById('cards-container');
-                container.innerHTML = '';
-                const grouped = {};
-                let lastKnownName = "";
+    if (!name || name === "") continue;
 
-                for (let i = 1; i < results.data.length; i++) {
-                    let row = results.data[i];
-                    let name = row[0]?.trim();
-
-                    if (!name || name === "") {
-                        name = lastKnownName;
-                    } else {
-                        lastKnownName = name;
-                    }
-
-                    if (!name || name === "") continue;
-
-                    if (!grouped[name]) {
-                        grouped[name] = [...row];
-                    } else {
-                        // دمج البيانات (لو خانة فاضية املأها، ولو فيها كلام زود عليه)
-                        for (let j = 1; j < row.length; j++) {
-                            if (row[j] && row[j].trim() !== "") {
-                                if (!grouped[name][j] || grouped[name][j].trim() === "") {
-                                    grouped[name][j] = row[j].trim();
-                                } else {
-                                    grouped[name][j] += "\n" + row[j].trim();
-                                }
-                            }
-                        }
-                    }
+    if (!grouped[name]) {
+        grouped[name] = [...row];
+    } else {
+        for (let j = 1; j < row.length; j++) {
+            if (row[j] && row[j].trim() !== "") {
+                // التعديل هنا: مبيضيفش الكلمة لو هي هي موجودة أصلاً (عشان التكرار)
+                let newValue = row[j].trim();
+                if (!grouped[name][j] || grouped[name][j].trim() === "") {
+                    grouped[name][j] = newValue;
+                } else if (!grouped[name][j].includes(newValue)) {
+                    grouped[name][j] += "\n" + newValue;
                 }
-
-                Object.values(grouped).forEach(d => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <h2>${d[0] || ''}</h2>
-                        <p><strong>الحالة:</strong> ${d[1] || ''}</p>
-                        <p><strong>ماهو:</strong> ${d[2] || ''}</p>
-                        <p><strong>التحليل المناسب:</strong> ${d[3] || ''}</p>
-                        <p><strong>العلاج:</strong> ${d[4] || ''}</p>
-                        <p><strong>معدي:</strong> ${d[5] || ''}</p>
-                        ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
-                    `;
-                    container.appendChild(card);
-                });
             }
-        });
-
-        document.getElementById('search-input').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.display = card.querySelector('h2').innerText.toLowerCase().includes(term) ? 'block' : 'none';
-            });
-        });
-    </script>
-</body>
-</html>
+        }
+    }
+}
