@@ -1,22 +1,56 @@
+:root {
+    --main-color: #2e7d32;
+    --bg-color: #f4f7f6; /* خلفية أهدى */
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    background-color: var(--bg-color); 
+    margin: 0; 
+    padding: 20px; 
+}
+
+/* تنسيق الاسم والعنوان */
+h2 { 
+    text-align: center; 
+    color: var(--main-color); 
+    margin-bottom: 25px; 
+    font-size: 2rem; 
+}
+
+/* تنسيق خانة البحث */
+#searchInput {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 0 auto 30px auto;
+    padding: 15px;
+    border: 2px solid var(--main-color);
+    border-radius: 50px; /* شكل بيضاوي شيك */
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+/* تنسيق منطقة الكروت */
+#cards-zone { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+    gap: 25px; 
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .card { 
     background: white; 
-    padding: 25px; /* زودنا الـ Padding عشان الكارت يبقى أريح */
+    padding: 25px; 
     border-radius: 20px; 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
-    border-top: 20px solid; /* كبرنا الخط اللي فوق */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08); 
+    border-top: 15px solid; 
     transition: transform 0.2s;
-    min-height: 400px; /* حد أدنى لطول الكارت عشان البيانات متبقاش مزنوقة */
 }
 
-/* عشان الخط يبقى أوضح في المعلومات الكتير */
-p { 
-    margin: 12px 0; 
-    font-size: 1.05rem; 
-    line-height: 1.6; 
-}
-
-.label { 
-    font-weight: bold; 
-    color: var(--main-color); 
-    display: block; /* عشان الليبل يظهر فوق المعلومة أو جنبها بوضوح */
-}
+p { margin: 10px 0; font-size: 1rem; line-height: 1.5; color: #444; }
+.label { font-weight: bold; color: var(--main-color); }
+.card-image-container { text-align: center; margin-top: 15px; }
+.card-image-container img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid #ddd; }
