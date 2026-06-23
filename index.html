@@ -14,7 +14,8 @@
 <div id="cards-zone"></div>
 
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+    // الرابط المحدث مع "كود كاش" عشان البيانات تتحدث فوراً
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv&cache=' + new Date().getTime();
     let allData = [];
 
     Papa.parse(csvUrl, {
