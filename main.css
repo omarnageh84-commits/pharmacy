@@ -1,36 +1,29 @@
-/* 1. سنتره الكروت وتوسيعها بشكل متناسق */
+:root { --main-color: #2e7d32; --bg-color: #f4f7f6; }
+
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; }
+h2 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
+
+#searchInput {
+    width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto;
+    padding: 15px 25px; border: 2px solid var(--main-color);
+    border-radius: 50px; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    outline: none; text-align: center;
+}
+
 #cards-zone { 
     display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 30px; 
-    max-width: 950px;  /* زودنا العرض شوية عشان الكارتين ياخدوا راحتهم */
-    margin: 0 auto;    /* ده اللي بيسنتر المنطقة كلها في نص الشاشة */
-    padding: 0 20px;
+    grid-template-columns: 1fr 1fr; /* إجبار كارتين */
+    gap: 25px; max-width: 1000px; margin: 0 auto; padding: 20px;
 }
 
-/* 2. تصغير الخط بنسبة إضافية (إجمالي 30% تقريباً عن الأول) */
-body { 
-    font-size: 0.75rem; /* خط أصغر وأدق */
-}
-
-.card h3 { 
-    font-size: 1.1rem; /* تصغير عنوان الكارت */
-    margin-bottom: 15px;
-}
-
-p { 
-    font-size: 0.85rem; /* تصغير خط الفقرات */
-    line-height: 1.5;
-    margin: 8px 0;
-}
-
-/* 3. تظبيط الكارت نفسه عشان يبقى متوازن */
 .card { 
-    background: white; 
-    padding: 20px; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.07); 
-    border-top: 6px solid; 
-    display: flex;
-    flex-direction: column;
+    background: white; padding: 25px; border-radius: 10px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 8px solid; 
+}
+
+p { margin: 10px 0; font-size: 1rem; color: #333; }
+.label { font-weight: bold; color: var(--main-color); display: block; }
+
+@media (max-width: 768px) {
+    #cards-zone { grid-template-columns: 1fr; } /* موبايل = كارت واحد */
 }
