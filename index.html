@@ -70,11 +70,15 @@
 
                     card.innerHTML = `
                         <h2>${d[0] || ''}</h2>
-                        <p><strong>الحالة:</strong> ${d[1] || ''}</p>
+                        <p><strong>اسم التحليل / المرض:</strong> ${d[1] || ''}</p>
                         <p><strong>ماهو:</strong> ${d[2] || ''}</p>
                         <p><strong>التحليل المناسب:</strong> ${d[3] || ''}</p>
-                        <p><strong>العلاج:</strong><br>${treatmentText}</p>
+                        <p><strong>العلاج الصيدلي والطبيعي:</strong><br>${treatmentText}</p>
                         <p><strong>معدي:</strong> ${d[5] || ''}</p>
+                        <p><strong>الطبيعي:</strong> ${d[5] || ''}</p>
+                        <p><strong>العالي:</strong> ${d[5] || ''}</p>
+                        <p><strong>الوطي:</strong> ${d[5] || ''}</p>
+                        <p><strong>رابط الصور:</strong> ${d[5] || ''}</p>
                         ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
                     `;
                     container.appendChild(card);
