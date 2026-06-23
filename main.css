@@ -1,29 +1,32 @@
-:root { --main-color: #2e7d32; --bg-color: #f4f7f6; }
-
-body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; }
-h2 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
-
-#searchInput {
-    width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto;
-    padding: 15px 25px; border: 2px solid var(--main-color);
-    border-radius: 50px; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    outline: none; text-align: center;
-}
-
+/* 1. السنتره والتحجيم */
 #cards-zone { 
     display: grid; 
-    grid-template-columns: 1fr 1fr; /* إجبار كارتين */
-    gap: 25px; max-width: 1000px; margin: 0 auto; padding: 20px;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px; 
+    max-width: 900px;  /* قللنا العرض عشان الكروت ما تفرشش أوي وتفضل في النص */
+    margin: 0 auto;    /* ده اللي بيسنتر الكروت في نص الشاشة بالظبط */
+    padding: 20px;
 }
 
+/* 2. تصغير الخط بنسبة 15% */
+body { 
+    font-size: 0.85rem; /* الخط الكلي بقى أصغر ومريح */
+}
+
+.card h3 { 
+    font-size: 1.2rem; /* عنوان الكارت أصغر شوية */
+}
+
+p { 
+    font-size: 0.9rem; /* النص جوه الكارت صغرناه */
+    line-height: 1.4; 
+}
+
+/* 3. شوية تظبيطات جمالية */
 .card { 
-    background: white; padding: 25px; border-radius: 10px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 8px solid; 
-}
-
-p { margin: 10px 0; font-size: 1rem; color: #333; }
-.label { font-weight: bold; color: var(--main-color); display: block; }
-
-@media (max-width: 768px) {
-    #cards-zone { grid-template-columns: 1fr; } /* موبايل = كارت واحد */
+    background: white; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08); 
+    border-top: 6px solid; 
 }
