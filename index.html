@@ -1,25 +1,50 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<style>
-  body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
-  .card { 
-    background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-right: 5px solid #2c3e50; 
-  }
-  h3 { color: #2c3e50; margin-top: 0; }
-  p { margin: 5px 0; font-size: 14px; }
-  .tag { background: #e0e0e0; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
-</style>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px; 
+        }
+        .card { 
+            background: white; border-radius: 15px; padding: 20px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            border-top: 5px solid #3498db; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        h3 { color: #2c3e50; margin-bottom: 10px; }
+        p { margin: 5px 0; font-size: 14px; color: #555; }
+        .badge { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+    </style>
 </head>
 <body>
 
-<div class="card">
-  <h3>مرض مناعي ذاتي (صدفية)</h3>
-  <p><strong>التحليل:</strong> محدد التشخيص الصدفية</p>
-  <p><strong>العلاج:</strong> مرهم Daivobet، كريمات Salibet و Betaval، مرطبات Atoderm/Lipikar</p>
-  <p><strong>نصيحة:</strong> <span class="tag">غير معدي</span> | تعرض للشمس + نظام غذائي أوميجا 3</p>
-</div>
+<div class="grid-container" id="cards-zone">
+    </div>
+
+<script>
+    // ضيف هنا بيانات الشيت بتاعك يا عمر
+    const data = [
+        { name: "مرض مناعي ذاتي (صدفية)", test: "محدد التشخيص", remedy: "Daivobet, Atoderm", status: "غير معدي" },
+        { name: "سكر تراكمي", test: "تحليل HbA1c", remedy: "متابعة طبية", status: "تحليل" },
+        { name: "تعصيب الجسم", test: "فحص سريري", remedy: "إدارة التوتر", status: "نصائح" }
+    ];
+
+    const container = document.getElementById('cards-zone');
+    data.forEach(item => {
+        container.innerHTML += `
+            <div class="card">
+                <h3>${item.name}</h3>
+                <p><strong>التحليل:</strong> ${item.test}</p>
+                <p><strong>العلاج:</strong> ${item.remedy}</p>
+                <p><span class="badge">${item.status}</span></p>
+            </div>
+        `;
+    });
+</script>
 
 </body>
 </html>
