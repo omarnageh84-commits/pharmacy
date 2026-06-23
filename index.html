@@ -5,75 +5,56 @@
     <title>موسوعة صيدلية زينهم</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f4f9f8; padding: 20px; }
-        h1 { color: #0083b0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f9f8; padding: 20px; text-align: center; }
         #cards-container { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
+            grid-template-columns: repeat(4, 1fr); /* دي اللي بتخلي 4 كروت في الصف */
             gap: 20px; 
             margin-top: 20px; 
         }
         .card { 
             background: white; 
-            border-radius: 12px; 
-            padding: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-            text-align: right; 
-            border-right: 6px solid #0083b0;
+            border-radius: 15px; 
+            padding: 20px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            border-right: 8px solid #0083b0;
+            text-align: right;
             display: flex;
             flex-direction: column;
-            min-height: 400px;
         }
-        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .card p { font-size: 13px; color: #333; margin: 4px 0; line-height: 1.4; }
-        input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
+        h2 { color: #0083b0; margin-top: 0; }
+        input { width: 80%; padding: 15px; border-radius: 25px; border: 1px solid #ddd; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <h1>موسوعة صيدلية زينهم 💊</h1>
-    <input type="text" id="search-input" placeholder="ابحث باسم المرض أو التحليل...">
+    <input type="text" id="search" placeholder="اكتب اسم التحليل أو المرض للبحث...">
     <div id="cards-container">جاري تحميل البيانات...</div>
 
     <script>
-        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+        // رابط الشيت بتاعك بعد النشر (CSV)
+        const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
 
-        Papa.parse(sheetUrl, {
-            download: true,
-            header: true,
+        Papa.parse(url, {
+            download: true, header: true,
             complete: function(results) {
                 const container = document.getElementById('cards-container');
                 container.innerHTML = '';
-                const grouped = {};
-
-                // تجميع البيانات بناءً على "الاسم"
-                results.data.forEach(row => {
-                    let name = row['الاسم / التحليل']?.trim();
-                    if (!name) return;
-
-                    if (!grouped[name]) {
-                        grouped[name] = row;
-                    } else {
-                        // دمج البيانات في حال وجود أكثر من صف لنفس المرض
-                        for (let key in row) {
-                            if (row[key] && !grouped[name][key]) {
-                                grouped[name][key] = row[key];
-                            }
-                        }
-                    }
-                });
-
-                Object.values(grouped).forEach(d => {
+                results.data.forEach(d => {
+                    if (!d['الاسم / التحليل']) return; // لو الصف فاضي سكيب
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h2>${d['الاسم / التحليل'] || ''}</h2>
-                        <p><strong>الحالة:</strong> ${d['الحالة'] || ''}</p>
+                        <h2>${d['الاسم / التحليل']}</h2>
                         <p><strong>ماهو:</strong> ${d['ماهو'] || ''}</p>
-                        <p><strong>التحليل:</strong> ${d['التحليل'] || ''}</p>
                         <p><strong>العلاج:</strong> ${d['العلاج'] || ''}</p>
-                        <p><strong>معدي:</strong> ${d['معدي'] || ''}</p>
-                        <p><strong>الطبيعي:</strong> ${d['الطبيعي'] || ''}</p>
-                        <p><strong>العالي:</strong> ${d['العالي'] || ''}</p>
-                        <p><strong>الوطي:</strong> ${d['الوطي'] || ''}</p>
-                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; height:150px; object-fit:contain; margin
+                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; border-radius:10px;">` : ''}
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
