@@ -1,45 +1,27 @@
-:root {
-    --main-color: #2e7d32;
-    --bg-color: #f0f7f4;
-}
+/* عدل الجزء الخاص بـ cards-zone و card في ملفك كالتالي: */
 
-body { 
-    font-family: 'Segoe UI', Tahoma, sans-serif; 
-    padding: 20px; 
-    background: var(--bg-color); 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; /* بيسنتر المحتوى في نص الصفحة */
-}
-
-h2 { text-align: center; color: var(--main-color); }
-
-input { 
-    width: 90%; 
-    max-width: 500px; 
-    padding: 15px; 
-    border: 2px solid var(--main-color); 
-    border-radius: 25px; 
-    margin-bottom: 30px; 
-    text-align: center; /* بيخلي الكلام جوه البحث في النص */
-}
-
-/* التعديل هنا: سنترنا الكروت في نص الشاشة */
 #cards-zone { 
     display: grid; 
     gap: 20px; 
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-    width: 100%;
-    max-width: 1200px; /* بيخلي الكروت متجمعة في النص ومبتمطش لآخر الشاشة */
-    justify-items: center; /* بيسنتر الكارت جوه الخلية بتاعته */
+    /* هنا زودنا الـ minmax عشان الكارت يعرض بشكل أعرض */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
 }
 
 .card { 
-    background: white; 
-    padding: 20px; 
+    background: var(--card-bg); 
+    /* قللنا الـ padding عشان الكارت يبقى مضغوط وأقصر */
+    padding: 15px; 
     border-radius: 15px; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     border-top: 5px solid var(--main-color);
-    width: 100%;
-    max-width: 300px; /* حجم الكارت ثابت ومسنتر */
+    /* إضافة خاصية للتحكم في الطول إذا أردت طولاً ثابتاً، 
+       لكن الأفضل ترك المحتوى يحدد الطول مع تقليل الهوامش */
+    display: flex;
+    flex-direction: column;
+}
+
+/* عشان نصغر المسافات بين الفقرات جوه الكارت */
+p { 
+    margin: 5px 0; 
+    line-height: 1.4; 
 }
