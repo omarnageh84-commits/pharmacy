@@ -1,38 +1,66 @@
-/* 1. ضبط حجم الخط العام ليكون أصغر */
+/* تنسيق عام */
 body { 
-    font-size: 0.7rem; /* خط أصغر قليلاً من السابق */
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    background-color: #f4f7f6; 
+    margin: 0; 
+    padding: 10px; 
 }
 
-/* 2. تصغير حجم الصور في التليفون */
+/* خانة البحث - توسيط وتنسيق */
+#searchInput {
+    display: block;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto; 
+    padding: 12px;
+    border-radius: 20px;
+    border: 2px solid #2e7d32;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* منطقة الكروت - شبكة متجاوبة */
+#cards-zone { 
+    display: grid; 
+    gap: 20px; 
+    max-width: 1000px; 
+    margin: 0 auto; /* هذا الأمر يسنتر الكروت في وسط الشاشة */
+}
+
+/* تنسيق الكارت */
+.card { 
+    background: white; 
+    padding: 15px; 
+    border-radius: 10px; 
+    border-top: 6px solid #2e7d32; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+/* تصغير الخط */
+.card h3 { font-size: 1.1rem; }
+.card p { font-size: 0.85rem; line-height: 1.4; }
+
+/* التحكم في الصور داخل الكروت */
+.card-image-container img { 
+    max-width: 100%; /* تمنع الصورة من الخروج عن حدود الكارت */
+    height: auto; 
+    display: block;
+    margin-top: 10px;
+}
+
+/* تنسيق للكمبيوتر (شاشات عريضة) */
+@media (min-width: 768px) {
+    #cards-zone {
+        grid-template-columns: 1fr 1fr; /* عرض كارتين جنباً لجنب */
+    }
+}
+
+/* تنسيق للموبايل (شاشات صغيرة) */
 @media (max-width: 767px) {
     #cards-zone {
-        display: block; 
+        display: block; /* عرض الكروت تحت بعضها */
     }
     .card {
         margin-bottom: 15px;
-        padding: 10px; /* تقليل الحواف داخل الكارت لتوفير مساحة */
-    }
-    
-    /* هذا الجزء هو المسؤول عن تصغير الصورة في الموبايل */
-    .card-image-container img {
-        max-width: 100%; /* ضمان عدم خروجها عن الشاشة */
-        height: auto;
-        border-radius: 8px; /* إضافة شكل جمالي للحواف */
-        display: block;
-        margin: 10px auto; /* توسيط الصورة */
-    }
-
-    /* تصغير الخط في التليفون بشكل إضافي */
-    .card h3 { font-size: 0.95rem; }
-    .card p { font-size: 0.75rem; }
-}
-
-/* 3. تنسيق الكمبيوتر ليبقى كما هو أو تحسينه */
-@media (min-width: 768px) {
-    #cards-zone {
-        grid-template-columns: 1fr 1fr;
-    }
-    .card-image-container img {
-        max-width: 300px; /* تحديد عرض ثابت للصورة في الكمبيوتر لتكون متناسقة */
     }
 }
