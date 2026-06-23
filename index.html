@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>OMAR - موسوعة صيدلية </title>
+    <title>موسوعة صيدلية زينهم</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f4f9f8; padding: 20px; }
@@ -10,15 +10,15 @@
         #cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: right; border-right: 6px solid #0083b0; }
         .card h2 { color: #0083b0; font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-        .card p { font-size: 15px; color: #333; margin: 10px 0; line-height: 1.6; }
+        .card p { font-size: 15px; color: #333; margin: 8px 0; line-height: 1.6; }
         .treatment-line { border-bottom: 1px solid #eee; display: block; padding-bottom: 5px; margin-bottom: 5px; }
         input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <h1> OMAR - موسوعة صيدلية</h1>
-    <input type="text" id="search-input" placeholder="ابحث عن اسم المرض أو التحليل...">
+    <h1>موسوعة صيدلية زينهم</h1>
+    <input type="text" id="search-input" placeholder="ابحث عن الاسم أو التحليل...">
     <div id="cards-container">جاري تحميل البيانات... 💊</div>
 
     <script>
@@ -26,60 +26,47 @@
 
         Papa.parse(sheetUrl, {
             download: true,
-            header: false,
+            header: true, // هنا التعديل: الكود هيعتمد على رؤوس الأعمدة
             complete: function(results) {
                 const container = document.getElementById('cards-container');
                 container.innerHTML = '';
                 const grouped = {};
-                let lastKnownName = "";
 
-                for (let i = 1; i < results.data.length; i++) {
-                    let row = results.data[i];
-                    let name = row[0]?.trim();
-
-                    if (!name || name === "") {
-                        name = lastKnownName;
-                    } else {
-                        lastKnownName = name;
-                    }
-
-                    if (!name || name === "") continue;
+                results.data.forEach(row => {
+                    let name = row['الاسم']?.trim(); // استخدام اسم العمود
+                    if (!name) return;
 
                     if (!grouped[name]) {
-                        grouped[name] = [...row];
+                        grouped[name] = row;
                     } else {
-                        for (let j = 1; j < row.length; j++) {
-                            if (row[j] && row[j].trim() !== "") {
-                                let val = row[j].trim();
-                                // دمج ذكي يمنع تكرار الكلمات
-                                if (!grouped[name][j] || grouped[name][j].trim() === "") {
-                                    grouped[name][j] = val;
-                                } else if (!grouped[name][j].includes(val)) {
-                                    grouped[name][j] += "\n" + val;
+                        // دمج البيانات في الخانات الفاضية
+                        Object.keys(row).forEach(key => {
+                            if (row[key] && row[key].trim() !== "") {
+                                if (!grouped[name][key] || grouped[name][key].trim() === "") {
+                                    grouped[name][key] = row[key].trim();
+                                } else if (!grouped[name][key].includes(row[key].trim())) {
+                                    grouped[name][key] += "\n" + row[key].trim();
                                 }
                             }
-                        }
+                        });
                     }
-                }
+                });
 
                 Object.values(grouped).forEach(d => {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    // تقسيم سطر العلاج لأسطر مسطرة
-                    let treatmentText = d[4] ? d[4].split('\n').map(l => `<span class="treatment-line">${l}</span>`).join('') : '';
+                    let treatment = d['العلاج'] ? d['العلاج'].split('\n').map(l => `<span class="treatment-line">${l}</span>`).join('') : '';
 
                     card.innerHTML = `
-                        <h2>${d[0] || ''}</h2>
-                        <p><strong>اسم التحليل / المرض:</strong> ${d[1] || ''}</p>
-                        <p><strong>ماهو:</strong> ${d[2] || ''}</p>
-                        <p><strong>التحليل المناسب:</strong> ${d[3] || ''}</p>
-                        <p><strong>العلاج الصيدلي والطبيعي:</strong><br>${treatmentText}</p>
-                        <p><strong>معدي:</strong> ${d[5] || ''}</p>
-                        <p><strong>الطبيعي:</strong> ${d[5] || ''}</p>
-                        <p><strong>العالي:</strong> ${d[5] || ''}</p>
-                        <p><strong>الوطي:</strong> ${d[5] || ''}</p>
-                        <p><strong>رابط الصور:</strong> ${d[5] || ''}</p>
-                        ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
+                        <h2>${d['الاسم'] || ''}</h2>
+                        ${d['الحالة'] ? `<p><strong>الحالة:</strong> ${d['الحالة']}</p>` : ''}
+                        ${d['التحليل'] ? `<p><strong>التحليل:</strong> ${d['التحليل']}</p>` : ''}
+                        <p><strong>العلاج:</strong><br>${treatment}</p>
+                        ${d['معدي'] ? `<p><strong>معدي:</strong> ${d['معدي']}</p>` : ''}
+                        ${d['الطبيعي'] ? `<p><strong>الطبيعي:</strong> ${d['الطبيعي']}</p>` : ''}
+                        ${d['العالي'] ? `<p><strong>العالي:</strong> ${d['العالي']}</p>` : ''}
+                        ${d['الوطي'] ? `<p><strong>الوطي:</strong> ${d['الوطي']}</p>` : ''}
+                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
                     `;
                     container.appendChild(card);
                 });
