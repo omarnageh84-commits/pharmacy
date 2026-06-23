@@ -1,45 +1,56 @@
 Papa.parse(sheetUrl, {
     download: true,
-    header: true,
+    header: false, // خليناه false عشان نتعامل مع الصفوف كمصفوفات (Arrays)
     complete: function(results) {
         const container = document.getElementById('cards-container');
-        container.innerHTML = ''; 
+        container.innerHTML = '';
         
-        // ده "القاموس" اللي هيجمع كل البيانات تحت اسم واحد
         const grouped = {};
+        let lastKnownName = "";
 
-        results.data.forEach(row => {
-            const name = row['اسم التحليل / المرض']?.trim();
-            // لو الاسم فاضي، سيبك منه خالص
-            if (!name) return;
+        // بنبدأ من i=1 عشان نتجاهل صف العناوين (Header)
+        for (let i = 1; i < results.data.length; i++) {
+            let row = results.data[i];
+            
+            // ترتيب الأعمدة بناءً على الشيت بتاعك:
+            // 0:اسم المرض | 1:ماهو | 2:التحليل | 3:العلاج | 4:معدي | 5:الطبيعي | 6:العالي | 7:الوطي | 8:رابط الصور
+            let currentName = row[0]?.trim();
 
-            // لو ده أول مرة نشوف المرض ده، نحفظ بياناته
-            if (!grouped[name]) {
-                grouped[name] = { ...row };
+            if (currentName && currentName !== "") {
+                lastKnownName = currentName;
             } else {
-                // لو شفناه قبل كدة، ندمج البيانات الجديدة اللي كانت ناقصة
-                for (let key in row) {
-                    if (row[key] && row[key].trim() !== "" && !grouped[name][key]) {
-                        grouped[name][key] = row[key].trim();
+                currentName = lastKnownName;
+            }
+
+            if (!currentName || currentName === "") continue;
+
+            if (!grouped[currentName]) {
+                grouped[currentName] = { name: currentName, data: row };
+            } else {
+                // دمج البيانات في الأعمدة لو كانت فاضية في الكارت المجمع
+                for (let col = 1; col < row.length; col++) {
+                    if (row[col] && row[col].trim() !== "" && (!grouped[currentName].data[col] || grouped[currentName].data[col] === "")) {
+                        grouped[currentName].data[col] = row[col].trim();
                     }
                 }
             }
-        });
+        }
 
-        // دلوقت نعرض الكروت "المجمعة" بس
+        // عرض الكروت
         Object.values(grouped).forEach(item => {
+            let d = item.data;
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <h2>${item['اسم التحليل / المرض'] || ''}</h2>
-                <p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
-                <p><strong>العلاج الصيدلي والطبيعي:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
-                <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
-                <p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
-                <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>
-                <p><strong>الوطي:</strong> ${item['الوطي'] || ''}</p>
-                <p><strong>التحليل المناسب:</strong> ${item['التحليل المناسب'] || ''}</p>
-                ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" style="max-width:100%; border-radius:8px;">` : ''}
+                <h2>${item.name}</h2>
+                <p><strong>ماهو:</strong> ${d[1] || ''}</p>
+                <p><strong>التحليل المناسب:</strong> ${d[8] || ''}</p> 
+                <p><strong>العلاج الصيدلي والطبيعي:</strong> ${d[3] || ''}</p>
+                <p><strong>معدي:</strong> ${d[4] || ''}</p>
+                <p><strong>الطبيعي:</strong> ${d[5] || ''}</p>
+                <p><strong>العالي:</strong> ${d[6] || ''}</p>
+                <p><strong>الوطي:</strong> ${d[7] || ''}</p>
+                ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px;">` : ''}
             `;
             container.appendChild(card);
         });
