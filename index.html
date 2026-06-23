@@ -2,29 +2,69 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وإذا مرضت فهو يشفين - OMAR</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- مكتبة قراءة الشيت -->
+    <title>موسوعة الأدوية والتحاليل</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <!-- ملف تحويل الموقع لأبلكيشن موبايل -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0083b0">
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .card { background: white; border-radius: 10px; padding: 15px; margin: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: right; }
+        input { width: 80%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
+    </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <h1 class="main-title">وإذا مرضت فهو يشفين</h1>
-        <h2 class="sub-title">OMAR</h2>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="ابحث عن مرض أو تحليل...">
-        </div>
-    </header>
+    <h1>وإذا مرضت فهو يشفين</h1>
+    <input type="text" id="search-input" placeholder="ابحث عن اسم المرض أو التحليل...">
+    <div id="cards-container"></div>
 
-    <main id="cards-container">
-        <!-- الكروت المبهجة هتظهر هنا عمودين جنب بعض -->
-    </main>
+    <script>
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
 
-    <script src="script.js"></script>
+        Papa.parse(sheetUrl, {
+            download: true, header: true,
+            complete: function(results) {
+                const data = results.data;
+                const container = document.getElementById('cards-container');
+                
+                // دمج البيانات المتكررة (للصدفية وغيرها)
+                const merged = {};
+                data.forEach(item => {
+                    const name = item['اسم التحليل / المرض']?.trim();
+                    if (!name) return;
+                    if (!merged[name]) merged[name] = { ...item };
+                    else {
+                        for (let key in item) {
+                            if (item[key] && !merged[name][key]) merged[name][key] = item[key].trim();
+                        }
+                    }
+                });
+
+                // عرض الكروت
+                Object.values(merged).forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const isDisease = item['الحالة']?.trim() === 'مرض';
+                    
+                    let html = `<h2>${item['اسم التحليل / المرض']}</h2>`;
+                    if (isDisease) {
+                        html += `<p><strong>التعريف:</strong> ${item['ماهو'] || ''}</p>
+                                 <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>`;
+                    } else {
+                        html += `<p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
+                                 <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>`;
+                    }
+                    card.innerHTML = html;
+                    container.appendChild(card);
+                });
+            }
+        });
+
+        // كود البحث
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.display = card.querySelector('h2').innerText.toLowerCase().includes(term) ? 'block' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>
