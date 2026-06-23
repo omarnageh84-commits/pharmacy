@@ -7,10 +7,11 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f4f9f8; padding: 20px; }
         h1 { color: #0083b0; }
-        #cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
-        .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: right; border-right: 5px solid #0083b0; }
-        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; }
-        .card p { font-size: 14px; color: #333; margin: 5px 0; white-space: pre-line; }
+        #cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: right; border-right: 6px solid #0083b0; }
+        .card h2 { color: #0083b0; font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .card p { font-size: 15px; color: #333; margin: 10px 0; line-height: 1.6; }
+        .treatment-line { border-bottom: 1px solid #eee; display: block; padding-bottom: 5px; margin-bottom: 5px; }
         input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
     </style>
 </head>
@@ -47,13 +48,14 @@
                     if (!grouped[name]) {
                         grouped[name] = [...row];
                     } else {
-                        // دمج البيانات (لو خانة فاضية املأها، ولو فيها كلام زود عليه)
                         for (let j = 1; j < row.length; j++) {
                             if (row[j] && row[j].trim() !== "") {
+                                let val = row[j].trim();
+                                // دمج ذكي يمنع تكرار الكلمات
                                 if (!grouped[name][j] || grouped[name][j].trim() === "") {
-                                    grouped[name][j] = row[j].trim();
-                                } else {
-                                    grouped[name][j] += "\n" + row[j].trim();
+                                    grouped[name][j] = val;
+                                } else if (!grouped[name][j].includes(val)) {
+                                    grouped[name][j] += "\n" + val;
                                 }
                             }
                         }
@@ -63,12 +65,15 @@
                 Object.values(grouped).forEach(d => {
                     const card = document.createElement('div');
                     card.className = 'card';
+                    // تقسيم سطر العلاج لأسطر مسطرة
+                    let treatmentText = d[4] ? d[4].split('\n').map(l => `<span class="treatment-line">${l}</span>`).join('') : '';
+
                     card.innerHTML = `
                         <h2>${d[0] || ''}</h2>
                         <p><strong>الحالة:</strong> ${d[1] || ''}</p>
                         <p><strong>ماهو:</strong> ${d[2] || ''}</p>
                         <p><strong>التحليل المناسب:</strong> ${d[3] || ''}</p>
-                        <p><strong>العلاج:</strong> ${d[4] || ''}</p>
+                        <p><strong>العلاج:</strong><br>${treatmentText}</p>
                         <p><strong>معدي:</strong> ${d[5] || ''}</p>
                         ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
                     `;
