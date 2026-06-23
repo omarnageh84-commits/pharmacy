@@ -4,7 +4,8 @@
 }
 body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); }
 #cards-zone { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-.card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid var(--main-color); }
-h3 { color: var(--main-color); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 8px solid var(--main-color); }
+h3 { color: var(--main-color); border-bottom: 2px solid var(--main-color); padding-bottom: 10px; margin-top: 0; }
 p { margin: 8px 0; white-space: pre-line; line-height: 1.5; }
 .label { font-weight: bold; color: var(--main-color); }
+img { max-width: 100%; height: auto; border-radius: 10px; margin: 10px 0; display: block; border: 1px solid #ddd; }
