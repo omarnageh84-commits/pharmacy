@@ -1,27 +1,30 @@
-/* عدل الجزء الخاص بـ cards-zone و card في ملفك كالتالي: */
-
+/* 1. زيادة عرض الكروت (توسيع الكارت) */
 #cards-zone { 
     display: grid; 
     gap: 20px; 
-    /* هنا زودنا الـ minmax عشان الكارت يعرض بشكل أعرض */
+    /* خليت الـ minmax تبدأ من 350px بدل 250px عشان الكارت يفرش بالعرض */
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
 }
 
+/* 2. تقليل طول الكارت */
 .card { 
     background: var(--card-bg); 
-    /* قللنا الـ padding عشان الكارت يبقى مضغوط وأقصر */
-    padding: 15px; 
+    /* قللنا الـ padding عشان الكارت يبقى مضغوط (أقصر) */
+    padding: 12px; 
     border-radius: 15px; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     border-top: 5px solid var(--main-color);
-    /* إضافة خاصية للتحكم في الطول إذا أردت طولاً ثابتاً، 
-       لكن الأفضل ترك المحتوى يحدد الطول مع تقليل الهوامش */
-    display: flex;
-    flex-direction: column;
 }
 
-/* عشان نصغر المسافات بين الفقرات جوه الكارت */
+/* 3. تقليل المساحات بين السطور عشان الطول يقل أكتر */
 p { 
-    margin: 5px 0; 
-    line-height: 1.4; 
+    margin: 4px 0; /* قللنا الهامش بين الفقرات */
+    line-height: 1.3; /* قللنا المسافة بين السطور */
+    font-size: 14px; /* ممكن تصغر الخط شوية عشان الكلام ياخد مساحة أقل */
+}
+
+h3 { 
+    margin-top: 0; 
+    padding-bottom: 5px; /* قللنا المسافة تحت العنوان */
+    font-size: 18px;
 }
