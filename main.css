@@ -1,63 +1,57 @@
-:root {
-    --main-color: #2e7d32;
-    --bg-color: #f4f7f6;
-}
-
+/* تنسيقات عامة */
 body { 
     font-family: 'Segoe UI', Tahoma, sans-serif; 
-    background-color: var(--bg-color); 
+    background-color: #f4f7f6; 
     margin: 0; 
     padding: 20px; 
 }
 
-h2 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
+/* تنسيق خانة البحث - ضبطت لتكون متوافقة مع كل الشاشات */
+#searchInput {
+    display: block;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto; /* سنتره في المنتصف */
+    padding: 15px;
+    border-radius: 25px;
+    border: 2px solid #2e7d32;
+    text-align: center;
+    box-sizing: border-box; /* لضمان عدم خروجها عن الإطار */
+}
 
+/* منطقة الكروت */
 #cards-zone { 
     display: grid; 
-    /* 2 كارت جنب بعض دايماً */
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 25px; 
+    gap: 20px; 
     max-width: 1000px; 
-    margin: 0 auto;
-    padding: 20px;
+    margin: 0 auto; 
 }
 
+/* تنسيق الكارت */
 .card { 
     background: white; 
-    padding: 25px; 
-    border-radius: 10px; /* زوايا مربعة شيك */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-    border-top: 8px solid; /* سمك الخط اللي فوق */
-    transition: all 0.3s ease; /* حركة ناعمة للكارت */
+    padding: 20px; 
+    border-radius: 10px; 
+    border-top: 8px solid #2e7d32; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
 
-/* عشان الكارت ينور لما تقف عليه بالماوس */
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-h3 { margin-top: 0; font-size: 1.4rem; }
-
-p { margin: 12px 0; font-size: 1.05rem; line-height: 1.6; color: #333; }
-
-.label { 
-    font-weight: bold; 
-    color: var(--main-color); 
-    display: block; 
-}
-
-.card-image-container { text-align: center; margin-top: 20px; }
-.card-image-container img { 
-    max-width: 100%; 
-    height: auto; 
-    border-radius: 5px; 
-    border: 1px solid #ddd; 
-}
-
-/* تنسيق الموبايل (عشان الكلام ميزنقش) */
-@media (max-width: 600px) {
+/* تنسيق خاص بالكمبيوتر (شاشات عريضة) */
+@media (min-width: 768px) {
     #cards-zone {
-        grid-template-columns: 1fr; /* في الموبايل كارت واحد عشان القراءة */
+        grid-template-columns: 1fr 1fr; /* كارتين جنب بعض */
+    }
+}
+
+/* تنسيق خاص بالموبايل (شاشات صغيرة) */
+@media (max-width: 767px) {
+    #cards-zone {
+        display: block; /* الكروت تحت بعض */
+    }
+    .card {
+        margin-bottom: 20px; 
+    }
+    #searchInput {
+        width: 95%; /* توسيع خانة البحث لتناسب شاشة الموبايل */
     }
 }
