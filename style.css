@@ -1,17 +1,45 @@
 :root {
     --main-color: #2e7d32;
     --bg-color: #f0f7f4;
-    --card-bg: #ffffff;
 }
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); color: #333; }
+
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 20px; 
+    background: var(--bg-color); 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; /* بيسنتر المحتوى في نص الصفحة */
+}
+
 h2 { text-align: center; color: var(--main-color); }
 
-input { width: 100%; max-width: 600px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 25px; font-size: 16px; outline: none; }
+input { 
+    width: 90%; 
+    max-width: 500px; 
+    padding: 15px; 
+    border: 2px solid var(--main-color); 
+    border-radius: 25px; 
+    margin-bottom: 30px; 
+    text-align: center; /* بيخلي الكلام جوه البحث في النص */
+}
 
-/* تنسيق الـ Grid ليظهر 4 كروت */
-#cards-zone { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+/* التعديل هنا: سنترنا الكروت في نص الشاشة */
+#cards-zone { 
+    display: grid; 
+    gap: 20px; 
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    width: 100%;
+    max-width: 1200px; /* بيخلي الكروت متجمعة في النص ومبتمطش لآخر الشاشة */
+    justify-items: center; /* بيسنتر الكارت جوه الخلية بتاعته */
+}
 
-.card { background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid var(--main-color); }
-h3 { color: var(--main-color); margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-p { margin: 8px 0; white-space: pre-line; line-height: 1.5; }
-.label { font-weight: bold; color: var(--main-color); display: block; margin-bottom: 5px; }
+.card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    border-top: 5px solid var(--main-color);
+    width: 100%;
+    max-width: 300px; /* حجم الكارت ثابت ومسنتر */
+}
