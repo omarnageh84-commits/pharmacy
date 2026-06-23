@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-</head>
-<body>
-    <h2>"علم ينتفع به" - Omar 💊 💊</h2>
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض...">
-    <div id="cards-zone"></div>
-
-<script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
-
-    Papa.parse(csvUrl, {
-        download: true, header: true,
-        complete: function(results) { allData = results.data; render(allData); }
-    });
-
-    function render(data) {
+function render(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
         data.forEach(item => {
@@ -34,16 +13,9 @@
                     <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
                     <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
                     <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
-                    ${item['رابط الصور'] ? `<a href="${item['رابط الصور']}" target="_blank" style="color:var(--main-color)">🖼️ عرض الصورة</a>` : ''}
+                    
+                    ${item['رابط الصور'] ? `<br><a href="${item['رابط الصور']}" target="_blank" style="color:var(--main-color)">🖼️ عرض الصورة</a>` : ''}
                 </div>
             `;
         });
     }
-
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        render(allData.filter(i => i.الاسم && i.الاسم.toUpperCase().includes(val)));
-    }
-</script>
-</body>
-</html>
