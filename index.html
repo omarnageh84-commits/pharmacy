@@ -32,7 +32,7 @@
                 const grouped = {};
                 let lastKnownName = "";
 
-                // بنبدأ من i=1 عشان نتخطى صف العناوين
+                // معالجة البيانات وتجميعها
                 for (let i = 1; i < results.data.length; i++) {
                     let row = results.data[i];
                     let currentName = row[0]?.trim();
@@ -46,9 +46,9 @@
                     if (!currentName || currentName === "") continue;
 
                     if (!grouped[currentName]) {
-                        grouped[currentName] = { name: currentName, data: row };
+                        grouped[currentName] = { name: currentName, data: [...row] };
                     } else {
-                        // دمج البيانات لو لقيت صف جديد لنفس المرض
+                        // دمج البيانات في الخانات الفاضية
                         for (let col = 1; col < row.length; col++) {
                             if (row[col] && row[col].trim() !== "" && (!grouped[currentName].data[col] || grouped[currentName].data[col] === "")) {
                                 grouped[currentName].data[col] = row[col].trim();
