@@ -3,58 +3,29 @@
     --bg-color: #f0f7f4;
 }
 
-/* تنسيق الصفحة الأساسي */
-body { 
-    font-family: 'Segoe UI', Tahoma, sans-serif; 
-    padding: 30px; 
-    background-color: var(--bg-color); 
-    color: #222; 
-}
+body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: var(--bg-color); color: #222; }
 
-/* تنسيق العنوان الرئيسي (كبرناه ونسقناه) */
-h2 { 
-    text-align: center; 
-    color: var(--main-color); 
-    font-size: 3rem; 
-    margin-bottom: 40px; 
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
+h2 { text-align: center; color: var(--main-color); margin-bottom: 20px; }
 
-/* تنسيق مربع البحث (أكبر وأشيك) */
-input { 
-    width: 80%; 
-    max-width: 800px; 
-    display: block; 
-    margin: 0 auto 40px auto; 
-    padding: 20px; 
-    border: 3px solid var(--main-color); 
-    border-radius: 50px; 
-    font-size: 1.2rem; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+input { width: 90%; max-width: 600px; display: block; margin: 0 auto 30px auto; padding: 15px; border: 3px solid var(--main-color); border-radius: 50px; }
 
-/* تنظيم الكروت (أنواع الـ Grid) */
-/* الـ auto-fill بيملأ المساحة، الـ minmax خليناها 400px عشان العرض يزيد */
+/* الجزء ده هو اللي بيظبط الشاشة للكمبيوتر والموبايل */
 #cards-zone { 
     display: grid; 
-    gap: 30px; 
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); 
+    gap: 20px; 
+    /* لو الشاشة صغيرة الموبايل ياخد 100%، لو كبيرة الكمبيوتر ياخد 400px */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); 
 }
 
-/* تنسيق الكارت (شكل مربع بحدود ملونة عشوائية) */
 .card { 
     background: white; 
-    padding: 25px; 
-    border-radius: 20px; 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
-    border-top: 15px solid; /* اللون هيتغير بالـ JS */
-    min-height: 250px; 
-    display: flex; 
-    flex-direction: column;
-    transition: transform 0.3s;
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    border-top: 15px solid; 
+    transition: transform 0.2s;
 }
 
-.card:hover { transform: scale(1.02); }
-
-h3 { color: #333; margin-top: 0; padding-bottom: 10px; font-size: 1.5rem; }
+h3 { margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+p { margin: 8px 0; font-size: 1rem; line-height: 1.5; }
 .label { font-weight: bold; color: var(--main-color); }
