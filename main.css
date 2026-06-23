@@ -1,32 +1,30 @@
-/* 1. السنتره والتحجيم */
+/* ooo.css */
+body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 20px; }
+h2 { text-align: center; color: #2e7d32; }
+
+#searchInput {
+    display: block;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 25px;
+    border: 2px solid #2e7d32;
+    text-align: center;
+}
+
 #cards-zone { 
     display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 25px; 
-    max-width: 900px;  /* قللنا العرض عشان الكروت ما تفرشش أوي وتفضل في النص */
-    margin: 0 auto;    /* ده اللي بيسنتر الكروت في نص الشاشة بالظبط */
-    padding: 20px;
+    grid-template-columns: repeat(2, 1fr); /* كارتين جنب بعض */
+    gap: 20px; 
+    max-width: 1000px; 
+    margin: 0 auto; 
 }
 
-/* 2. تصغير الخط بنسبة 15% */
-body { 
-    font-size: 0.85rem; /* الخط الكلي بقى أصغر ومريح */
-}
-
-.card h3 { 
-    font-size: 1.2rem; /* عنوان الكارت أصغر شوية */
-}
-
-p { 
-    font-size: 0.9rem; /* النص جوه الكارت صغرناه */
-    line-height: 1.4; 
-}
-
-/* 3. شوية تظبيطات جمالية */
 .card { 
     background: white; 
     padding: 20px; 
     border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08); 
-    border-top: 6px solid; 
+    border-top: 8px solid #2e7d32; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
