@@ -1,1 +1,95 @@
+/* تنسيق الصفحة الأساسي */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
+body {
+    background-color: #f4f9f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+}
+
+/* تصميم الهيدر المبهج */
+.main-header {
+    text-align: center;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    padding: 20px 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.main-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.sub-title {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 90%;
+    max-width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    outline: none;
+}
+
+/* تقسيم الكروت لعمودين */
+#cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* تصميم الكارت */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-right: 4px solid #0083b0;
+}
+
+.card h2 {
+    font-size: 14px;
+    color: #0083b0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.card p {
+    font-size: 11px;
+    color: #455a64;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.card strong {
+    color: #2e7d32;
+}
+
+/* تحجيم الصور داخل الكروت */
+.card img {
+    display: block;
+    max-width: 100px; /* تصغير الصورة */
+    height: auto;
+    margin: 10px auto;
+    border-radius: 8px;
+}
+
+/* التجاوب مع الموبايل (لو الشاشة صغيرة جداً) */
+@media (max-width: 480px) {
+    #cards-container {
+        grid-template-columns: 1fr; /* كارت واحد في العمود على الموبايلات الصغيرة */
+    }
+}
