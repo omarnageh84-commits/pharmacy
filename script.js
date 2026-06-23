@@ -1,32 +1,30 @@
-const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-
 Papa.parse(sheetUrl, {
     download: true,
-    header: false, // تعامل مع الأعمدة كأرقام (0, 1, 2...)
+    header: false, // مش هنعتمد على العناوين عشان نتجنب اللخبطة
     complete: function(results) {
         const container = document.getElementById('cards-container');
         container.innerHTML = '';
         
-        const grouped = {};
+        const grouped = {}; // ده القاموس اللي هيجمع البيانات
         let lastKnownName = "";
 
-        // بنبدأ من الصف التاني (i=1) عشان نتخطى العناوين
+        // بنبدأ من الصف التاني (i=1) عشان نتخطى صف العناوين
         for (let i = 1; i < results.data.length; i++) {
             let row = results.data[i];
             
-            // ترتيب الأعمدة: 0:اسم المرض | 1:الحالة | 2:ماهو | 3:التحليل | 4:العلاج | 5:معدي | 6:الطبيعي | 7:العالي | 8:الوطي | 9:الرابط
+            // ترتيب الأعمدة: A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7, I=8, J=9
             let currentName = row[0]?.trim();
 
             if (currentName && currentName !== "") {
                 lastKnownName = currentName;
             } else {
-                currentName = lastKnownName;
+                currentName = lastKnownName; // لو اسم المرض فاضي، بنستخدم اسم المرض اللي فوقه
             }
 
             if (!currentName || currentName === "") continue;
 
             if (!grouped[currentName]) {
-                grouped[currentName] = { name: currentName, data: row };
+                grouped[currentName] = { name: currentName, data: [...row] };
             } else {
                 // دمج البيانات في الخانات الفاضية
                 for (let col = 1; col < row.length; col++) {
@@ -37,7 +35,7 @@ Papa.parse(sheetUrl, {
             }
         }
 
-        // عرض الكروت
+        // عرض الكروت المجمعة
         Object.values(grouped).forEach(item => {
             let d = item.data;
             const card = document.createElement('div');
@@ -52,7 +50,7 @@ Papa.parse(sheetUrl, {
                 <p><strong>الطبيعي:</strong> ${d[6] || ''}</p>
                 <p><strong>العالي:</strong> ${d[7] || ''}</p>
                 <p><strong>الوطي:</strong> ${d[8] || ''}</p>
-                ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px;">` : ''}
+                ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
             `;
             container.appendChild(card);
         });
