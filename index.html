@@ -4,62 +4,48 @@
     <meta charset="UTF-8">
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .grid-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 20px; 
-        }
         .card { 
             background: white; border-radius: 15px; padding: 20px; 
             box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-            border-top: 5px solid #2c3e50;
+            border-right: 10px solid #2c3e50;
+            max-width: 400px;
         }
-        h3 { color: #2c3e50; margin-top: 0; }
-        p { margin: 8px 0; font-size: 14px; line-height: 1.5; }
-        .badge-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-        .badge { background: #3498db; color: white; padding: 4px 8px; border-radius: 5px; font-size: 11px; }
+        h3 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        p { margin: 10px 0; font-size: 14px; line-height: 1.6; }
+        .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; margin-left: 5px; }
         a { color: #e74c3c; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="grid-container" id="cards-zone"></div>
+<div class="card" id="card-zone"></div>
 
 <script>
-    // ضيف هنا بياناتك يا عمر
-    const data = [
-        { 
-            الاسم: "مرض مناعي ذاتي (صدفية)", 
-            ماهو: "مرض جلدي غير معدي", 
-            التحليل: "محدد التشخيص الصدفية", 
-            العلاج: "Daivobet, Atoderm, Lipikar", 
-            معدي: "لا", 
-            الطبيعي: "N/A", 
-            العالي: "N/A", 
-            الوطي: "N/A", 
-            رابط_الصور: "#" 
-        }
-    ];
+    // البيانات (تقدر تغيرها من الشيت)
+    const item = { 
+        الاسم: "مرض مناعي ذاتي (صدفية)", 
+        ماهو: "مرض جلدي غير معدي", 
+        التحليل: "محدد التشخيص الصدفية", 
+        العلاج: "Daivobet, Atoderm, Lipikar", 
+        معدي: "لا", 
+        الطبيعي: "N/A", 
+        عالي: "N/A", 
+        واطي: "N/A", 
+        رابط_الصور: "#" 
+    };
 
-    const container = document.getElementById('cards-zone');
-    
-    data.forEach(item => {
-        container.innerHTML += `
-            <div class="card">
-                <h3>${item.الاسم}</h3>
-                <p><strong>ماهو:</strong> ${item.ماهو}</p>
-                <p><strong>التحليل:</strong> ${item.التحليل}</p>
-                <p><strong>العلاج:</strong> ${item.العلاج}</p>
-                <div class="badge-container">
-                    <span class="badge">معدي: ${item.معدي}</span>
-                    <span class="badge">الطبيعي: ${item.الطبيعي}</span>
-                    <span class="badge">العالي: ${item.العالي}</span>
-                    <span class="badge">الواطي: ${item.الوطي}</span>
-                </div>
-                <p style="margin-top:15px;"><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض الصورة</a></p>
-            </div>
-        `;
-    });
+    const card = document.getElementById('card-zone');
+    card.innerHTML = `
+        <h3>${item.الاسم}</h3>
+        <p><strong>ماهو:</strong> ${item.ماهو}</p>
+        <p><strong>التحليل:</strong> ${item.التحليل}</p>
+        <p><strong>العلاج:</strong> ${item.العلاج}</p>
+        <p><strong>معدي:</strong> <span class="badge">${item.معدي}</span></p>
+        <p><strong>الطبيعي:</strong> ${item.الطبيعي}</p>
+        <p><strong>لو عالي (السبب والعلاج):</strong> ${item.عالي}</p>
+        <p><strong>لو واطي (السبب والعلاج):</strong> ${item.واطي}</p>
+        <p><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض الصورة للمرض</a></p>
+    `;
 </script>
 
 </body>
