@@ -5,14 +5,17 @@
     <title>موسوعة الأدوية والتحاليل</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
-        .card { background: white; border-radius: 10px; padding: 15px; margin: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: right; }
-        input { width: 80%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #f4f9f8; padding: 20px; }
+        #cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
+        .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: right; border-right: 5px solid #0083b0; }
+        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; }
+        .card p { font-size: 14px; color: #333; margin-bottom: 5px; }
+        input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <h1>وإذا مرضت فهو يشفين</h1>
+    <h1>موسوعة صيدلية زينهم</h1>
     <input type="text" id="search-input" placeholder="ابحث عن اسم المرض أو التحليل...">
     <div id="cards-container"></div>
 
@@ -20,45 +23,26 @@
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
 
         Papa.parse(sheetUrl, {
-            download: true, header: true,
+            download: true,
+            header: true,
             complete: function(results) {
-                const data = results.data;
                 const container = document.getElementById('cards-container');
-                
-                // دمج البيانات المتكررة (للصدفية وغيرها)
-                const merged = {};
-                data.forEach(item => {
-                    const name = item['اسم التحليل / المرض']?.trim();
-                    if (!name) return;
-                    if (!merged[name]) merged[name] = { ...item };
-                    else {
-                        for (let key in item) {
-                            if (item[key] && !merged[name][key]) merged[name][key] = item[key].trim();
-                        }
-                    }
-                });
+                results.data.forEach(item => {
+                    if (!item['اسم التحليل / المرض']) return;
 
-                // عرض الكروت
-                Object.values(merged).forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    const isDisease = item['الحالة']?.trim() === 'مرض';
-                    
-                    let html = `<h2>${item['اسم التحليل / المرض']}</h2>`;
-                    if (isDisease) {
-                        html += `<p><strong>التعريف:</strong> ${item['ماهو'] || ''}</p>
-                                 <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>`;
-                    } else {
-                        html += `<p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
-                                 <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>`;
-                    }
-                    card.innerHTML = html;
+                    card.innerHTML = `
+                        <h2>${item['اسم التحليل / المرض']}</h2>
+                        <p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
+                        <p><strong>العلاج:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
+                        <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
+                    `;
                     container.appendChild(card);
                 });
             }
         });
 
-        // كود البحث
         document.getElementById('search-input').addEventListener('input', function(e) {
             const term = e.target.value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
