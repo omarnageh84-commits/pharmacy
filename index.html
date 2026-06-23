@@ -25,13 +25,13 @@
 
         Papa.parse(sheetUrl, {
             download: true,
-            header: false, // تعامل مع الأعمدة كأرقام 0,1,2...
+            header: false, // لا تعتمد على العناوين لتجنب التكرار
             complete: function(results) {
                 const container = document.getElementById('cards-container');
                 container.innerHTML = '';
-                const grouped = {};
+                const grouped = {}; // هنا سنجمع البيانات
 
-                // تجميع البيانات (Grouping)
+                // تجميع البيانات: i=1 لتخطي سطر العناوين
                 for (let i = 1; i < results.data.length; i++) {
                     let row = results.data[i];
                     let name = row[0]?.trim(); 
@@ -39,9 +39,9 @@
                     if (!name || name === "") continue;
 
                     if (!grouped[name]) {
-                        grouped[name] = { ...row };
+                        grouped[name] = { ...row }; // حفظ بيانات الصف الأول
                     } else {
-                        // دمج البيانات في الخانات الفاضية
+                        // دمج البيانات في الخانات الفاضية فقط
                         for (let j = 1; j < row.length; j++) {
                             if (row[j] && row[j].trim() !== "" && (!grouped[name][j] || grouped[name][j] === "")) {
                                 grouped[name][j] = row[j].trim();
@@ -50,7 +50,7 @@
                     }
                 }
 
-                // عرض الكروت
+                // عرض الكروت المجمعة
                 Object.values(grouped).forEach(d => {
                     const card = document.createElement('div');
                     card.className = 'card';
