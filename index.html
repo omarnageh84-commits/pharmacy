@@ -3,66 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>مساعد الصيدلية الذكي 💊</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body { font-family: Tahoma; padding: 20px; background: #f4f7f6; }
         input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #4CAF50; border-radius: 10px; font-size: 16px; }
         .card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-right: 5px solid #4CAF50; }
-        h3 { color: #2E7D32; margin-top: 0; }
-        .label { font-weight: bold; color: #4CAF50; }
+        .label { font-weight: bold; color: #4CAF50; display: inline-block; width: 80px; }
+        img { max-width: 100%; height: auto; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <h2>البحث في بيانات الصيدلية 💊</h2>
 <input type="text" id="searchInput" onkeyup="filterData()" placeholder="ابحث باسم المرض...">
-<div id="cards-zone"></div>
+<div id="result"></div>
 
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQuBQxCesEFgAfM7YACypYmqKNzYsgwM85Bwecxi1UDhbMkEnt-bkcXYYzMHHil3E0G7ihpI4crqNwA/pub?output=csv";
     let allData = [];
 
-    Papa.parse(csvUrl, {
-        download: true, 
-        header: true,
-        complete: function(results) {
-            allData = results.data;
-            displayData(allData);
-        }
-    });
-
-    function displayData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = ''; 
-        const groupedData = {};
-
-        data.forEach(item => {
-            if (!item.الاسم) return;
-            
-            if (!groupedData[item.الاسم]) {
-                groupedData[item.الاسم] = { ...item };
-            } else {
-                groupedData[item.الاسم].العلاج += "، " + item.العلاج;
-            }
+    fetch(csvUrl)
+        .then(res => res.text())
+        .then(data => {
+            const rows = data.split('\n');
+            allData = rows.map(row => row.split(','));
         });
-
-        Object.values(groupedData).forEach(item => {
-            let imageLink = item.رابط_الصور ? `<p><a href="${item.رابط_الصور}" target="_blank">عرض الصورة</a></p>` : '';
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${item.الاسم}</h3>
-                    <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
-                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    ${imageLink}
-                </div>
-            `;
-        });
-    }
 
     function filterData() {
         let input = document.getElementById("searchInput").value.toUpperCase();
-        let filtered = allData.filter(item => item.الاسم && item.الاسم.toUpperCase().includes(input));
-        displayData(filtered);
+        let res = document.getElementById("result");
+        res.innerHTML = "";
+        
+        allData.forEach((row, index) => {
+            if (index > 0 && row[0] && row[0].toUpperCase().includes(input)) {
+                res.innerHTML += `
+                    <div class="card">
+                        <div><span class="label">الاسم:</span> ${row[0]}</div>
+                        <div><span class="label">التحليل:</span> ${row[1] || '---'}</div>
+                        <div><span class="label">ما هو:</span> ${row[2] || '---'}</div>
+                        <div><span class="label">العلاج:</span> ${row[3] || '---'}</div>
+                        <div><span class="label">معدي:</span> ${row[4] || '---'}</div>
+                        <div><span class="label">الطبيعي:</span> ${row[5] || '---'}</div>
+                        <div><span class="label">العالي:</span> ${row[6] || '---'}</div>
+                        <div><span class="label">الوطي:</span> ${row[7] || '---'}</div>
+                        <div><span class="label">الصورة:</span> <br><a href="${row[8]}" target="_blank">اضغط لعرض الصورة</a></div>
+                    </div>`;
+            }
+        });
     }
 </script>
 </body>
