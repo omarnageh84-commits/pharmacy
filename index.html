@@ -2,50 +2,50 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .card { 
-            background: white; border-radius: 15px; padding: 20px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-            border-right: 10px solid #2c3e50;
-            max-width: 400px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-right: 10px solid #2c3e50; }
         h3 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        p { margin: 10px 0; font-size: 14px; line-height: 1.6; }
-        .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; margin-left: 5px; }
-        a { color: #e74c3c; text-decoration: none; font-weight: bold; }
+        p { font-size: 14px; margin: 8px 0; }
+        .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; }
     </style>
 </head>
 <body>
 
-<div class="card" id="card-zone"></div>
+<div class="grid" id="cards-zone">جارِ تحميل البيانات من الشيت...</div>
 
 <script>
-    // البيانات (تقدر تغيرها من الشيت)
-    const item = { 
-        الاسم: "مرض مناعي ذاتي (صدفية)", 
-        ماهو: "مرض جلدي غير معدي", 
-        التحليل: "محدد التشخيص الصدفية", 
-        العلاج: "Daivobet, Atoderm, Lipikar", 
-        معدي: "لا", 
-        الطبيعي: "N/A", 
-        عالي: "N/A", 
-        واطي: "N/A", 
-        رابط_الصور: "#" 
-    };
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
 
-    const card = document.getElementById('card-zone');
-    card.innerHTML = `
-        <h3>${item.الاسم}</h3>
-        <p><strong>ماهو:</strong> ${item.ماهو}</p>
-        <p><strong>التحليل:</strong> ${item.التحليل}</p>
-        <p><strong>العلاج:</strong> ${item.العلاج}</p>
-        <p><strong>معدي:</strong> <span class="badge">${item.معدي}</span></p>
-        <p><strong>الطبيعي:</strong> ${item.الطبيعي}</p>
-        <p><strong>لو عالي (السبب والعلاج):</strong> ${item.عالي}</p>
-        <p><strong>لو واطي (السبب والعلاج):</strong> ${item.واطي}</p>
-        <p><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض الصورة للمرض</a></p>
-    `;
+    Papa.parse(csvUrl, {
+        download: true,
+        header: true, // عشان يتعرف على العناوين (الاسم، ماهو، إلخ)
+        complete: function(results) {
+            const container = document.getElementById('cards-zone');
+            container.innerHTML = ''; // نمسح كلمة "جاري التحميل"
+            
+            results.data.forEach(item => {
+                // أتأكد إن الاسم موجود عشان ما يظهرش كارت فاضي
+                if(item.الاسم) {
+                    container.innerHTML += `
+                        <div class="card">
+                            <h3>${item.الاسم}</h3>
+                            <p><strong>ماهو:</strong> ${item.ماهو || 'N/A'}</p>
+                            <p><strong>التحليل:</strong> ${item.التحليل || 'N/A'}</p>
+                            <p><strong>العلاج:</strong> ${item.العلاج || 'N/A'}</p>
+                            <p><strong>معدي:</strong> <span class="badge">${item.معدي || 'N/A'}</span></p>
+                            <p><strong>الطبيعي:</strong> ${item.الطبيعي || 'N/A'}</p>
+                            <p><strong>لو عالي:</strong> ${item.العالي || 'N/A'}</p>
+                            <p><strong>لو واطي:</strong> ${item.الوطي || 'N/A'}</p>
+                            <p><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض الصورة</a></p>
+                        </div>
+                    `;
+                }
+            });
+        }
+    });
 </script>
 
 </body>
