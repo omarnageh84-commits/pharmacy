@@ -1,58 +1,45 @@
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+
 Papa.parse(sheetUrl, {
     download: true,
-    header: false, // نلغي الاعتماد على العناوين عشان نتجنب مشاكل التسمية
+    header: true, // بنعتمد هنا على أسماء الأعمدة اللي في الشيت
     complete: function(results) {
         const container = document.getElementById('cards-container');
         container.innerHTML = '';
         
         const grouped = {};
-        let lastKnownName = "";
 
-        // نبدأ من الصف الثاني (i=1) عشان نتخطى صف العناوين
-        for (let i = 1; i < results.data.length; i++) {
-            let row = results.data[i];
-            
-            // ترتيب الأعمدة حسب ما كتبت لي:
-            // A=0 (الاسم), B=1 (الحالة), C=2 (ماهو), D=3 (التحليل), 
-            // E=4 (العلاج), F=5 (معدي), G=6 (الطبيعي), H=7 (العالي), I=8 (الوطي), J=9 (الرابط)
-            let currentName = row[0]?.trim();
+        results.data.forEach(row => {
+            // بنستخدم اسم العمود بالظبط زي ما هو مكتوب في الشيت
+            const name = row['اسم التحليل / المرض']?.trim();
+            if (!name) return; // تجاهل أي صف مفيش فيه اسم
 
-            if (currentName && currentName !== "") {
-                lastKnownName = currentName;
+            if (!grouped[name]) {
+                grouped[name] = { ...row };
             } else {
-                currentName = lastKnownName;
-            }
-
-            if (!currentName || currentName === "") continue;
-
-            if (!grouped[currentName]) {
-                grouped[currentName] = { name: currentName, data: row };
-            } else {
-                // دمج البيانات لو كانت مكملة في صفوف تانية
-                for (let col = 1; col < row.length; col++) {
-                    if (row[col] && row[col].trim() !== "" && (!grouped[currentName].data[col] || grouped[currentName].data[col] === "")) {
-                        grouped[currentName].data[col] = row[col].trim();
+                // دمج البيانات لو لقيت صف تاني لنفس المرض
+                for (let key in row) {
+                    if (row[key] && row[key].trim() !== "" && !grouped[name][key]) {
+                        grouped[name][key] = row[key].trim();
                     }
                 }
             }
-        }
+        });
 
-        // العرض النهائي
+        // عرض الكروت
         Object.values(grouped).forEach(item => {
-            let d = item.data;
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <h2>${item.name}</h2>
-                <p><strong>الحالة:</strong> ${d[1] || ''}</p>
-                <p><strong>ماهو:</strong> ${d[2] || ''}</p>
-                <p><strong>التحليل المناسب:</strong> ${d[3] || ''}</p>
-                <p><strong>العلاج الصيدلي والطبيعي:</strong> ${d[4] || ''}</p>
-                <p><strong>معدي:</strong> ${d[5] || ''}</p>
-                <p><strong>الطبيعي:</strong> ${d[6] || ''}</p>
-                <p><strong>العالي:</strong> ${d[7] || ''}</p>
-                <p><strong>الوطي:</strong> ${d[8] || ''}</p>
-                ${d[9] ? `<img src="${d[9]}" style="max-width:100%; border-radius:8px;">` : ''}
+                <h2>${item['اسم التحليل / المرض'] || ''}</h2>
+                <p><strong>ماهو:</strong> ${item['ماهو'] || ''}</p>
+                <p><strong>التحليل المناسب:</strong> ${item['التحليل المناسب'] || ''}</p>
+                <p><strong>العلاج الصيدلي والطبيعي:</strong> ${item['العلاج الصيدلي والطبيعي'] || ''}</p>
+                <p><strong>معدي:</strong> ${item['معدي'] || ''}</p>
+                <p><strong>الطبيعي:</strong> ${item['الطبيعي'] || ''}</p>
+                <p><strong>العالي:</strong> ${item['العالي'] || ''}</p>
+                <p><strong>الوطي:</strong> ${item['الوطي'] || ''}</p>
+                ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" style="max-width:100%; border-radius:8px;">` : ''}
             `;
             container.appendChild(card);
         });
