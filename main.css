@@ -1,11 +1,8 @@
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f0f7f4; }
-h2 { text-align: center; color: #2e7d32; }
-
-/* هنا السر! الكارتين جنب بعض */
 #cards-zone { 
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
     gap: 20px; 
+    padding: 20px;
 }
 
 .card { 
@@ -14,8 +11,5 @@ h2 { text-align: center; color: #2e7d32; }
     border-radius: 15px; 
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
     border-top: 10px solid; 
+    transition: transform 0.2s;
 }
-
-.label { font-weight: bold; color: #2e7d32; display: block; margin-top: 10px; }
-.card-image-container { text-align: center; margin-top: 15px; }
-.card-image-container img { max-width: 100%; height: auto; border-radius: 10px; }
