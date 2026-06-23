@@ -1,52 +1,32 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>علم ينتفع به - Omar</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-</head>
-<body>
-
-    <h2>"علم ينتفع به" - Omar 💊</h2>
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض...">
-    <div id="cards-zone"></div>
-
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
-
-    Papa.parse(csvUrl, {
-        download: true, header: true,
-        complete: function(results) { allData = results.data; render(allData); }
-    });
-
     function render(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
+        
+        // استخدام كائن لتجميع البيانات تحت نفس اسم المرض
+        const groupedData = {};
         data.forEach(item => {
             if (!item.الاسم) return;
+            if (!groupedData[item.الاسم]) {
+                groupedData[item.الاسم] = item;
+            }
+        });
+
+        Object.values(groupedData).forEach(item => {
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
                     <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    <p><span class="label">معدي:</span> ${item.معدي || 'لا'}</p>
+                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
                     <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
                     <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
                     <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
                     
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة توضيحية" style="width:100%; border-radius:10px; margin-top:10px;">` : ''}
                 </div>
             `;
         });
     }
-
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        render(allData.filter(i => i.الاسم && i.الاسم.toUpperCase().includes(val)));
-    }
 </script>
-</body>
-</html>
