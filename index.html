@@ -1,77 +1,36 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>مساعد الصيدلية الذكي 💊</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        body { font-family: Tahoma; padding: 20px; background: #f4f7f6; }
-        input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #4CAF50; border-radius: 10px; font-size: 16px; }
-        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-right: 8px solid #4CAF50; }
-        h3 { color: #2E7D32; margin-top: 0; font-size: 24px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
-        p { margin: 10px 0; line-height: 1.6; }
-        .label { font-weight: bold; color: #388E3C; display: inline-block; width: 100px; }
-    </style>
-</head>
-<body>
-
-<h2>البحث في بيانات الصيدلية 💊</h2>
-<input type="text" id="searchInput" onkeyup="filterData()" placeholder="ابحث باسم المرض...">
-<div id="cards-zone"></div>
-
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
-
-    Papa.parse(csvUrl, {
-        download: true, 
-        header: true,
-        complete: function(results) {
-            allData = results.data;
-            displayData(allData);
-        }
-    });
-
-    function displayData(data) {
+    // ... (جزء Papa.parse زي ما هو)
+    
+    complete: function(results) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = ''; 
         const groupedData = {};
 
-        data.forEach(item => {
+        results.data.forEach(item => {
             if (!item.الاسم) return;
-            
-            // تجميع البيانات
+
+            // إذا كان المرض أول مرة يظهر، أنشئ له كارت
             if (!groupedData[item.الاسم]) {
                 groupedData[item.الاسم] = { ...item };
             } else {
+                // إذا كان موجود، ادمج البيانات الجديدة مع القديمة
                 groupedData[item.الاسم].العلاج += "، " + item.العلاج;
                 groupedData[item.الاسم].التحليل += "، " + item.التحليل;
                 groupedData[item.الاسم].السبب += "، " + item.السبب;
             }
         });
 
-        // عرض الكروت
+        // عرض البيانات بعد التجميع
         Object.values(groupedData).forEach(item => {
-            let imageLink = item.رابط_الصور ? `<p><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض صورة توضيحية</a></p>` : '';
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
-                    <p><span class="label">السبب:</span> ${item.السبب || '---'}</p>
-                    <p><span class="label">التحاليل:</span> ${item.التحليل || '---'}</p>
-                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    <p><span class="label">معدي:</span> ${item.معدي || 'لا'}</p>
-                    ${imageLink}
+                    <p><strong>التحاليل:</strong> ${item.التحليل || '---'}</p>
+                    <p><strong>ماهو:</strong> ${item.ماهو || '---'}</p>
+                    <p><strong>العلاج:</strong> ${item.العلاج || '---'}</p>
+                    <p><a href="${item.رابط_الصور}" target="_blank">عرض الصورة</a></p>
                 </div>
             `;
         });
     }
-
-    function filterData() {
-        let input = document.getElementById("searchInput").value.toUpperCase();
-        let filtered = allData.filter(item => item.الاسم && item.الاسم.toUpperCase().includes(input));
-        displayData(filtered);
-    }
 </script>
-</body>
-</html>
