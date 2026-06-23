@@ -1,46 +1,14 @@
-:root {
-    --main-color: #2e7d32;
-    --bg-color: #f0f7f4;
-}
-
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background-color: var(--bg-color); color: #222; }
-
-h2 { text-align: center; color: var(--main-color); margin-bottom: 15px; font-size: 1.6rem; }
-
-input { width: 95%; max-width: 400px; display: block; margin: 0 auto 20px auto; padding: 10px; border: 2px solid var(--main-color); border-radius: 25px; font-size: 1rem; }
-
-/* ده التعديل السحري لعرض الكمبيوتر والتليفون مع الصور */
-#cards-zone { 
-    display: grid; 
-    gap: 15px; 
-    /* على الموبايل كارت واحد، على الكمبيوتر كارتين جنب بعض - ده هو الحل اللي طالبه */
-    grid-template-columns: repeat(auto-fit, minmax(max(100%, 350px), 1fr)); 
-}
-
 .card { 
     background: white; 
-    padding: 15px; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
-    border-top: 12px solid; 
-    transition: transform 0.2s;
-    overflow: hidden; /* عشان لو الصورة كبيرة ماتخرجش برة */
+    padding: 25px; 
+    border-radius: 20px; 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
+    border-top: 20px solid; 
+    margin-bottom: 20px;
 }
 
-h3 { margin-top: 0; padding-bottom: 8px; border-bottom: 1px solid #eee; font-size: 1.2rem; }
-p { margin: 6px 0; font-size: 0.9rem; line-height: 1.4; }
-.label { font-weight: bold; color: var(--main-color); }
-
-/* --- ده تنسيق الصور الجديد عشان تبقى شيك --- */
-.card-image-container {
-    text-align: center; /* سنتر الصورة */
-    margin-top: 10px;
-}
-
-.card-image-container img {
-    max-width: 250px; /* ده السر! خلينا الصورة مش كبيرة أوي */
-    height: auto; /* حافظ على الأبعاد */
-    border-radius: 8px;
-    border: 3px solid #eee;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
+    margin-left: 5px;
 }
