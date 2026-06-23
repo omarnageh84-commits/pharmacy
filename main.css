@@ -1,21 +1,38 @@
-/* تنسيق الشاشات الكبيرة (الكمبيوتر) */
-@media (min-width: 768px) {
-    #cards-zone {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* اتنين جنب بعض */
-        gap: 20px;
-        max-width: 1000px; /* بيخلي الكروت مش مفرودة لآخر الشاشة */
-        margin: 0 auto; /* بيسنتر الكروت في نص الصفحة */
-    }
+/* 1. ضبط حجم الخط العام ليكون أصغر */
+body { 
+    font-size: 0.7rem; /* خط أصغر قليلاً من السابق */
 }
 
-/* تنسيق الموبايل (الشاشات الصغيرة) */
+/* 2. تصغير حجم الصور في التليفون */
 @media (max-width: 767px) {
     #cards-zone {
-        display: block; /* بيخلي الكروت تحت بعض */
-        padding: 10px;
+        display: block; 
     }
     .card {
-        margin-bottom: 20px; /* مسافة بين الكارت والتاني في الموبايل */
+        margin-bottom: 15px;
+        padding: 10px; /* تقليل الحواف داخل الكارت لتوفير مساحة */
+    }
+    
+    /* هذا الجزء هو المسؤول عن تصغير الصورة في الموبايل */
+    .card-image-container img {
+        max-width: 100%; /* ضمان عدم خروجها عن الشاشة */
+        height: auto;
+        border-radius: 8px; /* إضافة شكل جمالي للحواف */
+        display: block;
+        margin: 10px auto; /* توسيط الصورة */
+    }
+
+    /* تصغير الخط في التليفون بشكل إضافي */
+    .card h3 { font-size: 0.95rem; }
+    .card p { font-size: 0.75rem; }
+}
+
+/* 3. تنسيق الكمبيوتر ليبقى كما هو أو تحسينه */
+@media (min-width: 768px) {
+    #cards-zone {
+        grid-template-columns: 1fr 1fr;
+    }
+    .card-image-container img {
+        max-width: 300px; /* تحديد عرض ثابت للصورة في الكمبيوتر لتكون متناسقة */
     }
 }
