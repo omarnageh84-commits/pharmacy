@@ -1,66 +1,57 @@
-/* تنسيق عام */
+/* تنسيقات عامة */
 body { 
     font-family: 'Segoe UI', Tahoma, sans-serif; 
     background-color: #f4f7f6; 
     margin: 0; 
-    padding: 10px; 
+    padding: 20px; 
 }
 
-/* خانة البحث - توسيط وتنسيق */
+/* تنسيق خانة البحث - ضبطت لتكون متوافقة مع كل الشاشات */
 #searchInput {
     display: block;
     width: 90%;
     max-width: 500px;
-    margin: 20px auto; 
-    padding: 12px;
-    border-radius: 20px;
+    margin: 20px auto; /* سنتره في المنتصف */
+    padding: 15px;
+    border-radius: 25px;
     border: 2px solid #2e7d32;
     text-align: center;
-    box-sizing: border-box;
+    box-sizing: border-box; /* لضمان عدم خروجها عن الإطار */
 }
 
-/* منطقة الكروت - شبكة متجاوبة */
+/* منطقة الكروت */
 #cards-zone { 
     display: grid; 
     gap: 20px; 
     max-width: 1000px; 
-    margin: 0 auto; /* هذا الأمر يسنتر الكروت في وسط الشاشة */
+    margin: 0 auto; 
 }
 
 /* تنسيق الكارت */
 .card { 
     background: white; 
-    padding: 15px; 
+    padding: 20px; 
     border-radius: 10px; 
-    border-top: 6px solid #2e7d32; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    border-top: 8px solid #2e7d32; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
 
-/* تصغير الخط */
-.card h3 { font-size: 1.1rem; }
-.card p { font-size: 0.85rem; line-height: 1.4; }
-
-/* التحكم في الصور داخل الكروت */
-.card-image-container img { 
-    max-width: 100%; /* تمنع الصورة من الخروج عن حدود الكارت */
-    height: auto; 
-    display: block;
-    margin-top: 10px;
-}
-
-/* تنسيق للكمبيوتر (شاشات عريضة) */
+/* تنسيق خاص بالكمبيوتر (شاشات عريضة) */
 @media (min-width: 768px) {
     #cards-zone {
-        grid-template-columns: 1fr 1fr; /* عرض كارتين جنباً لجنب */
+        grid-template-columns: 1fr 1fr; /* كارتين جنب بعض */
     }
 }
 
-/* تنسيق للموبايل (شاشات صغيرة) */
+/* تنسيق خاص بالموبايل (شاشات صغيرة) */
 @media (max-width: 767px) {
     #cards-zone {
-        display: block; /* عرض الكروت تحت بعضها */
+        display: block; /* الكروت تحت بعض */
     }
     .card {
-        margin-bottom: 15px;
+        margin-bottom: 20px; 
+    }
+    #searchInput {
+        width: 95%; /* توسيع خانة البحث لتناسب شاشة الموبايل */
     }
 }
