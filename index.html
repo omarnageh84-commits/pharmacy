@@ -10,43 +10,52 @@
         h3 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
         p { font-size: 14px; margin: 8px 0; }
         .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; }
+        /* تنسيق الصورة عشان تظهر داخل الكارت */
+        .card img { width: 100%; border-radius: 10px; margin-top: 10px; display: block; }
     </style>
 </head>
 <body>
 
-<div class="grid" id="cards-zone">جارِ تحميل البيانات من الشيت...</div>
+<div class="grid" id="cards-zone">جارِ تحميل البيانات...</div>
 
 <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
 
     Papa.parse(csvUrl, {
-        download: true,
-        header: true, // عشان يتعرف على العناوين (الاسم، ماهو، إلخ)
+        download: true, header: true,
         complete: function(results) {
             const container = document.getElementById('cards-zone');
-            container.innerHTML = ''; // نمسح كلمة "جاري التحميل"
+            container.innerHTML = '';
             
+            // تجميع البيانات لمنع التكرار
+            const grouped = {};
             results.data.forEach(item => {
-                // أتأكد إن الاسم موجود عشان ما يظهرش كارت فاضي
-                if(item.الاسم) {
-                    container.innerHTML += `
-                        <div class="card">
-                            <h3>${item.الاسم}</h3>
-                            <p><strong>ماهو:</strong> ${item.ماهو || 'N/A'}</p>
-                            <p><strong>التحليل:</strong> ${item.التحليل || 'N/A'}</p>
-                            <p><strong>العلاج:</strong> ${item.العلاج || 'N/A'}</p>
-                            <p><strong>معدي:</strong> <span class="badge">${item.معدي || 'N/A'}</span></p>
-                            <p><strong>الطبيعي:</strong> ${item.الطبيعي || 'N/A'}</p>
-                            <p><strong>لو عالي:</strong> ${item.العالي || 'N/A'}</p>
-                            <p><strong>لو واطي:</strong> ${item.الوطي || 'N/A'}</p>
-                            <p><a href="${item.رابط_الصور}" target="_blank">🖼️ عرض الصورة</a></p>
-                        </div>
-                    `;
+                if(!item.الاسم) return;
+                if(!grouped[item.الاسم]) {
+                    grouped[item.الاسم] = { ...item };
+                } else {
+                    grouped[item.الاسم].العلاج += "، " + item.العلاج;
                 }
+            });
+
+            Object.values(grouped).forEach(item => {
+                container.innerHTML += `
+                    <div class="card">
+                        <h3>${item.الاسم}</h3>
+                        <p><strong>ماهو:</strong> ${item.ماهو || 'N/A'}</p>
+                        <p><strong>التحليل:</strong> ${item.التحليل || 'N/A'}</p>
+                        <p><strong>العلاج:</strong> ${item.العلاج || 'N/A'}</p>
+                        <p><strong>معدي:</strong> <span class="badge">${item.معدي || 'N/A'}</span></p>
+                        <p><strong>الطبيعي:</strong> ${item.الطبيعي || 'N/A'}</p>
+                        <p><strong>لو عالي:</strong> ${item.العالي || 'N/A'}</p>
+                        <p><strong>لو واطي:</strong> ${item.الوطي || 'N/A'}</p>
+                        <!-- الصورة تظهر مباشرة هنا -->
+                        <img src="${item.رابط_الصور}" alt="صورة المرض">
+                    </div>
+                `;
             });
         }
     });
 </script>
-
 </body>
 </html>
