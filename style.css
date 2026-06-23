@@ -3,36 +3,18 @@
     --bg-color: #f0f7f4;
 }
 
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background-color: var(--bg-color); color: #222; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: var(--bg-color); color: #222; }
 
-h2 { text-align: center; color: var(--main-color); margin-bottom: 10px; }
+h2 { text-align: center; color: var(--main-color); margin-bottom: 20px; font-size: 1.8rem; }
 
-/* تصغير العنوان الرئيسي */
-h2 { 
-    text-align: center; 
-    color: var(--main-color); 
-    font-size: 1.8rem; /* بدل 2.5rem أو 3rem، صغرناه لـ 1.8rem عشان مياخدش مساحة كبيرة */
-    margin-bottom: 20px; 
-    margin-top: 10px; /* إضافة مسافة بسيطة من فوق */
-}
+input { width: 90%; max-width: 500px; display: block; margin: 0 auto 30px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; font-size: 1rem; }
 
-/* تصغير مربع البحث */
-input { 
-    width: 80%; 
-    max-width: 400px; /* قللنا العرض الأقصى عشان ميبقاش عريض أوي */
-    display: block; 
-    margin: 0 auto 30px auto; /* قللنا المسافة اللي تحت البحث */
-    padding: 30px; /* قللنا الـ padding عشان المربع يبقى "أرفع" */
-    border: 2px solid var(--main-color); /* قللنا سمك الحدود */
-    border-radius: 700px; /* صغرنا التدوير */
-    font-size: 3rem; /* حجم خط مناسب */
-}
-/* الجزء ده هو اللي بيظبط الشاشة للكمبيوتر والموبايل */
+/* ده التعديل المهم للشاشة */
 #cards-zone { 
     display: grid; 
     gap: 20px; 
-    /* لو الشاشة صغيرة الموبايل ياخد 100%، لو كبيرة الكمبيوتر ياخد 400px */
-    grid-template-columns: repeat(auto-fill, minmax(min(50%, 200px), 1fr)); 
+    /* على الموبايل كارت واحد، على الكمبيوتر يعرض كارتين أو تلاتة حسب المساحة */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
 }
 
 .card { 
@@ -42,8 +24,9 @@ input {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     border-top: 15px solid; 
     transition: transform 0.2s;
+    min-height: 200px; /* بنحدد حد أدنى للطول عشان الكارت ما يبقاش طويل أوي */
 }
 
-h3 { margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-p { margin: 8px 0; font-size: 1rem; line-height: 1.5; }
+h3 { margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #eee; font-size: 1.3rem; }
+p { margin: 8px 0; font-size: 0.95rem; line-height: 1.4; }
 .label { font-weight: bold; color: var(--main-color); }
