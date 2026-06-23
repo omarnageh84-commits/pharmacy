@@ -18,13 +18,13 @@ h2 {
 
 /* تصغير مربع البحث */
 input { 
-    width: 90%; 
+    width: 100%; 
     max-width: 500px; /* قللنا العرض الأقصى عشان ميبقاش عريض أوي */
     display: block; 
     margin: 0 auto 20px auto; /* قللنا المسافة اللي تحت البحث */
-    padding: 10px; /* قللنا الـ padding عشان المربع يبقى "أرفع" */
+    padding: 20px; /* قللنا الـ padding عشان المربع يبقى "أرفع" */
     border: 2px solid var(--main-color); /* قللنا سمك الحدود */
-    border-radius: 25px; /* صغرنا التدوير */
+    border-radius: 50px; /* صغرنا التدوير */
     font-size: 1rem; /* حجم خط مناسب */
 }
 /* الجزء ده هو اللي بيظبط الشاشة للكمبيوتر والموبايل */
