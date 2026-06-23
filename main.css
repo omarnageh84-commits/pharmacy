@@ -1,21 +1,36 @@
-/* تنسيق الشاشات الكبيرة (الكمبيوتر) */
-@media (min-width: 768px) {
-    #cards-zone {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* اتنين جنب بعض */
-        gap: 20px;
-        max-width: 1000px; /* بيخلي الكروت مش مفرودة لآخر الشاشة */
-        margin: 0 auto; /* بيسنتر الكروت في نص الصفحة */
-    }
+/* 1. سنتره الكروت وتوسيعها بشكل متناسق */
+#cards-zone { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px; 
+    max-width: 950px;  /* زودنا العرض شوية عشان الكارتين ياخدوا راحتهم */
+    margin: 0 auto;    /* ده اللي بيسنتر المنطقة كلها في نص الشاشة */
+    padding: 0 20px;
 }
 
-/* تنسيق الموبايل (الشاشات الصغيرة) */
-@media (max-width: 767px) {
-    #cards-zone {
-        display: block; /* بيخلي الكروت تحت بعض */
-        padding: 10px;
-    }
-    .card {
-        margin-bottom: 20px; /* مسافة بين الكارت والتاني في الموبايل */
-    }
+/* 2. تصغير الخط بنسبة إضافية (إجمالي 30% تقريباً عن الأول) */
+body { 
+    font-size: 0.75rem; /* خط أصغر وأدق */
+}
+
+.card h3 { 
+    font-size: 1.1rem; /* تصغير عنوان الكارت */
+    margin-bottom: 15px;
+}
+
+p { 
+    font-size: 0.85rem; /* تصغير خط الفقرات */
+    line-height: 1.5;
+    margin: 8px 0;
+}
+
+/* 3. تظبيط الكارت نفسه عشان يبقى متوازن */
+.card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07); 
+    border-top: 6px solid; 
+    display: flex;
+    flex-direction: column;
 }
