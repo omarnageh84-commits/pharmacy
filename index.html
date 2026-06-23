@@ -20,19 +20,19 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             text-align: right; 
             border-right: 6px solid #0083b0;
-            aspect-ratio: 1 / 1; /* لجعل الكارت مربعاً */
-            overflow-y: auto; /* للسماح بالتمرير داخل الكارت المربع */
+            aspect-ratio: 1 / 1; /* كارت مربع */
+            overflow-y: auto; 
         }
-        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; }
+        .card h2 { color: #0083b0; font-size: 18px; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
         .card p { font-size: 13px; color: #333; margin: 5px 0; line-height: 1.4; }
         input { width: 90%; max-width: 400px; padding: 12px; border-radius: 20px; border: 1px solid #ddd; outline: none; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <h1>موسوعة صيدلية زينهم</h1>
-    <input type="text" id="search-input" placeholder="ابحث عن اسم المرض أو التحليل...">
-    <div id="cards-container">جاري التحميل...</div>
+    <h1>موسوعة صيدلية زينهم 💊</h1>
+    <input type="text" id="search-input" placeholder="اكتب اسم المرض أو التحليل هنا...">
+    <div id="cards-container">جاري تحميل الأدوية...</div>
 
     <script>
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
@@ -44,25 +44,28 @@
                 const container = document.getElementById('cards-container');
                 container.innerHTML = '';
                 
+                // تصفية الصفوف الفاضية
                 results.data.forEach(d => {
-                    if (!d['اسم التحليل / المرض']) return;
+                    const name = d['اسم التحليل / المرض']?.trim();
+                    if (!name) return;
 
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h2>${d['اسم التحليل / المرض']}</h2>
+                        <h2>${name}</h2>
                         <p><strong>ماهو:</strong> ${d['ماهو'] || ''}</p>
                         <p><strong>العلاج:</strong> ${d['العلاج الصيدلي والطبيعي'] || ''}</p>
-                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; height:100px; object-fit:cover; border-radius:8px;">` : ''}
+                        <p><strong>التحليل:</strong> ${d['التحليل المناسب'] || ''}</p>
+                        ${d['رابط الصور'] ? `<img src="${d['رابط الصور']}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-top:5px;">` : ''}
                     `;
                     container.appendChild(card);
                 });
             }
         });
 
-        // تحسين البحث ليعمل مع النصوص العربية
+        // البحث الذكي
         document.getElementById('search-input').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
+            const term = e.target.value.trim().toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
                 const title = card.querySelector('h2').innerText.toLowerCase();
                 card.style.display = title.includes(term) ? 'block' : 'none';
