@@ -8,8 +8,8 @@
 </head>
 <body>
 
-<h2>البحث في بيانات الصيدلية 💊</h2>
-<input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض...">
+<h2>"علم ينتفع به" 💊 - Omar</h2>
+<input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض أو الدواء...">
 <div id="cards-zone"></div>
 
 <script>
@@ -28,22 +28,23 @@
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
         const groups = {};
+        const colors = ['#2e7d32', '#1976d2', '#d32f2f', '#f57c00', '#7b1fa2'];
 
-        // تجميع البيانات لمنع التكرار
         data.forEach(item => {
             if (!item.الاسم) return;
             if (!groups[item.الاسم]) groups[item.الاسم] = item;
         });
 
         Object.values(groups).forEach(item => {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
             container.innerHTML += `
-                <div class="card">
-                    <h3>${item.الاسم}</h3>
+                <div class="card" style="border-top-color: ${randomColor}">
+                    <h3 style="color: ${randomColor}">${item.الاسم}</h3>
                     <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
                     <p><span class="label">السبب:</span> ${item.السبب || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    ${item.رابط_الصور ? `<a href="${item.رابط_الصور}" target="_blank" style="color:var(--main-color)">🖼️ عرض الصورة</a>` : ''}
+                    ${item['رابط الصور'] ? `<a href="${item['رابط الصور']}" target="_blank" style="color:${randomColor}">🖼️ عرض الصورة</a>` : ''}
                 </div>
             `;
         });
