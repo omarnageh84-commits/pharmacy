@@ -6,17 +6,16 @@
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-right: 10px solid #2c3e50; }
-        h3 { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        p { font-size: 14px; margin: 8px 0; }
-        .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; }
-        /* تنسيق الصورة */
-        .card img { width: 100%; border-radius: 10px; margin-top: 10px; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-right: 10px solid #2c3e50; }
+        h3 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        p { font-size: 14px; margin: 8px 0; line-height: 1.5; }
+        .badge { background: #3498db; color: white; padding: 3px 8px; border-radius: 5px; font-size: 11px; margin: 2px; }
+        .card img { width: 100%; border-radius: 10px; margin-top: 15px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
-<div class="grid" id="cards-zone">جارِ التحميل...</div>
+<div class="grid" id="cards-zone">جاري تحميل البيانات...</div>
 
 <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
@@ -25,34 +24,34 @@
         download: true, header: true,
         complete: function(results) {
             const container = document.getElementById('cards-zone');
-            container.innerHTML = '';
-            
-            const grouped = {};
-            results.data.forEach(item => {
-                // استخدام trim() عشان نشيل المسافات اللي بتعمل تكرار
-                const name = item.الاسم ? item.الاسم.trim() : null;
-                if(!name) return;
+            container.innerHTML = ''; 
 
-                if(!grouped[name]) {
-                    grouped[name] = { ...item };
+            const groupedData = {};
+
+            results.data.forEach(item => {
+                const name = item.الاسم ? item.الاسم.trim() : null;
+                if (!name) return;
+                
+                if (!groupedData[name]) {
+                    groupedData[name] = { ...item };
                 } else {
-                    // تجميع العلاج مع علامة فاصلة
-                    grouped[name].العلاج += "<br>• " + item.العلاج;
+                    // تجميع العلاجات المكررة في نفس الكارت
+                    groupedData[name].العلاج += "<br>• " + item.العلاج;
                 }
             });
 
-            Object.values(grouped).forEach(item => {
+            Object.values(groupedData).forEach(item => {
                 container.innerHTML += `
                     <div class="card">
                         <h3>${item.الاسم}</h3>
                         <p><strong>ماهو:</strong> ${item.ماهو || '-'}</p>
                         <p><strong>التحليل:</strong> ${item.التحليل || '-'}</p>
-                        <p><strong>العلاج:</strong> ${item.العلاج || '-'}</p>
-                        <p><strong>معدي:</strong> <span class="badge">${item.معدي || '-'}</span></p>
-                        <p><strong>الطبيعي:</strong> ${item.الطبيعي || '-'}</p>
-                        <p><strong>لو عالي:</strong> ${item.العالي || '-'}</p>
-                        <p><strong>لو واطي:</strong> ${item.الوطي || '-'}</p>
-                        <img src="${item.رابط_الصور}" alt="صورة المرض" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=الصورة+غير+متاحة'">
+                        <p><strong>العلاج:</strong><br>${item.العلاج || '-'}</p>
+                        <div>
+                            <span class="badge">معدي: ${item.معدي || '-'}</span>
+                            <span class="badge">الطبيعي: ${item.الطبيعي || '-'}</span>
+                        </div>
+                        <img src="${item.رابط_الصور}" alt="صورة المرض" onerror="this.style.display='none'">
                     </div>
                 `;
             });
