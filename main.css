@@ -1,32 +1,36 @@
-/* 1. السنتره والتحجيم */
+/* 1. سنتره الكروت وتوسيعها بشكل متناسق */
 #cards-zone { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
-    gap: 25px; 
-    max-width: 900px;  /* قللنا العرض عشان الكروت ما تفرشش أوي وتفضل في النص */
-    margin: 0 auto;    /* ده اللي بيسنتر الكروت في نص الشاشة بالظبط */
-    padding: 20px;
+    gap: 30px; 
+    max-width: 950px;  /* زودنا العرض شوية عشان الكارتين ياخدوا راحتهم */
+    margin: 0 auto;    /* ده اللي بيسنتر المنطقة كلها في نص الشاشة */
+    padding: 0 20px;
 }
 
-/* 2. تصغير الخط بنسبة 15% */
+/* 2. تصغير الخط بنسبة إضافية (إجمالي 30% تقريباً عن الأول) */
 body { 
-    font-size: 0.85rem; /* الخط الكلي بقى أصغر ومريح */
+    font-size: 0.75rem; /* خط أصغر وأدق */
 }
 
 .card h3 { 
-    font-size: 1.2rem; /* عنوان الكارت أصغر شوية */
+    font-size: 1.1rem; /* تصغير عنوان الكارت */
+    margin-bottom: 15px;
 }
 
 p { 
-    font-size: 0.9rem; /* النص جوه الكارت صغرناه */
-    line-height: 1.4; 
+    font-size: 0.85rem; /* تصغير خط الفقرات */
+    line-height: 1.5;
+    margin: 8px 0;
 }
 
-/* 3. شوية تظبيطات جمالية */
+/* 3. تظبيط الكارت نفسه عشان يبقى متوازن */
 .card { 
     background: white; 
     padding: 20px; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07); 
     border-top: 6px solid; 
+    display: flex;
+    flex-direction: column;
 }
