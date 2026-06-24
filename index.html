@@ -11,7 +11,6 @@
         
         #searchInput { width: 95%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
         
-        /* التنسيق الإجباري للموبايل: كارت واحد */
         #cards-zone { 
             display: grid !important; 
             gap: 15px; 
@@ -21,7 +20,6 @@
             margin: 0 auto; 
         }
 
-        /* التنسيق الإجباري للكمبيوتر: كارتين */
         @media (min-width: 768px) {
             #cards-zone { 
                 grid-template-columns: repeat(2, 1fr) !important; 
@@ -37,25 +35,23 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
             display: flex;
             flex-direction: column;
-            text-transform: uppercase; /* يخلي أي حروف إنجليزي كابيتال أوتوماتيك */
+            text-transform: uppercase; 
         }
         
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
-        /* تنسيق البيانات في شكل نقط (Bullets) */
         ul.card-data { list-style-type: none; padding: 0; margin: 0; flex-grow: 1; }
-        ul.card-data li { margin: 6px 0; font-size: 0.95rem; line-height: 1.5; color: #333; position: relative; padding-right: 15px; }
+        ul.card-data li { margin: 8px 0; font-size: 0.95rem; line-height: 1.5; color: #333; position: relative; padding-right: 15px; }
         ul.card-data li::before { content: "•"; color: var(--main-color); font-weight: bold; position: absolute; right: 0; top: 0; }
 
-        /* تنسيق الصورة: تحت ومتسنترة */
-        .card img { 
-            max-width: 90%; 
-            height: auto; 
-            max-height: 150px; 
-            object-fit: contain; 
-            border-radius: 8px; 
-            margin: 15px auto 0 auto; 
-            display: block; 
+        /* السر كله هنا: تنسيق إجباري للصورة عشان تبقى تحت ومتسنترة وصغيرة */
+        .img-perfect { 
+            width: 100%; 
+            max-width: 180px !important; /* عرض صغير وملموم */
+            height: 120px !important; /* طول ثابت عشان الكروت تبقى قد بعض */
+            object-fit: contain !important; /* يمنع إن الصورة تتمط أو تتبكسل */
+            margin: 15px auto 0 auto !important; /* بيسنتر الصورة في النص بالظبط */
+            display: block !important; 
         }
     </style>
 </head>
@@ -87,12 +83,12 @@
         });
 
         Object.values(groups).forEach(item => {
-            // تجميع البيانات المتاحة في نقط بدون عناوين
             let listItems = '';
             const fields = ['ماهو', 'التحليل', 'العلاج', 'معدي', 'الطبيعي', 'العالي', 'الوطي'];
             
             fields.forEach(field => {
                 if (item[field] && item[field].trim() !== '' && item[field] !== '---') {
+                    // شيلنا العناوين وبقت نقط بس
                     listItems += `<li>${item[field]}</li>`;
                 }
             });
@@ -104,7 +100,7 @@
                         ${listItems}
                     </ul>
                     
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض" class="img-perfect">` : ''}
                 </div>
             `;
         });
