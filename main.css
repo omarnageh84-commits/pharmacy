@@ -39,8 +39,8 @@ body {
 
 /* تعديل حجم الصورة عشان متخدش مساحة كبيرة */
 .card img { 
-    width: 70%; 
-    max-height: 90px; /* صغرنا الصورة زيادة عشان نكسب مساحة */
+    width: 50%; 
+    max-height: 70px; /* صغرنا الصورة زيادة عشان نكسب مساحة */
     object-fit: cover; 
     border-radius: 8px; 
     margin-bottom: 8px; 
