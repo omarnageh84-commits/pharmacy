@@ -1,16 +1,47 @@
-/* التنسيق الأساسي للموبايل (عمود واحد) */
+/* تنسيق أساسي للصفحة لتقليل المساحات الفاضية */
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 10px; /* قللنا الـ padding عشان نقرب العناصر للمقدمة */
+    background: var(--bg-color); 
+    margin: 0; 
+}
+
+/* تنسيق خانة البحث */
+#searchInput { 
+    width: 95%; 
+    max-width: 500px; 
+    display: block; 
+    margin: 10px auto; /* قللنا المسافة فوق وتحت خانة البحث */
+    padding: 12px; 
+    border: 2px solid var(--main-color); 
+    border-radius: 25px; 
+    text-align: center;
+}
+
+/* التنسيق المسؤول عن الكروت */
 #cards-zone { 
     display: grid; 
-    grid-template-columns: 1fr; /* عمود واحد فقط */
-    gap: 20px; 
-    max-width: 600px; /* بيخلي الكروت ملمومة في نص الشاشة */
+    gap: 10px; /* قللنا المسافة بين الكروت (gap) عشان تتقرب لبعض */
+    padding: 5px;
+    grid-template-columns: 1fr; /* إجبار الموبايل على عرض كارت واحد فقط */
+    max-width: 500px; 
     margin: 0 auto; 
 }
 
-/* التنسيق للشاشات الكبيرة (الكمبيوتر) */
-@media (min-width: 768px) {
-    #cards-zone { 
-        grid-template-columns: repeat(2, 1fr); /* اتنين جنب بعض */
-        max-width: 1000px; /* مساحة أكبر للكمبيوتر */
-    }
+/* تنسيق الكارت نفسه */
+.card { 
+    background: white; 
+    padding: 12px; /* قللنا الـ padding جوه الكارت عشان يلم المحتوى */
+    border-radius: 12px; 
+    border-top: 6px solid var(--main-color); 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+/* تعديل حجم الصورة عشان متخدش مساحة كبيرة */
+.card img { 
+    width: 100%; 
+    max-height: 90px; /* صغرنا الصورة زيادة عشان نكسب مساحة */
+    object-fit: cover; 
+    border-radius: 8px; 
+    margin-bottom: 8px; 
 }
