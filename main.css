@@ -27,13 +27,14 @@ body {
 }
 
 /* ده التنسيق اللي بيحل مشكلة الموبايل والكمبيوتر */
+/* التعديل هنا في الـ Grid */
 #cards-zone { 
     display: grid; 
     gap: 15px; 
-    padding: 5px;
-    /* التعديل هنا: يظبط نفسه تلقائياً عشان ميبقاش عريض أوي أو ضيق أوي */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-    max-width: 1000px; 
+    padding: 10px;
+    /* بنحدد هنا إن العرض الأدنى للكارت يكون 400 بكسل عشان يشيلوا كارتين بس */
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+    max-width: 900px; 
     margin: 0 auto; 
 }
 
