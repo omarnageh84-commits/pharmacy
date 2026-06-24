@@ -3,46 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>علم ينتفع به - Omar 💊</title>
+    <title>علم ينتفع به - OMAR 💊</title>
     <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        :root { --main-color: #2e7d32; --bg-color: #f8fdf8; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
-        
-        #searchInput { width: 95%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
-        
-        #cards-zone { 
-            display: grid !important; 
-            gap: 10px; 
-            padding: 5px;
-            grid-template-columns: 1fr !important; 
-            max-width: 500px; 
-            margin: 0 auto; 
-        }
-
-        @media (min-width: 768px) {
-            #cards-zone { 
-                grid-template-columns: repeat(2, 1fr) !important; 
-                max-width: 1000px; 
-            }
-        }
-
-        .card { background: white; padding: 12px; border-radius: 12px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        .card img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 200px; 
-            object-fit: contain; 
-            border-radius: 8px; 
-            margin-top: 10px; 
-        }
-        
-        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        p { margin: 4px 0; font-size: 0.9rem; line-height: 1.4; color: #333; }
-        .label { font-weight: bold; color: var(--main-color); }
-    </style>
 </head>
 <body>
 
@@ -75,7 +39,7 @@
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <p><span class="label">ماهو وسببه:</span> ${item.ماهو وسببه || '---'}</p>
+                    <p><span class="label">ماهو / سببه:</span> ${item['ماهو / سببه'] || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
                     <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
