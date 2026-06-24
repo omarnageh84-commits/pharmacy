@@ -26,8 +26,7 @@
     });
 
     function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
+<p class="card-text"><span class="label">ماهو / سببه:</span><br>${item['ماهو / سببه'] || item.ماهو || 'غير متوفر'}</p>        container.innerHTML = '';
         const groups = {};
 
         data.forEach(item => {
