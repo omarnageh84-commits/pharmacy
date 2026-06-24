@@ -2,10 +2,39 @@
     --main-color: #2e7d32;
     --bg-color: #f0f7f4;
 }
+
 body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); }
-#cards-zone { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-.card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 8px solid var(--main-color); }
+
+/* تقسيم الكروت لـ 2 في كل صف */
+#cards-zone { 
+    display: grid; 
+    gap: 20px; 
+    grid-template-columns: repeat(2, 1fr); /* 2 كرت في الصف */
+}
+
+/* تنسيق الكارت */
+.card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    border-top: 8px solid var(--main-color);
+    display: flex;
+    flex-direction: column; /* ترتيب العناصر فوق بعض */
+}
+
 h3 { color: var(--main-color); border-bottom: 2px solid var(--main-color); padding-bottom: 10px; margin-top: 0; }
+
 p { margin: 8px 0; white-space: pre-line; line-height: 1.5; }
+
 .label { font-weight: bold; color: var(--main-color); }
-img { max-width: 100%; height: auto; border-radius: 10px; margin: 10px 0; display: block; border: 1px solid #ddd; }
+
+/* الصورة تكون في آخر الكارت */
+img { 
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+    margin-top: auto; /* بتزق الصورة للأسفل */
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
