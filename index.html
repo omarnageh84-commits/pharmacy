@@ -1,48 +1,99 @@
-/* تنسيق أساسي للصفحة */
-:root { --main-color: #2e7d32; --bg-color: #f8fdf8; }
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
-h1 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>علم ينتفع به - Omar 💊</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        :root { --main-color: #2e7d32; --bg-color: #f8fdf8; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
+        h1 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
+        
+        #searchInput { width: 90%; max-width: 500px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; }
+        
+        /* التنسيق الأساسي للموبايل: عمود واحد */
+        #cards-zone { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 20px; 
+            max-width: 500px; 
+            margin: 0 auto; 
+        }
+        
+        /* التنسيق للكمبيوتر: 2 كارت جنب بعض */
+        @media (min-width: 768px) {
+            #cards-zone { 
+                grid-template-columns: repeat(2, 1fr); 
+                max-width: 1000px; 
+            }
+        }
+        
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            border-top: 8px solid var(--main-color); 
+            display: flex; 
+            flex-direction: column;
+        }
+        
+        h3 { color: var(--main-color); margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        p { margin: 8px 0; line-height: 1.5; color: #333; }
+        .label { font-weight: bold; color: var(--main-color); }
+        
+        .card img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
 
-#searchInput { width: 90%; max-width: 500px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; }
+    <h1>علم ينتفع به - Omar 💊</h1>
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض...">
+    <div id="cards-zone"></div>
 
-/* هذا هو الجزء الأهم للتنسيق */
-#cards-zone { 
-    display: grid; 
-    gap: 20px; 
-    padding: 10px;
-    /* الموبايل: عمود واحد فقط تحت بعض */
-    grid-template-columns: 1fr; 
-    max-width: 500px; 
-    margin: 0 auto; 
-}
+<script>
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+    let allData = [];
 
-/* الكمبيوتر: 2 كارت في السطر */
-@media (min-width: 768px) {
-    #cards-zone { 
-        grid-template-columns: repeat(2, 1fr); 
-        max-width: 1000px; 
+    Papa.parse(csvUrl, {
+        download: true, header: true,
+        complete: function(results) {
+            allData = results.data;
+            renderData(allData);
+        }
+    });
+
+    function renderData(data) {
+        const container = document.getElementById('cards-zone');
+        container.innerHTML = '';
+        const groups = {};
+
+        data.forEach(item => {
+            if (!item.الاسم) return;
+            if (!groups[item.الاسم]) groups[item.الاسم] = item;
+        });
+
+        Object.values(groups).forEach(item => {
+            container.innerHTML += `
+                <div class="card">
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
+                    <h3>${item.الاسم}</h3>
+                    <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
+                    <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
+                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
+                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
+                </div>
+            `;
+        });
     }
-}
 
-.card { 
-    background: white; 
-    padding: 15px; 
-    border-radius: 15px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    border-top: 8px solid var(--main-color); 
-    display: flex; 
-    flex-direction: column;
-}
-
-/* تصغير الصورة لتقليل المساحة */
-.card img { 
-    width: 100%; 
-    max-height: 100px; /* الصورة بقت أصغر بكتير عشان المساحة */
-    object-fit: cover; 
-    border-radius: 8px; 
-    margin-bottom: 10px; 
-}
-
-h3 { color: var(--main-color); margin-top: 0; font-size: 1.2rem; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-p { margin: 5px 0; line-height: 1.4; color: #333; font-size: 0.9rem; }
-.label { font-weight: bold; color: var(--main-color); }
+    function filterData() {
+        let val = document.getElementById("searchInput").value.toUpperCase();
+        renderData(allData.filter(i => i.الاسم && i.الاسم.toUpperCase().includes(val)));
+    }
+</script>
+</body>
+</html>
