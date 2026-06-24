@@ -1,41 +1,67 @@
 :root {
     --main-color: #2e7d32;
     --bg-color: #f8fdf8;
+    --card-bg: #ffffff;
 }
 
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); }
-
-/* التحكم في ترتيب الكروت (الكمبيوتر 4 أعمدة، الموبايل عمود واحد) */
-#cards-zone {
-    display: grid;
-    /* الكمبيوتر: 4 كروت جنب بعض. الموبايل: كارت واحد */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 20px; 
+    background: var(--bg-color); 
+    color: #333; 
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-top: 8px solid var(--main-color);
-    display: flex;
+h1 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
+
+#searchInput { 
+    width: 90%; 
+    max-width: 500px; 
+    display: block; 
+    margin: 20px auto; 
+    padding: 15px; 
+    border: 2px solid var(--main-color); 
+    border-radius: 25px; 
+    outline: none; 
+    text-align: center;
+}
+
+/* تنسيق الشبكة: 2 كارت في السطر للكمبيوتر */
+#cards-zone { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px; 
+    max-width: 900px; 
+    margin: 0 auto; 
+}
+
+.card { 
+    background: var(--card-bg); 
+    padding: 20px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    border-top: 8px solid var(--main-color); 
+    display: flex; 
     flex-direction: column;
-}
-
-/* تنسيق الصورة عشان تصغر وتتوسط في الموبايل والكمبيوتر */
-.card img {
-    width: 100%;
-    max-height: 200px; /* تصغير حجم الصورة عشان متخدش مساحة كبيرة */
-    object-fit: cover; /* عشان الصورة متتمطش */
-    border-radius: 8px;
-    margin-bottom: 15px;
 }
 
 h3 { color: var(--main-color); margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
-p { margin: 8px 0; line-height: 1.5; color: #333; }
+p { margin: 8px 0; line-height: 1.5; }
 
 .label { font-weight: bold; color: var(--main-color); }
+
+/* تحجيم الصورة لتكون مناسبة ومنسقة */
+.card img { 
+    width: 100%; 
+    max-height: 180px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    margin-bottom: 15px; 
+}
+
+/* التنسيق للموبايل: كارت واحد فقط في السطر */
+@media (max-width: 600px) {
+    #cards-zone { 
+        grid-template-columns: 1fr; 
+    }
+}
