@@ -2,67 +2,48 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مساعد الصيدلية الذكي 💊</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2e7d32">
-    
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-
-<h2>"علم ينتفع به" 💊 - Omar</h2>
-<input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض أو الدواء...">
-<div id="cards-zone"></div>
+    <h2>مساعد الصيدلية الذكي 💊</h2>
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث باسم المرض...">
+    <div id="cards-zone"></div>
 
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv&cache=' + new Date().getTime();
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
     let allData = [];
 
     Papa.parse(csvUrl, {
         download: true, header: true,
-        complete: function(results) {
-            allData = results.data;
-            renderData(allData);
-        }
+        complete: function(results) { allData = results.data; render(allData); }
     });
 
-    function renderData(data) {
+    function render(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
-        const groups = {};
-        const colors = ['#2e7d32', '#1976d2', '#d32f2f', '#f57c00', '#7b1fa2'];
-
         data.forEach(item => {
             if (!item.الاسم) return;
-            if (!groups[item.الاسم]) groups[item.الاسم] = item;
-        });
-
-        Object.values(groups).forEach(item => {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
             container.innerHTML += `
-                <div class="card" style="border-top-color: ${randomColor}">
-                    <h3 style="color: ${randomColor}">${item.الاسم}</h3>
+                <div class="card">
+                    <h3>${item.الاسم}</h3>
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="${item.الاسم}">` : ''}
                     <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
-                    <p><span class="label">السبب:</span> ${item.السبب || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p><span class="label">معدي:</span> ${item.معدي || 'لا'}</p>
                     <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
                     <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
-                    <p><span class="label">الواطي:</span> ${item.الواطي || '---'}</p>
-                    ${item['رابط الصور'] ? `<div class="card-image-container"><img src="${item['رابط الصور']}"></div>` : ''}
+                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
                 </div>
             `;
         });
     }
 
     function filterData() {
-        let input = document.getElementById("searchInput").value.toUpperCase();
-        let filtered = allData.filter(item => item.الاسم && item.الاسم.toUpperCase().includes(input));
-        renderData(filtered);
+        let val = document.getElementById("searchInput").value.toUpperCase();
+        render(allData.filter(i => i.الاسم && i.الاسم.toUpperCase().includes(val)));
     }
 </script>
 </body>
