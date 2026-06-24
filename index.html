@@ -6,17 +6,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         :root { --main-color: #2e7d32; --bg-color: #f8fdf8; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
         h1 { text-align: center; color: var(--main-color); margin-bottom: 30px; }
         
         #searchInput { width: 90%; max-width: 500px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; }
         
-        /* التنسيق الأساسي: عمود واحد (للموبايل) */
+        /* التنسيق الأساسي للموبايل: عمود واحد */
         #cards-zone { 
             display: grid; 
             grid-template-columns: 1fr; 
             gap: 20px; 
-            max-width: 600px; 
+            max-width: 500px; 
             margin: 0 auto; 
         }
         
@@ -42,14 +42,7 @@
         p { margin: 8px 0; line-height: 1.5; color: #333; }
         .label { font-weight: bold; color: var(--main-color); }
         
-        /* تحجيم الصورة */
-        .card img { 
-            width: 100%; 
-            max-height: 180px; 
-            object-fit: cover; 
-            border-radius: 8px; 
-            margin-bottom: 15px; 
-        }
+        .card img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -89,6 +82,9 @@
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
                     <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
                 </div>
             `;
         });
