@@ -1,9 +1,15 @@
-/* تنسيق أساسي للصفحة لتقليل المساحات الفاضية */
+/* تنسيق أساسي للصفحة */
+:root {
+    --bg-color: #f4f7f6;
+    --main-color: #2e7d32; /* لون أخضر صيدلي مريح للعين */
+}
+
 body { 
     font-family: 'Segoe UI', Tahoma, sans-serif; 
-    padding: 10px; /* قللنا الـ padding عشان نقرب العناصر للمقدمة */
+    padding: 10px; 
     background: var(--bg-color); 
     margin: 0; 
+    direction: rtl; /* عشان الكلام العربي يبقى مظبوط من اليمين للشمال */
 }
 
 /* تنسيق خانة البحث */
@@ -11,38 +17,56 @@ body {
     width: 95%; 
     max-width: 500px; 
     display: block; 
-    margin: 10px auto; /* قللنا المسافة فوق وتحت خانة البحث */
+    margin: 10px auto; 
     padding: 12px; 
     border: 2px solid var(--main-color); 
     border-radius: 25px; 
     text-align: center;
+    font-size: 16px;
 }
 
-/* التنسيق المسؤول عن الكروت */
+/* التنسيق المسؤول عن الكروت (عرض كارتين في الشاشة لو الموبايل بالعرض أو حسب ما تحب) */
 #cards-zone { 
     display: grid; 
-    gap: 10px; /* قللنا المسافة بين الكروت (gap) عشان تتقرب لبعض */
+    gap: 12px; 
     padding: 5px;
-    grid-template-columns: 1fr; /* إجبار الموبايل على عرض كارت واحد فقط */
-    max-width: 500px; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* بيخلي الكروت تترتب أوتوماتيك */
+    max-width: 900px; 
     margin: 0 auto; 
 }
 
 /* تنسيق الكارت نفسه */
 .card { 
     background: white; 
-    padding: 12px; /* قللنا الـ padding جوه الكارت عشان يلم المحتوى */
+    padding: 15px; 
     border-radius: 12px; 
-    border-top: 6px solid var(--main-color); 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border-top: 8px solid var(--main-color); 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
 
-/* تعديل حجم الصورة عشان متخدش مساحة كبيرة */
+/* هنا الإضافة اللي طلبتها للتنسيق المخطط */
+.card-text {
+    white-space: pre-line; /* ده اللي هيخلي الـ Alt+Enter يشتغل */
+    line-height: 1.6;     /* مسافة مريحة بين السطور */
+    color: #333;
+    font-size: 14px;
+}
+
+/* عنوان الكارت */
+.card h3 {
+    color: var(--main-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* تعديل حجم الصورة */
 .card img { 
     width: 100%; 
-    height: auto; /* بدل 100px عشان الصورة تاخد طولها الطبيعي */
-    max-height: 200px; /* ممكن تزودها لو عاوز صورة أكبر شوية */
-    object-fit: contain; /* عشان الصورة تظهر كاملة من غير ما تتقص */
+    height: auto; 
+    max-height: 200px; 
+    object-fit: contain; 
     border-radius: 8px; 
     margin-top: 10px;  
 }
