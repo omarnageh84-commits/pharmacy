@@ -1,47 +1,86 @@
-/* تنسيق أساسي للصفحة لتقليل المساحات الفاضية */
+/* المتغيرات الأساسية للألوان */
+:root { 
+    --main-color: #2e7d32; 
+    --bg-color: #f8fdf8; 
+}
+
+/* تنسيق الصفحة العام */
 body { 
     font-family: 'Segoe UI', Tahoma, sans-serif; 
-    padding: 10px; /* قللنا الـ padding عشان نقرب العناصر للمقدمة */
+    padding: 10px; 
     background: var(--bg-color); 
     margin: 0; 
 }
 
-/* تنسيق خانة البحث */
+/* شريط البحث */
 #searchInput { 
     width: 95%; 
     max-width: 500px; 
     display: block; 
-    margin: 10px auto; /* قللنا المسافة فوق وتحت خانة البحث */
+    margin: 15px auto; 
     padding: 12px; 
     border: 2px solid var(--main-color); 
     border-radius: 25px; 
-    text-align: center;
+    outline: none; 
+    text-align: center; 
+    font-size: 16px; 
 }
 
-/* التنسيق المسؤول عن الكروت */
+/* التنسيق الإجباري للموبايل: كارت واحد في الصف */
 #cards-zone { 
-    display: grid; 
-    gap: 10px; /* قللنا المسافة بين الكروت (gap) عشان تتقرب لبعض */
+    display: grid !important; 
+    gap: 10px; 
     padding: 5px;
-    grid-template-columns: 1fr; /* إجبار الموبايل على عرض كارت واحد فقط */
+    grid-template-columns: 1fr !important; 
     max-width: 500px; 
     margin: 0 auto; 
+}
+
+/* التنسيق الإجباري للشاشات الكبيرة (الكمبيوتر): كارتين جنب بعض */
+@media (min-width: 768px) {
+    #cards-zone { 
+        grid-template-columns: repeat(2, 1fr) !important; 
+        max-width: 1000px; 
+    }
 }
 
 /* تنسيق الكارت نفسه */
 .card { 
     background: white; 
-    padding: 12px; /* قللنا الـ padding جوه الكارت عشان يلم المحتوى */
+    padding: 12px; 
     border-radius: 12px; 
     border-top: 6px solid var(--main-color); 
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
 }
 
-/* تعديل حجم الصورة عشان متخدش مساحة كبيرة */
+/* ضبط صور الأمراض عشان تظهر كاملة وطبيعية تحت الكلام */
 .card img { 
     width: 100%; 
-    max-height: 90px; /* صغرنا الصورة زيادة عشان نكسب مساحة */
-    object-fit: cover; 
+    height: auto; 
+    max-height: 200px; 
+    object-fit: contain; 
     border-radius: 8px; 
-    margin-bottom: 8px; 
+    margin-top: 10px; 
+}
+
+/* العناوين والنصوص جوه الكارت */
+h3 { 
+    color: var(--main-color); 
+    margin: 0 0 10px 0; 
+    font-size: 1.1rem; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 5px; 
+}
+
+p { 
+    margin: 4px 0; 
+    font-size: 0.9rem; 
+    line-height: 1.4; 
+    color: #333; 
+}
+
+/* العناوين الجانبية (مثل ماهو/سببه، التحليل، العلاج...) */
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
 }
