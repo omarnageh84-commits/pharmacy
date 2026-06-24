@@ -79,3 +79,12 @@ h3 {
     border-radius: 8px; 
     margin-top: 10px; 
 }
+ #cards-zone { 
+    display: grid; 
+    gap: 15px; 
+    padding: 5px;
+    /* عدّل الرقم 300px لـ 400px أو 450px عشان الكارت يكبر في العرض */
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
