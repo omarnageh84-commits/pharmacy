@@ -26,7 +26,8 @@
     });
 
     function renderData(data) {
-<p class="card-text"><span class="label">ماهو / سببه:</span><br>${item['ماهو / سببه'] || item.ماهو || 'غير متوفر'}</p>        container.innerHTML = '';
+        const container = document.getElementById('cards-zone');
+        container.innerHTML = '';
         const groups = {};
 
         data.forEach(item => {
@@ -35,17 +36,20 @@
         });
 
         Object.values(groups).forEach(item => {
+            // حل مشكلة الـ undefined والمسافات في الأعمدة
+            const mahoValue = item['ماهو / سببه'] || item.ماهو || '---';
+            const watiValue = item['الواطي'] || item.الوطي || '---';
+
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <p><span class="label">ماهو / سببه:</span> ${item['ماهو / سببه'] || '---'}</p>
-                    <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
-                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
-                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
-                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
-                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
-                    
+                    <p class="card-text"><span class="label">ماهو / سببه:</span><br>${mahoValue}</p>
+                    <p class="card-text"><span class="label">التحليل:</span><br>${item.التحليل || '---'}</p>
+                    <p class="card-text"><span class="label">العلاج:</span><br>${item.العلاج || '---'}</p>
+                    <p class="card-text"><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p class="card-text"><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                    <p class="card-text"><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                    <p class="card-text"><span class="label">الواطي:</span> ${watiValue}</p>
                     ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
                 </div>
             `;
