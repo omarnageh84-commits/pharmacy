@@ -1,31 +1,26 @@
-:root { --bg-color: #f8fdf8; --main-color: #2e7d32; }
+function renderData(data) {
+    const container = document.getElementById('cards-zone');
+    container.innerHTML = '';
+    const groups = {};
 
-body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: var(--bg-color); margin: 0; direction: rtl; }
+    data.forEach(item => {
+        if (!item.الاسم) return;
+        if (!groups[item.الاسم]) groups[item.الاسم] = item;
+    });
 
-#searchInput { width: 95%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
-
-#cards-zone { 
-    display: grid; 
-    gap: 15px; 
-    padding: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-    max-width: 1000px; 
-    margin: 0 auto; 
+    Object.values(groups).forEach(item => {
+        container.innerHTML += `
+            <div class="card">
+                <h3>${item.الاسم}</h3>
+                <p class="card-text"><span class="label">ماهو / سببه:</span> ${item['ماهو / سببه'] || '---'}</p>
+                <p class="card-text"><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
+                <p class="card-text"><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
+                <p class="card-text"><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                <p class="card-text"><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                <p class="card-text"><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                <p class="card-text"><span class="label">الواطي:</span> ${item.الواطي || '---'}</p>
+                ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
+            </div>
+        `;
+    });
 }
-
-.card { background: white; padding: 15px; border-radius: 12px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-/* هنا صغرنا الخط في الكمبيوتر */
-h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-.card-text { margin: 4px 0; font-size: 0.85rem; line-height: 1.5; color: #333; white-space: pre-line; }
-.label { font-weight: bold; color: var(--main-color); font-size: 0.9rem; }
-
-/* ده التعديل السحري للموبايل */
-@media (max-width: 500px) {
-    #cards-zone { grid-template-columns: 1fr; padding: 5px; }
-    .card { width: 95%; margin: 0 auto; padding: 12px; }
-    .card-text { font-size: 0.95rem; }
-    h3 { font-size: 1.1rem; }
-}
-
-.card img { width: 100%; height: auto; max-height: 200px; object-fit: contain; border-radius: 8px; margin-top: 10px; }
