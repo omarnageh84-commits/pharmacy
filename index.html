@@ -3,10 +3,7 @@
     let allData = [];
 
     Papa.parse(csvUrl, {
-        download: true, 
-        header: true,
-        skipEmptyLines: true,
-        transformHeader: function(h) { return h.trim(); }, // بيشيل أي مسافات زيادة في أسماء الأعمدة
+        download: true, header: true,
         complete: function(results) {
             allData = results.data;
             renderData(allData);
@@ -20,20 +17,22 @@
         data.forEach(item => {
             if (!item.الاسم) return;
 
-            // دالة بتنضف البيانات وتطلعها بشكل شيك
-            const val = (key) => item[key] && item[key].trim() !== "" ? item[key] : '---';
+            // هنا بنحل مشكلة الـ undefined
+            // بنحط أكتر من احتمال لاسم العمود عشان نضمن إنه يشتغل
+            const maho = item['ماهو / سببه'] || item['ماهو'] || '---';
+            const wati = item['الواطي'] || item['الوطي'] || '---';
 
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <p class="card-text"><span class="label">ماهو / سببه:</span><br>${val('ماهو / سببه')}</p>
-                    <p class="card-text"><span class="label">التحليل:</span><br>${val('التحليل')}</p>
-                    <p class="card-text"><span class="label">العلاج:</span><br>${val('العلاج')}</p>
-                    <p class="card-text"><span class="label">معدي:</span> ${val('معدي')}</p>
-                    <p class="card-text"><span class="label">الطبيعي:</span> ${val('الطبيعي')}</p>
-                    <p class="card-text"><span class="label">العالي:</span> ${val('العالي')}</p>
-                    <p class="card-text"><span class="label">الواطي:</span> ${val('الواطي')}</p>
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
+                    <p><span class="label">ماهو / سببه:</span> ${maho}</p>
+                    <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
+                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
+                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                    <p><span class="label">الواطي:</span> ${wati}</p>
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
                 </div>
             `;
         });
