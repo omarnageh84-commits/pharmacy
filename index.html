@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>علم ينتفع به - OMAR 💊</title>
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css?v=3.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
@@ -18,7 +18,10 @@
     let allData = [];
 
     Papa.parse(csvUrl, {
-        download: true, header: true,
+        download: true, 
+        header: true,
+        skipEmptyLines: true,
+        transformHeader: function(h) { return h.trim(); }, // بيشيل أي مسافات مستخبية في أعمدة الإكسيل
         complete: function(results) {
             allData = results.data;
             renderData(allData);
@@ -36,18 +39,31 @@
         });
 
         Object.values(groups).forEach(item => {
+            // دالة ذكية بتدور على العمود الحقيقي وبتلغي الـ undefined تماماً
+            const getVal = (keys) => {
+                const foundKey = keys.find(k => item[k] !== undefined && item[k] !== null && item[k].toString().trim() !== "");
+                return foundKey ? item[foundKey] : '---';
+            };
+
+            const mahoVal = getVal(['ماهو / سببه', 'ماهو', 'السبب']);
+            const watiVal = getVal(['الالواطي', 'الواطي', 'الوطي']);
+            const tahlilVal = getVal(['التحليل']);
+            const elajVal = getVal(['العلاج']);
+            const modyVal = getVal(['معدي']);
+            const tabeyiVal = getVal(['الطبيعي']);
+            const alyVal = getVal(['العالي']);
+
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <p><span class="label">ماهو / سببه:</span> ${item['ماهو / سببه'] || '---'}</p>
-                    <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
-                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
-                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
-                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
-                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
-                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
-                    
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
+                    <p class="card-text"><span class="label">ماهو / سببه:</span><br>${mahoVal}</p>
+                    <p class="card-text"><span class="label">التحليل:</span><br>${tahlilVal}</p>
+                    <p class="card-text"><span class="label">العلاج:</span><br>${elajVal}</p>
+                    <p class="card-text"><span class="label">معدي:</span> ${modyVal}</p>
+                    <p class="card-text"><span class="label">الطبيعي:</span> ${tabeyiVal}</p>
+                    <p class="card-text"><span class="label">العالي:</span> ${alyVal}</p>
+                    <p class="card-text"><span class="label">الواطي:</span> ${watiVal}</p>
+                    ${item['رابط الصور'] && item['رابط الصور'].trim() !== "" ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
                 </div>
             `;
         });
