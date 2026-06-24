@@ -39,9 +39,10 @@ body {
 
 /* تعديل حجم الصورة عشان متخدش مساحة كبيرة */
 .card img { 
-    width: 50%; 
-    max-height: 70px; /* صغرنا الصورة زيادة عشان نكسب مساحة */
-    object-fit: cover; 
+    width: 100%; 
+    height: auto; /* بدل 100px عشان الصورة تاخد طولها الطبيعي */
+    max-height: 200px; /* ممكن تزودها لو عاوز صورة أكبر شوية */
+    object-fit: contain; /* عشان الصورة تظهر كاملة من غير ما تتقص */
     border-radius: 8px; 
-    margin-bottom: 8px; 
+    margin-top: 10px;  
 }
