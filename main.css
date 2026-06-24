@@ -15,7 +15,7 @@
     width: 70%;        /* ياخد 90% من عرض شاشة الموبايل */
     max-width: 350px;  /* ميزدش عن 400 بيكسل في الكمبيوتر */
     border: 1px solid #ccc;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
