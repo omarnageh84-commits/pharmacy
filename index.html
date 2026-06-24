@@ -11,48 +11,29 @@
         
         #searchInput { width: 95%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
         
+        /* التنسيق الإجباري للموبايل: كارت واحد */
         #cards-zone { 
             display: grid !important; 
-            gap: 15px; 
+            gap: 10px; 
             padding: 5px;
-            grid-template-columns: 1fr !important; 
+            grid-template-columns: 1fr !important; /* عمود واحد بالعافية */
             max-width: 500px; 
             margin: 0 auto; 
         }
 
+        /* التنسيق الإجباري للكمبيوتر: كارتين */
         @media (min-width: 768px) {
             #cards-zone { 
-                grid-template-columns: repeat(2, 1fr) !important; 
+                grid-template-columns: repeat(2, 1fr) !important; /* اتنين جنب بعض */
                 max-width: 1000px; 
             }
         }
 
-        .card { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 12px; 
-            border-top: 6px solid var(--main-color); 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            display: flex;
-            flex-direction: column;
-            text-transform: uppercase; 
-        }
-        
-        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        
-        ul.card-data { list-style-type: none; padding: 0; margin: 0; flex-grow: 1; }
-        ul.card-data li { margin: 8px 0; font-size: 0.95rem; line-height: 1.5; color: #333; position: relative; padding-right: 15px; }
-        ul.card-data li::before { content: "•"; color: var(--main-color); font-weight: bold; position: absolute; right: 0; top: 0; }
-
-        /* السر كله هنا: تنسيق إجباري للصورة عشان تبقى تحت ومتسنترة وصغيرة */
-        .img-perfect { 
-            width: 100%; 
-            max-width: 180px !important; /* عرض صغير وملموم */
-            height: 120px !important; /* طول ثابت عشان الكروت تبقى قد بعض */
-            object-fit: contain !important; /* يمنع إن الصورة تتمط أو تتبكسل */
-            margin: 15px auto 0 auto !important; /* بيسنتر الصورة في النص بالظبط */
-            display: block !important; 
-        }
+        .card { background: white; padding: 12px; border-radius: 12px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        p { margin: 4px 0; font-size: 0.9rem; line-height: 1.4; color: #333; }
+        .label { font-weight: bold; color: var(--main-color); }
     </style>
 </head>
 <body>
@@ -83,24 +64,17 @@
         });
 
         Object.values(groups).forEach(item => {
-            let listItems = '';
-            const fields = ['ماهو', 'التحليل', 'العلاج', 'معدي', 'الطبيعي', 'العالي', 'الوطي'];
-            
-            fields.forEach(field => {
-                if (item[field] && item[field].trim() !== '' && item[field] !== '---') {
-                    // شيلنا العناوين وبقت نقط بس
-                    listItems += `<li>${item[field]}</li>`;
-                }
-            });
-
             container.innerHTML += `
                 <div class="card">
+                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
                     <h3>${item.الاسم}</h3>
-                    <ul class="card-data">
-                        ${listItems}
-                    </ul>
-                    
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض" class="img-perfect">` : ''}
+                    <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
+                    <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
+                    <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
+                    <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
+                    <p><span class="label">الطبيعي:</span> ${item.الطبيعي || '---'}</p>
+                    <p><span class="label">العالي:</span> ${item.العالي || '---'}</p>
+                    <p><span class="label">الواطي:</span> ${item.الوطي || '---'}</p>
                 </div>
             `;
         });
