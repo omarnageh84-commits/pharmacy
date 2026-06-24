@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>علم ينتفع به - Omar 💊</title>
-    <!-- الإضافة الجديدة عشان نلغي خطأ الـ 404 -->
     <link rel="icon" href="data:,">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
@@ -31,7 +30,6 @@
 
         .card { background: white; padding: 12px; border-radius: 12px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
-        /* عدلنا هنا عشان الصورة تظهر بشكلها الطبيعي من غير مط */
         .card img { 
             width: 100%; 
             height: auto; 
@@ -78,6 +76,7 @@
                 <div class="card">
                     <h3>${item.الاسم}</h3>
                     <p><span class="label">ماهو:</span> ${item.ماهو || '---'}</p>
+                    <p><span class="label">السبب:</span> ${item.السبب || '---'}</p>
                     <p><span class="label">التحليل:</span> ${item.التحليل || '---'}</p>
                     <p><span class="label">العلاج:</span> ${item.العلاج || '---'}</p>
                     <p><span class="label">معدي:</span> ${item.معدي || '---'}</p>
