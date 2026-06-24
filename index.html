@@ -1,82 +1,18 @@
-"<!DOCTYPE html>
-<html lang=""ar"" dir=""rtl"">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"">
-    <title>علم ينتفع به - OMAR 💊</title>
-    <link rel=""icon"" href=""data:,"">
-    <link rel=""stylesheet"" href=""main.css?v=4.0"">
-    <script src=""https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js""></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صيدلية زينهم</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
-    <input type=""text"" id=""searchInput"" onkeyup=""filterData()"" placeholder=""🔍 ابحث باسم المرض..."">
-    <div id=""cards-zone""></div>
+    <input type="text" id="search-input" onkeyup="searchFunction()" placeholder="ابحث بأي كلمة (اسم، علاج، تحليل...)... 🔍">
 
-<script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
+    <div id="cards-zone"></div>
 
-    // قفلنا الـ header وخليناه false عشان نمشي بترتيب العواميد ونقضي على مشكلة الـ undefined
-    Papa.parse(csvUrl, {
-        download: true, 
-        header: false, 
-        skipEmptyLines: true,
-        complete: function(results) {
-            // بنشيل أول صف خالص (اللي فيه العناوين) وبناخد البيانات الصافية
-            allData = results.data.slice(1);
-            renderData(allData);
-        }
-    });
+    <script src="script.js"></script>
 
-    function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        const groups = {};
-
-        data.forEach(row => {
-            if (!row[0]) return;
-            const name = row[0].trim();
-            if (!name) return;
-            
-            // تجميع الداتا لمنع التكرار
-            if (!groups[name]) groups[name] = row;
-        });
-
-        Object.values(groups).forEach(row => {
-            // دالة تنظيف البيانات الفاضية
-            const clean = (val) => (val !== undefined && val !== null && val.toString().trim() !== """") ? val.toString().trim() : '---';
-
-            const name = clean(row[0]);
-            const maho = clean(row[1]);
-            const tahlil = clean(row[2]);
-            const elaj = clean(row[3]);
-            const mody = clean(row[4]);
-            const tabeyi = clean(row[5]);
-            const aly = clean(row[6]);
-            const wati = clean(row[7]);
-            const imgUrl = clean(row[8]);
-
-            container.innerHTML += `
-                <div class=""card"">
-                    <h3>${name}</h3>
-                    <p class=""card-text""><span class=""label"">ماهو / سببه:</span><br>${maho}</p>
-                    <p class=""card-text""><span class=""label"">التحليل:</span><br>${tahlil}</p>
-                    <p class=""card-text""><span class=""label"">العلاج:</span><br>${elaj}</p>
-                    <p class=""card-text""><span class=""label"">معدي:</span> ${mody}</p>
-                    <p class=""card-text""><span class=""label"">الطبيعي:</span> ${tabeyi}</p>
-                    <p class=""card-text""><span class=""label"">العالي:</span> ${aly}</p>
-                    <p class=""card-text""><span class=""label"">الواطي:</span> ${wati}</p>
-                    ${imgUrl !== '---' && imgUrl.startsWith('http') ? `<img src=""${imgUrl}"" alt=""صورة المرض"">` : ''}
-                </div>
-            `;
-        });
-    }
-
-    function filterData() {
-        let val = document.getElementById(""searchInput"").value.toUpperCase();
-        renderData(allData.filter(row => row[0] && row[0].toUpperCase().includes(val)));
-    }
-</script>
 </body>
-</html>"
+</html>
