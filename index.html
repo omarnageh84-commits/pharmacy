@@ -11,13 +11,21 @@
         
         #searchInput { width: 90%; max-width: 500px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; }
         
-        /* تنسيق الشبكة: 2 كارت في السطر للكمبيوتر */
+        /* التنسيق الأساسي: عمود واحد (للموبايل) */
         #cards-zone { 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
+            grid-template-columns: 1fr; 
             gap: 20px; 
-            max-width: 900px; 
+            max-width: 600px; 
             margin: 0 auto; 
+        }
+        
+        /* التنسيق للكمبيوتر: 2 كارت جنب بعض */
+        @media (min-width: 768px) {
+            #cards-zone { 
+                grid-template-columns: repeat(2, 1fr); 
+                max-width: 1000px; 
+            }
         }
         
         .card { 
@@ -41,11 +49,6 @@
             object-fit: cover; 
             border-radius: 8px; 
             margin-bottom: 15px; 
-        }
-
-        /* تنسيق الموبايل: كارت واحد تحت بعضه */
-        @media (max-width: 600px) {
-            #cards-zone { grid-template-columns: 1fr; }
         }
     </style>
 </head>
