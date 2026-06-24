@@ -1,49 +1,81 @@
-<script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
+/* تنسيق أساسي للصفحة */
+:root {
+    --bg-color: #f8fdf8;
+    --main-color: #2e7d32;
+}
 
-    Papa.parse(csvUrl, {
-        download: true, 
-        header: true,
-        skipEmptyLines: true,
-        transformHeader: function(h) { return h.trim(); }, // بيشيل أي مسافات زيادة من أسماء الأعمدة
-        complete: function(results) {
-            allData = results.data;
-            renderData(allData);
-        }
-    });
+body { 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 10px; 
+    background: var(--bg-color); 
+    margin: 0; 
+    direction: rtl; 
+}
 
-    function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        
-        data.forEach(item => {
-            if (!item.الاسم) return;
+/* تنسيق خانة البحث */
+#searchInput { 
+    width: 95%; 
+    max-width: 500px; 
+    display: block; 
+    margin: 15px auto; 
+    padding: 12px; 
+    border: 2px solid var(--main-color); 
+    border-radius: 25px; 
+    outline: none; 
+    text-align: center; 
+    font-size: 16px; 
+}
 
-            // دي دالة بتدور في أكتر من احتمال لاسم العمود عشان تضمن ظهور البيانات
-            const getVal = (keys) => {
-                const foundKey = keys.find(k => item[k] !== undefined && item[k] !== "");
-                return foundKey ? item[foundKey] : '---';
-            };
+/* ده التنسيق اللي بيحل مشكلة الموبايل والكمبيوتر */
+/* التعديل هنا في الـ Grid */
+#cards-zone { 
+    display: grid; 
+    gap: 15px; 
+    padding: 10px;
+    /* بنحدد هنا إن العرض الأدنى للكارت يكون 400 بكسل عشان يشيلوا كارتين بس */
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+    max-width: 900px; 
+    margin: 0 auto; 
+}
 
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${item.الاسم}</h3>
-                    <p class="card-text"><span class="label">ماهو / سببه:</span><br>${getVal(['ماهو / سببه', 'ماهو', 'السبب'])}</p>
-                    <p class="card-text"><span class="label">التحليل:</span><br>${getVal(['التحليل'])}</p>
-                    <p class="card-text"><span class="label">العلاج:</span><br>${getVal(['العلاج'])}</p>
-                    <p class="card-text"><span class="label">معدي:</span> ${getVal(['معدي'])}</p>
-                    <p class="card-text"><span class="label">الطبيعي:</span> ${getVal(['الطبيعي'])}</p>
-                    <p class="card-text"><span class="label">العالي:</span> ${getVal(['العالي'])}</p>
-                    <p class="card-text"><span class="label">الواطي:</span> ${getVal(['الواطي', 'الوطي'])}</p>
-                    ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة المرض">` : ''}
-                </div>
-            `;
-        });
-    }
+/* تنسيق الكارت */
+.card { 
+    background: white; 
+    padding: 15px; 
+    border-radius: 12px; 
+    border-top: 6px solid var(--main-color); 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
 
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        renderData(allData.filter(i => i.الاسم && i.الاسم.toUpperCase().includes(val)));
-    }
-</script>
+/* تنسيق العناوين */
+h3 { 
+    color: var(--main-color); 
+    margin: 0 0 10px 0; 
+    font-size: 1.1rem; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 5px; 
+}
+
+/* الفقرات وتنسيقها المخطط */
+.card-text { 
+    margin: 6px 0; 
+    font-size: 0.95rem; 
+    line-height: 1.6; 
+    color: #333; 
+    white-space: pre-line; /* ده اللي بيخلي الـ Alt+Enter يظهر في الموقع */
+}
+
+.label { 
+    font-weight: bold; 
+    color: var(--main-color); 
+}
+
+/* الصورة */
+.card img { 
+    width: 100%; 
+    height: auto; 
+    max-height: 200px; 
+    object-fit: contain; 
+    border-radius: 8px; 
+    margin-top: 10px; 
+}
