@@ -27,14 +27,13 @@ body {
 }
 
 /* ده التنسيق اللي بيحل مشكلة الموبايل والكمبيوتر */
-/* التعديل هنا في الـ Grid */
 #cards-zone { 
     display: grid; 
     gap: 15px; 
-    padding: 10px;
-    /* بنحدد هنا إن العرض الأدنى للكارت يكون 400 بكسل عشان يشيلوا كارتين بس */
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-    max-width: 900px; 
+    padding: 5px;
+    /* التعديل هنا: يظبط نفسه تلقائياً عشان ميبقاش عريض أوي أو ضيق أوي */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    max-width: 1000px; 
     margin: 0 auto; 
 }
 
@@ -59,7 +58,7 @@ h3 {
 /* الفقرات وتنسيقها المخطط */
 .card-text { 
     margin: 6px 0; 
-    font-size: 0.80rem; 
+    font-size: 0.95rem; 
     line-height: 1.6; 
     color: #333; 
     white-space: pre-line; /* ده اللي بيخلي الـ Alt+Enter يظهر في الموقع */
@@ -78,13 +77,4 @@ h3 {
     object-fit: contain; 
     border-radius: 8px; 
     margin-top: 10px; 
-}
- #cards-zone { 
-    display: grid; 
-    gap: 15px; 
-    padding: 5px;
-    /* عدّل الرقم 300px لـ 400px أو 450px عشان الكارت يكبر في العرض */
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    max-width: 1200px; 
-    margin: 0 auto; 
 }
