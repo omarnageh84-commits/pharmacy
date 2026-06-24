@@ -1,72 +1,20 @@
-/* تنسيق أساسي للصفحة */
-:root {
-    --bg-color: #f4f7f6;
-    --main-color: #2e7d32; /* لون أخضر صيدلي مريح للعين */
-}
+/* ده التنسيق اللي بيخلي الكروت زي الصورة بالظبط */
+:root { --main-color: #2e7d32; --bg-color: #f8fdf8; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: var(--bg-color); margin: 0; direction: rtl; }
 
-body { 
-    font-family: 'Segoe UI', Tahoma, sans-serif; 
-    padding: 10px; 
-    background: var(--bg-color); 
-    margin: 0; 
-    direction: rtl; /* عشان الكلام العربي يبقى مظبوط من اليمين للشمال */
-}
+#searchInput { width: 95%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
 
-/* تنسيق خانة البحث */
-#searchInput { 
-    width: 95%; 
-    max-width: 500px; 
-    display: block; 
-    margin: 10px auto; 
-    padding: 12px; 
-    border: 2px solid var(--main-color); 
-    border-radius: 25px; 
-    text-align: center;
-    font-size: 16px;
-}
-
-/* التنسيق المسؤول عن الكروت (عرض كارتين في الشاشة لو الموبايل بالعرض أو حسب ما تحب) */
 #cards-zone { 
-    display: grid; 
-    gap: 12px; 
-    padding: 5px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* بيخلي الكروت تترتب أوتوماتيك */
-    max-width: 900px; 
-    margin: 0 auto; 
+    display: grid; gap: 15px; padding: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    max-width: 1000px; margin: 0 auto; 
 }
 
-/* تنسيق الكارت نفسه */
-.card { 
-    background: white; 
-    padding: 15px; 
-    border-radius: 12px; 
-    border-top: 8px solid var(--main-color); 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-}
+.card { background: white; padding: 15px; border-radius: 12px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 
-/* هنا الإضافة اللي طلبتها للتنسيق المخطط */
-.card-text {
-    white-space: pre-line; /* ده اللي هيخلي الـ Alt+Enter يشتغل */
-    line-height: 1.6;     /* مسافة مريحة بين السطور */
-    color: #333;
-    font-size: 14px;
-}
+/* الفقرات العادية اللي في الصورة */
+p { margin: 4px 0; font-size: 0.9rem; line-height: 1.4; color: #333; }
+.label { font-weight: bold; color: var(--main-color); }
 
-/* عنوان الكارت */
-.card h3 {
-    color: var(--main-color);
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-
-/* تعديل حجم الصورة */
-.card img { 
-    width: 100%; 
-    height: auto; 
-    max-height: 200px; 
-    object-fit: contain; 
-    border-radius: 8px; 
-    margin-top: 10px;  
-}
+.card img { width: 100%; height: auto; max-height: 200px; object-fit: contain; border-radius: 8px; margin-top: 10px; }
