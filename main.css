@@ -1,86 +1,72 @@
-/* المتغيرات الأساسية للألوان */
-:root { 
-    --main-color: #2e7d32; 
-    --bg-color: #f8fdf8; 
+/* تنسيق أساسي للصفحة */
+:root {
+    --bg-color: #f4f7f6;
+    --main-color: #2e7d32; /* لون أخضر صيدلي مريح للعين */
 }
 
-/* تنسيق الصفحة العام */
 body { 
     font-family: 'Segoe UI', Tahoma, sans-serif; 
     padding: 10px; 
     background: var(--bg-color); 
     margin: 0; 
+    direction: rtl; /* عشان الكلام العربي يبقى مظبوط من اليمين للشمال */
 }
 
-/* شريط البحث */
+/* تنسيق خانة البحث */
 #searchInput { 
     width: 95%; 
     max-width: 500px; 
     display: block; 
-    margin: 15px auto; 
+    margin: 10px auto; 
     padding: 12px; 
     border: 2px solid var(--main-color); 
     border-radius: 25px; 
-    outline: none; 
-    text-align: center; 
-    font-size: 16px; 
+    text-align: center;
+    font-size: 16px;
 }
 
-/* التنسيق الإجباري للموبايل: كارت واحد في الصف */
+/* التنسيق المسؤول عن الكروت (عرض كارتين في الشاشة لو الموبايل بالعرض أو حسب ما تحب) */
 #cards-zone { 
-    display: grid !important; 
-    gap: 10px; 
+    display: grid; 
+    gap: 12px; 
     padding: 5px;
-    grid-template-columns: 1fr !important; 
-    max-width: 500px; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* بيخلي الكروت تترتب أوتوماتيك */
+    max-width: 900px; 
     margin: 0 auto; 
-}
-
-/* التنسيق الإجباري للشاشات الكبيرة (الكمبيوتر): كارتين جنب بعض */
-@media (min-width: 768px) {
-    #cards-zone { 
-        grid-template-columns: repeat(2, 1fr) !important; 
-        max-width: 1000px; 
-    }
 }
 
 /* تنسيق الكارت نفسه */
 .card { 
     background: white; 
-    padding: 12px; 
+    padding: 15px; 
     border-radius: 12px; 
-    border-top: 6px solid var(--main-color); 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border-top: 8px solid var(--main-color); 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
 
-/* ضبط صور الأمراض عشان تظهر كاملة وطبيعية تحت الكلام */
+/* هنا الإضافة اللي طلبتها للتنسيق المخطط */
+.card-text {
+    white-space: pre-line; /* ده اللي هيخلي الـ Alt+Enter يشتغل */
+    line-height: 1.6;     /* مسافة مريحة بين السطور */
+    color: #333;
+    font-size: 14px;
+}
+
+/* عنوان الكارت */
+.card h3 {
+    color: var(--main-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* تعديل حجم الصورة */
 .card img { 
     width: 100%; 
     height: auto; 
     max-height: 200px; 
     object-fit: contain; 
     border-radius: 8px; 
-    margin-top: 10px; 
-}
-
-/* العناوين والنصوص جوه الكارت */
-h3 { 
-    color: var(--main-color); 
-    margin: 0 0 10px 0; 
-    font-size: 1.1rem; 
-    border-bottom: 1px solid #eee; 
-    padding-bottom: 5px; 
-}
-
-p { 
-    margin: 4px 0; 
-    font-size: 0.9rem; 
-    line-height: 1.4; 
-    color: #333; 
-}
-
-/* العناوين الجانبية (مثل ماهو/سببه، التحليل، العلاج...) */
-.label { 
-    font-weight: bold; 
-    color: var(--main-color); 
+    margin-top: 10px;  
 }
