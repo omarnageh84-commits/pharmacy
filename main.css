@@ -6,7 +6,7 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: v
 #cards-zone { 
     display: grid; 
     gap: 15px; 
-    padding: 10px;
+    padding: 8px;
     /* كارتين كحد أقصى على الكمبيوتر */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     max-width: 900px; 
