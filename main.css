@@ -1,38 +1,42 @@
-// دالة البحث الشامل (بتدور في كل نص الكارت)
+// تشغيل الدالة فور تحميل الصفحة
+document.addEventListener('DOMContentLoaded', fetchData);
+
+// دالة البحث الشامل
 function searchFunction() {
     let input = document.getElementById('search-input').value.toLowerCase();
     let cards = document.getElementsByClassName('card');
 
     for (let i = 0; i < cards.length; i++) {
         let cardText = cards[i].innerText.toLowerCase();
-        // لو الكلمة موجودة في أي حتة جوه الكارت، هيظهر، غير كده يختفي
         cards[i].style.display = cardText.includes(input) ? "" : "none";
     }
 }
 
-// دالة عرض البيانات (استبدل الرابط اللي تحت برابط الـ JSON بتاع شيتك)
+// دالة جلب وعرض البيانات
 async function fetchData() {
-    const url = 'حط_هنا_رابط_الـ_JSON_بتاع_جوجل_شيت';
-    const response = await fetch(url);
-    const data = await response.json();
-    const container = document.getElementById('cards-zone');
-    
-    container.innerHTML = ''; 
-    data.feed.entry.forEach(item => {
-        // بنسحب البيانات من الشيت
-        const name = item.gsx$الاسم?.$t || '---';
-        const cause = item.gsx$ماهو-سببه?.$t || '---';
-        const analysis = item.gsx$التحليل?.$t || '---';
-        const treatment = item.gsx$العلاج?.$t || '---';
-        
-        container.innerHTML += `
-            <div class="card">
-                <h2>${name}</h2>
-                <p><strong>السبب:</strong> ${cause}</p>
-                <p><strong>التحليل:</strong> ${analysis}</p>
-                <p><strong>العلاج:</strong> ${treatment}</p>
-            </div>
-        `;
-    });
+    const url = 'حط_رابط_الـ_JSON_هنا';
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const container = document.getElementById('cards-zone');
+        container.innerHTML = ''; 
+
+        data.feed.entry.forEach(item => {
+            const name = item.gsx$الاسم?.$t || '---';
+            const cause = item.gsx$ماهو-سببه?.$t || '---';
+            const analysis = item.gsx$التحليل?.$t || '---';
+            const treatment = item.gsx$العلاج?.$t || '---';
+            
+            container.innerHTML += `
+                <div class="card">
+                    <h2>${name}</h2>
+                    <p><strong>السبب:</strong> ${cause}</p>
+                    <p><strong>التحليل:</strong> ${analysis}</p>
+                    <p><strong>العلاج:</strong> ${treatment}</p>
+                </div>
+            `;
+        });
+    } catch (error) {
+        console.error("خطأ في جلب البيانات:", error);
+    }
 }
-fetchData();
