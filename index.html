@@ -41,6 +41,7 @@
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
         
+        // تجميع ذكي لكل صف يخص نفس الاسم
         const grouped = {};
         data.forEach(row => {
             if (!row.الاسم) return;
@@ -49,30 +50,17 @@
         });
 
         Object.values(grouped).forEach(item => {
-            // هنا بنعرف الحالة "مرض" ولا "تحليل" بناءً على وجود بيانات في "الطبيعي"
-            const isAnalysis = (item.الطبيعي && item.الطبيعي.trim() !== "-" && item.الطبيعي.trim() !== "");
-            
-            let html = `<h3>${item.الاسم}</h3>`;
-            html += `<span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}`;
-            html += `<span class="label">التحليل:</span> ${item.التحليل || '---'}`;
-            
-            if (isAnalysis) {
-                // عرض بيانات التحليل
-                html += `<span class="label">معدي:</span> ${item.معدي || '---'}`;
-                html += `<span class="label">طبيعي:</span> ${item.الطبيعي || '---'}`;
-                html += `<span class="label">عالي:</span> ${item.العالي || '---'}`;
-                html += `<span class="label">واطي:</span> ${item.الوطي || '---'}`;
-            } else {
-                // عرض بيانات المرض
-                html += `<span class="label">العلاج:</span> ${item.العلاج.filter(e => e).join('<br>')}`;
-                html += `<span class="label">معدي:</span> ${item.معدي || '---'}`;
-            }
-            
-            if (item['رابط الصور'] && item['رابط الصور'] !== 'رابط') {
-                html += `<img src="${item['رابط الصور']}" alt="صورة">`;
-            }
-
-            container.innerHTML += `<div class="card">${html}</div>`;
+            container.innerHTML += `
+                <div class="card">
+                    <h3>${item.الاسم}</h3>
+                    <span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}
+                    <span class="label">التحليل:</span> ${item.التحليل || '---'}
+                    <span class="label">العلاج:</span> ${item.العلاج.join('<br>')}
+                    <span class="label">معدي:</span> ${item.معدي || '---'}
+                    <span class="label">طبيعي:</span> ${item.الطبيعي || '---'}
+                    ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
+                </div>
+            `;
         });
     }
 
