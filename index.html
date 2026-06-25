@@ -12,7 +12,7 @@
         
         #cards-zone { display: grid; gap: 15px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 900px; margin: 0 auto; }
         
-        .card { background: white; padding: 20px; border-radius: 20px; border-top: 8px solid var(--main-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 20px; border-radius: 20px; border-top: 8px solid var(--main-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); white-space: pre-line; }
         h3 { color: var(--main-color); margin: 0 0 15px 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.4rem; }
         .label { font-weight: bold; color: var(--main-color); display: block; margin-top: 10px; }
         .card img { width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; }
@@ -40,11 +40,14 @@
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
         
-        // تجميع البيانات حسب الاسم
+        // تجميع البيانات
         const grouped = data.reduce((acc, curr) => {
             if (!curr.الاسم) return acc;
-            if (!acc[curr.الاسم]) acc[curr.الاسم] = { ...curr, العلاج: [curr.العلاج] };
-            else acc[curr.الاسم].العلاج.push(curr.العلاج);
+            if (!acc[curr.الاسم]) {
+                acc[curr.الاسم] = { ...curr, العلاج: [curr.العلاج] };
+            } else {
+                acc[curr.الاسم].العلاج.push(curr.العلاج);
+            }
             return acc;
         }, {});
 
@@ -52,11 +55,11 @@
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}
-                    <span class="label">التحليل:</span> ${item.التحليل || '---'}
-                    <span class="label">العلاج:</span> ${item.العلاج.join('<br>')}
-                    <span class="label">معدي:</span> ${item.معدي || '---'}
-                    <span class="label">طبيعي:</span> ${item.الطبيعي || '---'}
+                    <span class="label">ماهو:</span> ${item['ماهو / سببه']}
+                    <span class="label">التحليل:</span> ${item.التحليل}
+                    <span class="label">العلاج:</span> ${item.العلاج.filter(e => e).join('\n')}
+                    <span class="label">معدي:</span> ${item.معدي}
+                    <span class="label">طبيعي:</span> ${item.الطبيعي}
                     ${item['رابط الصور'] ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
                 </div>
             `;
