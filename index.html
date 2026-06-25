@@ -5,61 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f7f9f7; --border-color: #6a5acd; }
-        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
+        :root { --bg-color: #f7f9fc; --main-purple: #6a5acd; } 
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--border-color); border-radius: 15px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-purple); border-radius: 20px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         
         #cards-zone { display: grid; gap: 25px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
+        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
         
-        .card { 
-            background: #ffffff; 
-            padding: 25px; 
-            border-radius: 25px; 
-            border: 2px solid var(--border-color); 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
-        }
+        .card { background: white; padding: 25px; border-radius: 20px; border-right: 8px solid var(--main-purple); box-shadow: 0 6px 12px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
         
-        h3 { color: #333; margin: 0 0 15px 0; font-size: 1.6rem; text-align: center; }
-        .label { font-weight: bold; color: #d32f2f; display: block; margin-top: 15px; font-size: 1rem; }
+        h3 { color: var(--main-purple); margin: 0 0 15px 0; font-size: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .label { font-weight: bold; color: #483d8b; display: block; margin-top: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
         
         .text-block { 
             white-space: pre-line; 
-            color: #555; 
-            font-weight: 400; 
+            color: #333; 
+            font-weight: 500; 
             margin-top: 5px; 
             font-size: 0.95rem; 
             line-height: 1.6;
         }
         
-        .values-line { font-size: 0.85rem; background: #fff5e6; padding: 12px; border-radius: 15px; margin-top: 20px; color: #e67e22; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #ffe0b2; }
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 20px; }
+        .values-line { font-size: 0.85rem; background: #f3f0ff; padding: 12px; border-radius: 12px; margin-top: 20px; color: #483d8b; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #e6e6fa; }
+        
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 15px; border: 1px solid #eee; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="💊 اكتب اسم الدوا أو المرض هنا...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث عن مرض أو تحليل...">
     <div id="cards-zone"></div>
 
 <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?gid=686896654&single=true&output=csv';
-    let allData = [];
-
-    window.onload = function() {
-        Papa.parse(csvUrl, {
-            download: true, 
-            header: true,
-            complete: function(results) {
-                allData = results.data;
-                renderData(allData);
-            }
-        });
-    };
-
-    function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        
-        data.forEach(item => {
-            if (!item.الاسم || item.الاسم.
+    const csvUrl = '
