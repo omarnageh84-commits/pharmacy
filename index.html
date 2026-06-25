@@ -1,43 +1,63 @@
-<script>
-    // ... (جزء الـ PapaParse زي ما هو)
-    
-    function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        
-        const grouped = {};
-        data.forEach(row => {
-            if (!row.الاسم) return;
-            if (!grouped[row.الاسم]) grouped[row.الاسم] = { ...row, العلاج: [] };
-            if (row.العلاج) grouped[row.الاسم].العلاج.push(row.العلاج);
-        });
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>علم ينتفع به - OMAR 💊</title>
+    <style>
+        :root { --main-color: #2e7d32; }
+        body { font-family: sans-serif; background: #f8fdf8; padding: 10px; }
+        #cards-zone { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .card { background: white; padding: 20px; border-radius: 15px; border-top: 5px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .label { font-weight: bold; color: var(--main-color); margin-top: 10px; display: block; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body>
+    <div id="cards-zone"></div>
 
+<script>
+    const csvUrl = 'رابط_الـ_CSV_الخاص_بشيت_جوجل'; // حط رابط النشر هنا
+
+    Papa.parse(csvUrl, {
+        download: true, header: true,
+        complete: function(results) {
+            let lastValidName = "";
+            let grouped = {};
+
+            results.data.forEach(row => {
+                // 1. ملء الأسماء الفاضية (عشان نتخطى مشكلة الدمج)
+                if (row.الاسم && row.الاسم.trim() !== "") lastValidName = row.الاسم;
+                else row.الاسم = lastValidName;
+
+                if (!row.الاسم) return;
+
+                // 2. تجميع البيانات في كارت واحد
+                if (!grouped[row.الاسم]) grouped[row.الاسم] = { ...row, العلاج: [] };
+                if (row.العلاج) grouped[row.الاسم].العلاج.push(row.العلاج);
+            });
+
+            renderCards(grouped);
+        }
+    });
+
+    function renderCards(grouped) {
+        const container = document.getElementById('cards-zone');
         Object.values(grouped).forEach(item => {
-            // الكود دلوقتي بيسأل العمود اللي أنت ضفته!
-            const isAnalysis = (item.النوع && item.النوع.trim() === "تحليل");
-            
+            let isAnalysis = (item.النوع && item.النوع.includes("تحليل"));
             let html = `<h3>${item.الاسم}</h3>`;
-            html += `<span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}`;
-            html += `<span class="label">التحليل:</span> ${item.التحليل || '---'}`;
+            html += `<span class="label">ماهو:</span> ${item['ماهو / سببه'] || '-'}`;
             
             if (isAnalysis) {
-                // بيانات التحليل
-                html += `<span class="label">معدي:</span> ${item.معدي || '---'}`;
-                html += `<span class="label">طبيعي:</span> ${item.الطبيعي || '---'}`;
-                html += `<span class="label">عالي:</span> ${item.العالي || '---'}`;
-                html += `<span class="label">واطي:</span> ${item.الوطي || '---'}`;
+                html += `<span class="label">التحليل:</span> ${item.التحليل || '-'}`;
+                html += `<span class="label">طبيعي:</span> ${item.الطبيعي || '-'}`;
+                html += `<span class="label">عالي:</span> ${item.العالي || '-'}`;
+                html += `<span class="label">واطي:</span> ${item.الوطي || '-'}`;
             } else {
-                // بيانات المرض
-                html += `<span class="label">العلاج:</span> ${item.العلاج.filter(e => e).join('<br>')}`;
-                html += `<span class="label">معدي:</span> ${item.معدي || '---'}`;
+                html += `<span class="label">العلاج:</span> ${item.العلاج.join(' - ')}`;
             }
-            
-            if (item['رابط الصور'] && item['رابط الصور'] !== 'رابط') {
-                html += `<img src="${item['رابط الصور']}" alt="صورة">`;
-            }
-
             container.innerHTML += `<div class="card">${html}</div>`;
         });
     }
-    // ...
 </script>
+</body>
+</html>
