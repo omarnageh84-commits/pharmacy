@@ -26,13 +26,14 @@
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
         .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        /* التعديل الجوهري: النص يلف طبيعي من غير سكرول */
+        /* التعديل هنا: منع التفاف النص ليظهر السطر كاملاً */
         ul { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.9rem; font-weight: 500; list-style-type: disc; }
         li { 
-            margin-bottom: 8px; 
-            word-wrap: break-word; /* بيخلي النص يلف لو وصل لآخر الكارت */
-            white-space: normal;   /* بيلغي الـ nowrap اللي كان عامل مشكلة */
-            line-height: 1.5;
+            margin-bottom: 4px; 
+            white-space: nowrap;  /* يمنع النص من النزول سطر جديد */
+            overflow-x: auto;     /* إضافة سكرول أفقي للسطر الطويل فقط */
+            display: block;
+            padding-bottom: 2px;
         }
         
         .values-line { 
