@@ -8,8 +8,7 @@
         :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
         body { font-family: 'Segoe UI', sans-serif; padding: 15px; background: var(--bg-color); margin: 0; }
         
-        /* خانة البحث مكبرة 15% إضافية */
-        #searchInput { width: 95%; max-width: 650px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 17px; }
+        #searchInput { width: 95%; max-width: 750px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 17px; }
         
         #cards-zone { 
             display: grid; 
@@ -27,41 +26,23 @@
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
         .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        /* خط العلاج أخف شوية */
-        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.85rem; font-weight: 500; }
+        /* تحويل الترقيم لنقاط */
+        ul { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.85rem; font-weight: 500; list-style-type: disc; }
         li { margin-bottom: 4px; }
         
-        /* تنسيق القيم جنب بعض بفواصل جذابة */
         .values-line { 
-            font-size: 0.85rem; 
-            background: #e8f5e9; 
-            padding: 10px; 
-            border-radius: 10px; 
-            margin-top: 15px; 
-            color: #1b5e20; 
-            font-weight: bold; 
-            text-align: center; 
-            display: flex; 
-            justify-content: space-around;
-            border: 1px solid #c8e6c9;
+            font-size: 0.85rem; background: #e8f5e9; padding: 10px; border-radius: 10px; 
+            margin-top: 15px; color: #1b5e20; font-weight: bold; text-align: center; 
+            display: flex; justify-content: space-around; border: 1px solid #c8e6c9;
         }
         
-        /* الصورة كاملة ومش مقصوصة */
-        .card img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 250px; 
-            object-fit: contain; 
-            border-radius: 12px; 
-            margin-top: 15px; 
-            background: #fff;
-        }
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 12px; margin-top: 15px; background: #fff; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث عن مرض أو تحليل...">
     <div id="cards-zone"></div>
 
 <script>
@@ -71,11 +52,7 @@
     Papa.parse(csvUrl, {
         download: true, header: true,
         complete: function(results) {
-            let currentName = "";
-            allData = results.data.map(row => {
-                if (row.الاسم && row.الاسم.trim() !== "") currentName = row.الاسم;
-                return { ...row, الاسم: currentName };
-            });
+            allData = results.data;
             renderData(allData);
         }
     });
@@ -84,21 +61,26 @@
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
         const grouped = {};
+
         data.forEach(row => {
-            if (!row.الاسم) return;
-            if (!grouped[row.الاسم]) grouped[row.الاسم] = { ...row, العلاج: [] };
+            if (!row.الاسم || row.الاسم.trim() === "") return;
+            if (!grouped[row.الاسم]) {
+                grouped[row.الاسم] = { ...row, العلاج: [], التحليل: [] };
+            }
             if (row.العلاج && row.العلاج.trim() !== "") grouped[row.الاسم].العلاج.push(row.العلاج);
+            if (row.التحليل && row.التحليل.trim() !== "") grouped[row.الاسم].التحليل.push(row.التحليل);
         });
 
         Object.values(grouped).forEach(item => {
             const treatments = item.العلاج.map(t => `<li>${t}</li>`).join('');
+            const analyses = item.التحليل.map(a => `<li>${a}</li>`).join('');
             
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
                     <span class="label">ماهو / سببه:</span> <div>${item['ماهو / سببه'] || '---'}</div>
-                    <span class="label">التحليل:</span> <div>${item.التحليل || '---'}</div>
-                    <span class="label">العلاج:</span> <ol>${treatments}</ol>
+                    <span class="label">التحليل:</span> <ul>${analyses || '---'}</ul>
+                    <span class="label">العلاج:</span> <ul>${treatments || '---'}</ul>
                     <span class="label">معدي:</span> ${item.معدي || '---'}
                     <div class="values-line">
                         <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
