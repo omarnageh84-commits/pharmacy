@@ -5,35 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f7f9f7; --main-color: #4a7c59; } 
-        body { font-family: 'Segoe UI', sans-serif; padding: 15px; background: var(--bg-color); margin: 0; }
+        :root { --bg-color: #f7f9f7; --border-color: #6a5acd; } /* اللون البنفسجي للفريم */
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 95%; max-width: 750px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 20px; outline: none; text-align: center; font-size: 17px; background: white; }
+        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--border-color); border-radius: 15px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         
-        #cards-zone { display: grid; gap: 20px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); max-width: 1000px; margin: 0 auto; }
-        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
+        #cards-zone { display: grid; gap: 25px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
         
-        .card { background: #ffffff; padding: 22px; border-radius: 15px; border: 1px solid #dcdcdc; border-right: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.5rem; }
-        .label { font-weight: bold; color: #444; display: block; margin-top: 12px; font-size: 0.95rem; }
+        /* التعديلات الجمالية للفريم والظل */
+        .card { 
+            background: #ffffff; 
+            padding: 25px; 
+            border-radius: 25px; 
+            border: 2px solid var(--border-color); 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
+            transition: transform 0.2s;
+        }
+        
+        h3 { color: #333; margin: 0 0 15px 0; font-size: 1.6rem; text-align: center; }
+        .label { font-weight: bold; color: #d32f2f; display: block; margin-top: 15px; font-size: 1rem; }
         
         .text-block { 
             white-space: pre-line; 
-            color: #333; 
-            font-weight: 500; 
+            color: #555; 
+            font-weight: 400; 
             margin-top: 5px; 
             font-size: 0.95rem; 
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
-        .values-line { font-size: 0.85rem; background: #fdfdfd; padding: 10px; border-radius: 8px; margin-top: 15px; color: #4a7c59; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #e0e0e0; }
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 10px; margin-top: 15px; }
+        .values-line { font-size: 0.85rem; background: #fff5e6; padding: 12px; border-radius: 15px; margin-top: 20px; color: #e67e22; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #ffe0b2; }
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 20px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث عن مرض أو تحليل...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="💊 اكتب اسم الدوا أو المرض هنا...">
     <div id="cards-zone"></div>
 
 <script>
@@ -49,34 +57,4 @@
     });
 
     function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        
-        data.forEach(item => {
-            if (!item.الاسم || item.الاسم.trim() === "") return;
-            
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو / سببه:</span> <div class="text-block">${item['ماهو / سببه'] || '---'}</div>
-                    <span class="label">التحليل:</span> <div class="text-block">${item.التحليل || '---'}</div>
-                    <span class="label">العلاج:</span> <div class="text-block">${item.العلاج || '---'}</div>
-                    <span class="label">معدي:</span> ${item.معدي || '---'}
-                    <div class="values-line">
-                        <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
-                        <span>عالي: ${item.العالي || '-'}</span> | 
-                        <span>واطي: ${item['الواطي'] || '-'}</span>
-                    </div>
-                    ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
-                </div>
-            `;
-        });
-    }
-
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        renderData(allData.filter(item => JSON.stringify(item).toUpperCase().includes(val)));
-    }
-</script>
-</body>
-</html>
+        const
