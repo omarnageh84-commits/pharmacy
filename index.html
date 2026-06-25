@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f7f9f7; --border-color: #6a5acd; } /* اللون البنفسجي للفريم */
+        :root { --bg-color: #f7f9f7; --border-color: #6a5acd; }
         body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
         
         #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--border-color); border-radius: 15px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         
         #cards-zone { display: grid; gap: 25px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
         
-        /* التعديلات الجمالية للفريم والظل */
         .card { 
             background: #ffffff; 
             padding: 25px; 
             border-radius: 25px; 
             border: 2px solid var(--border-color); 
             box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
-            transition: transform 0.2s;
         }
         
         h3 { color: #333; margin: 0 0 15px 0; font-size: 1.6rem; text-align: center; }
@@ -48,13 +46,20 @@
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?gid=686896654&single=true&output=csv';
     let allData = [];
 
-    Papa.parse(csvUrl, {
-        download: true, header: true,
-        complete: function(results) {
-            allData = results.data;
-            renderData(allData);
-        }
-    });
+    window.onload = function() {
+        Papa.parse(csvUrl, {
+            download: true, 
+            header: true,
+            complete: function(results) {
+                allData = results.data;
+                renderData(allData);
+            }
+        });
+    };
 
     function renderData(data) {
-        const
+        const container = document.getElementById('cards-zone');
+        container.innerHTML = '';
+        
+        data.forEach(item => {
+            if (!item.الاسم || item.الاسم.
