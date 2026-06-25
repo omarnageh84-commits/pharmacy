@@ -26,9 +26,14 @@
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
         .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        /* تحويل الترقيم لنقاط */
+        /* التعديل الجديد: منع التفاف النص في العلاج والتحاليل */
         ul { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.85rem; font-weight: 500; list-style-type: disc; }
-        li { margin-bottom: 4px; }
+        li { 
+            margin-bottom: 4px; 
+            white-space: nowrap; /* منع الالتفاف */
+            overflow-x: auto;    /* سكرول للسطر الطويل */
+            padding-bottom: 2px;
+        }
         
         .values-line { 
             font-size: 0.85rem; background: #e8f5e9; padding: 10px; border-radius: 10px; 
