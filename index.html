@@ -6,36 +6,56 @@
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
         :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
-        body { font-family: 'Segoe UI', sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 15px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 100%; max-width: 800px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 30px; outline: none; text-align: center; font-size: 18px; }
+        /* خانة البحث مكبرة 15% إضافية */
+        #searchInput { width: 95%; max-width: 650px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 17px; }
         
         #cards-zone { 
             display: grid; 
             gap: 20px; 
             padding: 10px; 
-            /* كارتين في الصف للكمبيوتر */
-            grid-template-columns: repeat(2, 1fr); 
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
             max-width: 1000px; 
             margin: 0 auto; 
-            /* السماح بالسكرول في حالة زيادة الكروت */
-            overflow-y: auto; 
         }
         
-        /* للموبايل: كارت واحد */
-        @media (max-width: 600px) { #cards-zone { grid-template-columns: 1fr; } }
+        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
         
         .card { background: white; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
-        .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 1rem; }
+        .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.95rem; font-weight: 600; }
-        li { margin-bottom: 5px; }
+        /* خط العلاج أخف شوية */
+        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.85rem; font-weight: 500; }
+        li { margin-bottom: 4px; }
         
-        .values-line { font-size: 0.9rem; background: #f1f8e9; padding: 8px; border-radius: 8px; margin-top: 15px; color: #333; font-weight: bold; text-align: center; }
+        /* تنسيق القيم جنب بعض بفواصل جذابة */
+        .values-line { 
+            font-size: 0.85rem; 
+            background: #e8f5e9; 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            color: #1b5e20; 
+            font-weight: bold; 
+            text-align: center; 
+            display: flex; 
+            justify-content: space-around;
+            border: 1px solid #c8e6c9;
+        }
         
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 12px; margin-top: 15px; }
+        /* الصورة كاملة ومش مقصوصة */
+        .card img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 250px; 
+            object-fit: contain; 
+            border-radius: 12px; 
+            margin-top: 15px; 
+            background: #fff;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
@@ -80,7 +100,11 @@
                     <span class="label">التحليل:</span> <div>${item.التحليل || '---'}</div>
                     <span class="label">العلاج:</span> <ol>${treatments}</ol>
                     <span class="label">معدي:</span> ${item.معدي || '---'}
-                    <div class="values-line">طبيعي: ${item.الطبيعي || '-'} | عالي: ${item.العالي || '-'} | واطي: ${item['الواطي'] || '-'}</div>
+                    <div class="values-line">
+                        <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
+                        <span>عالي: ${item.العالي || '-'}</span> | 
+                        <span>واطي: ${item['الواطي'] || '-'}</span>
+                    </div>
                     ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
                 </div>
             `;
