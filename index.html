@@ -7,18 +7,19 @@
     <style>
         :root { --bg-color: #f8fdf8; --main-color: #2e7d32; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
-        #searchInput { width: 90%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
-        #cards-zone { display: grid; gap: 15px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 900px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 20px; border-top: 8px solid var(--main-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h3 { color: var(--main-color); margin: 0 0 15px 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.4rem; }
-        .label { font-weight: bold; color: var(--main-color); display: block; margin-top: 10px; }
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; }
+        #searchInput { width: 90%; max-width: 500px; display: block; margin: 10px auto; padding: 10px; border: 2px solid var(--main-color); border-radius: 20px; outline: none; text-align: center; }
+        #cards-zone { display: grid; gap: 10px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 15px; border-radius: 15px; border-top: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h3 { color: var(--main-color); margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 1.2rem; }
+        .label { font-weight: bold; color: var(--main-color); display: inline; font-size: 0.9rem; }
+        .line { margin-bottom: 5px; font-size: 0.9rem; line-height: 1.4; }
+        .card img { width: 100%; height: auto; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 10px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث بأي كلمة...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث...">
     <div id="cards-zone"></div>
 
 <script>
@@ -40,8 +41,6 @@
     function renderData(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
-        
-        // تجميع ذكي لكل صف يخص نفس الاسم
         const grouped = {};
         data.forEach(row => {
             if (!row.الاسم) return;
@@ -53,11 +52,11 @@
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}
-                    <span class="label">التحليل:</span> ${item.التحليل || '---'}
-                    <span class="label">العلاج:</span> ${item.العلاج.join('<br>')}
-                    <span class="label">معدي:</span> ${item.معدي || '---'}
-                    <span class="label">طبيعي:</span> ${item.الطبيعي || '---'}
+                    <div class="line"><span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}</div>
+                    <div class="line"><span class="label">التحليل:</span> ${item.التحليل || '---'}</div>
+                    <div class="line"><span class="label">العلاج:</span> ${item.العلاج.join('، ')}</div>
+                    <div class="line"><span class="label">معدي:</span> ${item.معدي || '---'}</div>
+                    <div class="line"><span class="label">قيم:</span> طبيعي(${item.الطبيعي || '-'}) | عالي(${item.العالي || '-'}) | واطي(${item.الوطي || '-'})</div>
                     ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
                 </div>
             `;
