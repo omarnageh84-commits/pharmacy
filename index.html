@@ -8,30 +8,22 @@
         :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
         body { font-family: 'Segoe UI', sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
         
-        /* توسيع خانة البحث للكمبيوتر */
-        #searchInput { 
-            width: 100%; 
-            max-width: 800px; 
-            display: block; 
-            margin: 20px auto; 
-            padding: 15px; 
-            border: 2px solid var(--main-color); 
-            border-radius: 30px; 
-            outline: none; 
-            text-align: center; 
-            font-size: 18px;
-        }
+        #searchInput { width: 100%; max-width: 800px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-color); border-radius: 30px; outline: none; text-align: center; font-size: 18px; }
         
         #cards-zone { 
             display: grid; 
             gap: 20px; 
             padding: 10px; 
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-            max-width: 1200px; 
+            /* كارتين في الصف للكمبيوتر */
+            grid-template-columns: repeat(2, 1fr); 
+            max-width: 1000px; 
             margin: 0 auto; 
+            /* السماح بالسكرول في حالة زيادة الكروت */
+            overflow-y: auto; 
         }
         
-        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
+        /* للموبايل: كارت واحد */
+        @media (max-width: 600px) { #cards-zone { grid-template-columns: 1fr; } }
         
         .card { background: white; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
@@ -43,15 +35,7 @@
         
         .values-line { font-size: 0.9rem; background: #f1f8e9; padding: 8px; border-radius: 8px; margin-top: 15px; color: #333; font-weight: bold; text-align: center; }
         
-        /* ضبط عرض الصورة لتظهر كاملة */
-        .card img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 250px; 
-            object-fit: contain; /* تضمن ظهور الصورة كاملة دون قص */
-            border-radius: 12px; 
-            margin-top: 15px; 
-        }
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 12px; margin-top: 15px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
