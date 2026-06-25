@@ -13,9 +13,9 @@
         #cards-zone { 
             display: grid; 
             gap: 25px; 
-            /* بيتحكم في عدد الكروت: 350px بيضمن يظهر عدد معين حسب شاشتك */
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-            max-width: 1200px; 
+            /* التعديل هنا: بيخلي الكارت كبير عشان ياخد مساحة كارتين بس في الصف */
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            max-width: 1000px; 
             margin: 0 auto; 
         }
         
@@ -31,8 +31,8 @@
         
         .label { font-weight: bold; color: #333; display: block; margin-top: 15px; font-size: 1rem; border-bottom: 1px dashed #ccc; padding-bottom: 2px; }
         
-        /* ده اللي بيخلي العلاج يظهر في سطور منظمة */
-        .treatment-item { display: block; margin-top: 5px; color: #555; padding-right: 10px; border-right: 3px solid var(--main-color); margin-bottom: 5px; }
+        /* التعديل هنا: خليت لون العلاج أخضر غامق وواضح */
+        .treatment-item { display: block; margin-top: 6px; color: #1b5e20; font-weight: 600; padding-right: 10px; border-right: 4px solid var(--main-color); margin-bottom: 5px; }
         
         .values-line { font-size: 0.95rem; background: #e8f5e9; padding: 10px; border-radius: 10px; margin-top: 15px; text-align: center; color: #2e7d32; font-weight: bold; }
         
@@ -72,7 +72,6 @@
         });
 
         Object.values(grouped).forEach(item => {
-            // تنسيق العلاج ليظهر كل واحد في سطر
             const treatments = item.العلاج.map(t => `<span class="treatment-item">${t}</span>`).join('');
             
             container.innerHTML += `
