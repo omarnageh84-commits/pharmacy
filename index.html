@@ -6,31 +6,32 @@
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
         :root { 
-            --bg-color: #f7f9fc; 
-            --soft-purple: #b39ddb; 
-            --apricot: #ffcc80;     
-            --gold: #f57f17;        
-            --teal: #4db6ac;        
-            --dark-gray: #424242;   
+            --bg-color: #f0f7f4; 
+            --soft-green: #81c784;     /* أخضر فاتح للفريم */
+            --main-green: #2e7d32;     /* أخضر غامق للعناوين */
+            --teal: #4db6ac;           /* تركواز هادي للـ Labels */
+            --apricot: #ffcc80;        /* برتقالي للعلاج */
+            --dark-gray: #424242;      /* رمادي للنص */
         }
 
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
 
-        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--soft-purple); border-radius: 20px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--soft-green); border-radius: 20px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
         #cards-zone { display: grid; gap: 25px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
 
+        /* الفريم على كل الحواف هنا */
         .card { 
             background: white; 
             padding: 25px; 
             border-radius: 20px; 
-            border-right: 8px solid var(--soft-purple); 
+            border: 3px solid var(--soft-green); 
             box-shadow: 0 6px 12px rgba(0,0,0,0.08); 
             transition: transform 0.2s;
         }
-        .card:hover { transform: translateY(-5px); }
+        .card:hover { transform: translateY(-5px); border-color: var(--main-green); }
 
-        h3 { color: var(--soft-purple); margin: 0 0 15px 0; font-size: 1.5rem; }
+        h3 { color: var(--main-green); margin: 0 0 15px 0; font-size: 1.5rem; }
 
         .label { font-weight: bold; color: var(--teal); display: block; margin-top: 15px; font-size: 0.95rem; text-transform: uppercase; }
 
@@ -47,19 +48,19 @@
 
         .values-line { 
             font-size: 0.85rem; 
-            background: #fff9f4; 
+            background: #e8f5e9; 
             padding: 12px; 
             border-radius: 12px; 
             margin-top: 20px; 
-            color: var(--gold); 
+            color: var(--main-green); 
             font-weight: bold; 
             text-align: center; 
-            border: 1px solid var(--apricot); 
+            border: 1px solid var(--soft-green); 
             display: flex; 
             justify-content: space-around;
         }
 
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 15px; }
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 15px; border: 1px solid #eee; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
@@ -69,4 +70,13 @@
     <div id="cards-zone"></div>
 
 <script>
-    const csvUrl = '
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
+    let allData = [];
+
+    Papa.parse(csvUrl, {
+        download: true, 
+        header: true,
+        complete: function(results) {
+            allData = results.data;
+            renderData(allData);
+        }
