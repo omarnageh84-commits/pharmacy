@@ -10,37 +10,23 @@
         
         #searchInput { width: 95%; max-width: 750px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 17px; }
         
-        #cards-zone { 
-            display: grid; 
-            gap: 20px; 
-            padding: 10px; 
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
-        
+        #cards-zone { display: grid; gap: 20px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); max-width: 1000px; margin: 0 auto; }
         @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
         
         .card { background: white; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
         .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        /* التنسيق الجديد: بدون نقط (disc) وبدون سكرول */
-        ul { margin: 5px 0; padding-right: 0; color: #2e7d32; font-size: 0.9rem; font-weight: 500; list-style-type: none; }
-        li { 
-            margin-bottom: 8px; 
-            white-space: normal; 
-            word-wrap: break-word; 
-            line-height: 1.6;
+        /* ده التنسيق اللي بيخلي الكلام يظهر سطر تحت سطر */
+        .text-block { 
+            white-space: pre-line; /* بيخلي النص يحترم السطور اللي في الشيت */
+            color: #2e7d32; 
+            font-weight: 500; 
+            margin-top: 5px; 
+            font-size: 0.95rem; 
         }
         
-        .values-line { 
-            font-size: 0.85rem; background: #e8f5e9; padding: 10px; border-radius: 10px; 
-            margin-top: 15px; color: #1b5e20; font-weight: bold; text-align: center; 
-            display: flex; justify-content: space-around; border: 1px solid #c8e6c9;
-        }
-        
+        .values-line { font-size: 0.85rem; background: #e8f5e9; padding: 10px; border-radius: 10px; margin-top: 15px; color: #1b5e20; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #c8e6c9; }
         .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 12px; margin-top: 15px; background: #fff; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -65,27 +51,16 @@
     function renderData(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
-        const grouped = {};
-
-        data.forEach(row => {
-            if (!row.الاسم || row.الاسم.trim() === "") return;
-            if (!grouped[row.الاسم]) {
-                grouped[row.الاسم] = { ...row, العلاج: [], التحليل: [] };
-            }
-            if (row.العلاج && row.العلاج.trim() !== "") grouped[row.الاسم].العلاج.push(row.العلاج);
-            if (row.التحليل && row.التحليل.trim() !== "") grouped[row.الاسم].التحليل.push(row.التحليل);
-        });
-
-        Object.values(grouped).forEach(item => {
-            const treatments = item.العلاج.map(t => `<li>${t}</li>`).join('');
-            const analyses = item.التحليل.map(a => `<li>${a}</li>`).join('');
+        
+        data.forEach(item => {
+            if (!item.الاسم || item.الاسم.trim() === "") return;
             
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو / سببه:</span> <div>${item['ماهو / سببه'] || '---'}</div>
-                    <span class="label">التحليل:</span> <ul>${analyses || '---'}</ul>
-                    <span class="label">العلاج:</span> <ul>${treatments || '---'}</ul>
+                    <span class="label">ماهو / سببه:</span> <div class="text-block">${item['ماهو / سببه'] || '---'}</div>
+                    <span class="label">التحليل:</span> <div class="text-block">${item.التحليل || '---'}</div>
+                    <span class="label">العلاج:</span> <div class="text-block">${item.العلاج || '---'}</div>
                     <span class="label">معدي:</span> ${item.معدي || '---'}
                     <div class="values-line">
                         <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
