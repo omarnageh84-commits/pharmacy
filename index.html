@@ -8,31 +8,50 @@
         :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
         body { font-family: 'Segoe UI', sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 90%; max-width: 500px; display: block; margin: 10px auto; padding: 10px; border: 2px solid var(--main-color); border-radius: 20px; outline: none; text-align: center; }
+        /* توسيع خانة البحث للكمبيوتر */
+        #searchInput { 
+            width: 100%; 
+            max-width: 800px; 
+            display: block; 
+            margin: 20px auto; 
+            padding: 15px; 
+            border: 2px solid var(--main-color); 
+            border-radius: 30px; 
+            outline: none; 
+            text-align: center; 
+            font-size: 18px;
+        }
         
-        /* التنسيق الجديد: كارتين في الصف للكمبيوتر، وكارت واحد للموبايل */
         #cards-zone { 
             display: grid; 
-            gap: 15px; 
+            gap: 20px; 
             padding: 10px; 
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-            max-width: 1000px; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            max-width: 1200px; 
             margin: 0 auto; 
         }
         
         @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
         
-        .card { background: white; padding: 15px; border-radius: 15px; border-right: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         
-        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.2rem; }
-        .label { font-weight: bold; color: #555; display: block; margin-top: 8px; font-size: 0.9rem; }
+        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
+        .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 1rem; }
         
-        /* هنا التعديل عشان العلاج يظهر كقائمة مرتبة وبخط مريح */
-        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.9rem; font-weight: 500; }
-        li { margin-bottom: 3px; }
+        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.95rem; font-weight: 600; }
+        li { margin-bottom: 5px; }
         
-        .values-line { font-size: 0.85rem; background: #f1f8e9; padding: 5px; border-radius: 5px; margin-top: 10px; color: #333; font-weight: bold; text-align: center; }
-        .card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px; }
+        .values-line { font-size: 0.9rem; background: #f1f8e9; padding: 8px; border-radius: 8px; margin-top: 15px; color: #333; font-weight: bold; text-align: center; }
+        
+        /* ضبط عرض الصورة لتظهر كاملة */
+        .card img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 250px; 
+            object-fit: contain; /* تضمن ظهور الصورة كاملة دون قص */
+            border-radius: 12px; 
+            margin-top: 15px; 
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
@@ -68,7 +87,6 @@
         });
 
         Object.values(grouped).forEach(item => {
-            // عملت العلاج في شكل <ol> و <li> عشان يظهر الترقيم تلقائي 1، 2، 3
             const treatments = item.العلاج.map(t => `<li>${t}</li>`).join('');
             
             container.innerHTML += `
