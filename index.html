@@ -5,35 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
-        body { font-family: 'Segoe UI', sans-serif; padding: 15px; background: var(--bg-color); margin: 0; }
+        :root { 
+            --bg-color: #f8f9fa; /* خلفية هادية جداً */
+            --main-color: #2e7d32; 
+            --card-border: #d1c4e9; /* لون البنفسجي الهادي اللي في الصورة */
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 95%; max-width: 750px; display: block; margin: 15px auto; padding: 14px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 17px; }
-        
-        #cards-zone { display: grid; gap: 20px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); max-width: 1000px; margin: 0 auto; }
-        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
-        
-        .card { background: white; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-color); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
-        .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
-        
-        /* ده التنسيق اللي بيخلي الكلام يظهر سطر تحت سطر */
-        .text-block { 
-            white-space: pre-line; /* بيخلي النص يحترم السطور اللي في الشيت */
-            color: #2e7d32; 
-            font-weight: 500; 
-            margin-top: 5px; 
-            font-size: 0.95rem; 
+        /* شكل خانة البحث زي الصورة */
+        #searchInput { 
+            width: 90%; max-width: 600px; display: block; margin: 20px auto; padding: 12px; 
+            border: 1px solid var(--card-border); border-radius: 50px; outline: none; 
+            text-align: center; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
-        .values-line { font-size: 0.85rem; background: #e8f5e9; padding: 10px; border-radius: 10px; margin-top: 15px; color: #1b5e20; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #c8e6c9; }
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 12px; margin-top: 15px; background: #fff; }
+        #cards-zone { display: grid; gap: 25px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
+        
+        /* شكل الكروت */
+        .card { 
+            background: white; padding: 25px; border-radius: 15px; 
+            border: 1px solid var(--card-border); /* حدود رفيعة وهادية */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
+        }
+        h3 { color: var(--main-color); margin-top: 0; border-bottom: 2px solid #e8f5e9; padding-bottom: 10px; }
+        .label { font-weight: bold; color: #444; margin-top: 15px; display: block; }
+        .text-block { white-space: pre-line; color: #333; margin-top: 5px; line-height: 1.6; }
+        
+        .values-line { 
+            font-size: 0.85rem; background: #fafafa; padding: 10px; border-radius: 8px; 
+            margin-top: 15px; color: #555; border: 1px solid #eee; display: flex; justify-content: space-between; 
+        }
+        .card img { width: 100%; border-radius: 10px; margin-top: 15px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث عن مرض أو تحليل...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="💊 اكتب اسم الدوا أو المرض هنا...">
     <div id="cards-zone"></div>
 
 <script>
@@ -42,41 +50,23 @@
 
     Papa.parse(csvUrl, {
         download: true, header: true,
-        complete: function(results) {
-            allData = results.data;
-            renderData(allData);
-        }
+        complete: function(results) { allData = results.data; renderData(allData); }
     });
 
     function renderData(data) {
         const container = document.getElementById('cards-zone');
         container.innerHTML = '';
-        
         data.forEach(item => {
             if (!item.الاسم || item.الاسم.trim() === "") return;
-            
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
                     <span class="label">ماهو / سببه:</span> <div class="text-block">${item['ماهو / سببه'] || '---'}</div>
                     <span class="label">التحليل:</span> <div class="text-block">${item.التحليل || '---'}</div>
                     <span class="label">العلاج:</span> <div class="text-block">${item.العلاج || '---'}</div>
-                    <span class="label">معدي:</span> ${item.معدي || '---'}
                     <div class="values-line">
-                        <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
-                        <span>عالي: ${item.العالي || '-'}</span> | 
+                        <span>طبيعي: ${item.الطبيعي || '-'}</span>
+                        <span>عالي: ${item.العالي || '-'}</span>
                         <span>واطي: ${item['الواطي'] || '-'}</span>
                     </div>
-                    ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
-                </div>
-            `;
-        });
-    }
-
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        renderData(allData.filter(item => JSON.stringify(item).toUpperCase().includes(val)));
-    }
-</script>
-</body>
-</html>
+                    ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''
