@@ -5,44 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f0f4f0; --main-color: #2e7d32; --card-bg: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
+        :root { --bg-color: #f0f4f0; --main-color: #2e7d32; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
         
-        #searchInput { width: 95%; max-width: 600px; display: block; margin: 0 auto 30px; padding: 15px; border: 2px solid var(--main-color); border-radius: 30px; outline: none; text-align: center; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        #searchInput { width: 90%; max-width: 500px; display: block; margin: 10px auto; padding: 10px; border: 2px solid var(--main-color); border-radius: 20px; outline: none; text-align: center; }
         
+        /* التنسيق الجديد: كارتين في الصف للكمبيوتر، وكارت واحد للموبايل */
         #cards-zone { 
             display: grid; 
-            gap: 25px; 
-            /* التعديل هنا: بيخلي الكارت كبير عشان ياخد مساحة كارتين بس في الصف */
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            gap: 15px; 
+            padding: 10px; 
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
             max-width: 1000px; 
             margin: 0 auto; 
         }
         
-        .card { 
-            background: var(--card-bg); padding: 25px; border-radius: 25px; 
-            border-right: 10px solid var(--main-color); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-        .card:hover { transform: translateY(-5px); }
+        @media (max-width: 450px) { #cards-zone { grid-template-columns: 1fr; } }
         
-        h3 { color: var(--main-color); margin: 0 0 15px 0; font-size: 1.6rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        .card { background: white; padding: 15px; border-radius: 15px; border-right: 6px solid var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
-        .label { font-weight: bold; color: #333; display: block; margin-top: 15px; font-size: 1rem; border-bottom: 1px dashed #ccc; padding-bottom: 2px; }
+        h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.2rem; }
+        .label { font-weight: bold; color: #555; display: block; margin-top: 8px; font-size: 0.9rem; }
         
-        /* التعديل هنا: خليت لون العلاج أخضر غامق وواضح */
-        .treatment-item { display: block; margin-top: 6px; color: #1b5e20; font-weight: 600; padding-right: 10px; border-right: 4px solid var(--main-color); margin-bottom: 5px; }
+        /* هنا التعديل عشان العلاج يظهر كقائمة مرتبة وبخط مريح */
+        ol { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.9rem; font-weight: 500; }
+        li { margin-bottom: 3px; }
         
-        .values-line { font-size: 0.95rem; background: #e8f5e9; padding: 10px; border-radius: 10px; margin-top: 15px; text-align: center; color: #2e7d32; font-weight: bold; }
-        
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-top: 20px; }
+        .values-line { font-size: 0.85rem; background: #f1f8e9; padding: 5px; border-radius: 5px; margin-top: 10px; color: #333; font-weight: bold; text-align: center; }
+        .card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث عن مرض أو تحليل...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث...">
     <div id="cards-zone"></div>
 
 <script>
@@ -72,20 +68,17 @@
         });
 
         Object.values(grouped).forEach(item => {
-            const treatments = item.العلاج.map(t => `<span class="treatment-item">${t}</span>`).join('');
+            // عملت العلاج في شكل <ol> و <li> عشان يظهر الترقيم تلقائي 1، 2، 3
+            const treatments = item.العلاج.map(t => `<li>${t}</li>`).join('');
             
             container.innerHTML += `
                 <div class="card">
                     <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو / سببه:</span> <p style="margin:5px 0;">${item['ماهو / سببه'] || '---'}</p>
-                    <span class="label">التحليل:</span> <p style="margin:5px 0;">${item.التحليل || '---'}</p>
-                    <span class="label">العلاج:</span> ${treatments || '---'}
+                    <span class="label">ماهو / سببه:</span> <div>${item['ماهو / سببه'] || '---'}</div>
+                    <span class="label">التحليل:</span> <div>${item.التحليل || '---'}</div>
+                    <span class="label">العلاج:</span> <ol>${treatments}</ol>
                     <span class="label">معدي:</span> ${item.معدي || '---'}
-                    
-                    <div class="values-line">
-                        طبيعي: ${item.الطبيعي || '-'} | عالي: ${item.العالي || '-'} | واطي: ${item['الواطي'] || '-'}
-                    </div>
-
+                    <div class="values-line">طبيعي: ${item.الطبيعي || '-'} | عالي: ${item.العالي || '-'} | واطي: ${item['الواطي'] || '-'}</div>
                     ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
                 </div>
             `;
