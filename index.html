@@ -5,32 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>علم ينتفع به - OMAR 💊</title>
     <style>
-        :root { --bg-color: #f7f9fc; --main-purple: #6a5acd; } 
+        :root { 
+            --bg-color: #f7f9fc; 
+            --soft-purple: #b39ddb; 
+            --apricot: #ffcc80;     
+            --gold: #f57f17;        
+            --teal: #4db6ac;        
+            --dark-gray: #424242;   
+        }
+
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background: var(--bg-color); margin: 0; }
-        
-        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--main-purple); border-radius: 20px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        
+
+        #searchInput { width: 95%; max-width: 750px; display: block; margin: 20px auto; padding: 15px; border: 2px solid var(--soft-purple); border-radius: 20px; outline: none; text-align: center; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
         #cards-zone { display: grid; gap: 25px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 1000px; margin: 0 auto; }
-        
-        .card { background: white; padding: 25px; border-radius: 20px; border-right: 8px solid var(--main-purple); box-shadow: 0 6px 12px rgba(0,0,0,0.08); transition: transform 0.2s; }
+
+        .card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 20px; 
+            border-right: 8px solid var(--soft-purple); 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08); 
+            transition: transform 0.2s;
+        }
         .card:hover { transform: translateY(-5px); }
-        
-        h3 { color: var(--main-purple); margin: 0 0 15px 0; font-size: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        
-        .label { font-weight: bold; color: #483d8b; display: block; margin-top: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        
+
+        h3 { color: var(--soft-purple); margin: 0 0 15px 0; font-size: 1.5rem; }
+
+        .label { font-weight: bold; color: var(--teal); display: block; margin-top: 15px; font-size: 0.95rem; text-transform: uppercase; }
+
         .text-block { 
             white-space: pre-line; 
-            color: #333; 
+            color: var(--dark-gray); 
             font-weight: 500; 
             margin-top: 5px; 
-            font-size: 0.95rem; 
             line-height: 1.6;
+            font-size: 0.95rem;
         }
-        
-        .values-line { font-size: 0.85rem; background: #f3f0ff; padding: 12px; border-radius: 12px; margin-top: 20px; color: #483d8b; font-weight: bold; text-align: center; display: flex; justify-content: space-around; border: 1px solid #e6e6fa; }
-        
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 15px; border: 1px solid #eee; }
+
+        .label-treatment { color: var(--apricot); font-weight: bold; }
+
+        .values-line { 
+            font-size: 0.85rem; 
+            background: #fff9f4; 
+            padding: 12px; 
+            border-radius: 12px; 
+            margin-top: 20px; 
+            color: var(--gold); 
+            font-weight: bold; 
+            text-align: center; 
+            border: 1px solid var(--apricot); 
+            display: flex; 
+            justify-content: space-around;
+        }
+
+        .card img { width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-top: 15px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
@@ -40,53 +69,4 @@
     <div id="cards-zone"></div>
 
 <script>
-    // الرابط ده رابط CSV للنشر المباشر
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSvlBUTo7Z4iFMHkH0cDGRsba99RlGiFjtGiLsO9MANiIIn_coI7xndvEht7LropZIHXA5SUde0hQo2/pub?output=csv';
-    let allData = [];
-
-    Papa.parse(csvUrl, {
-        download: true, 
-        header: true,
-        complete: function(results) {
-            allData = results.data;
-            renderData(allData);
-        },
-        error: function(err) {
-            console.error("مشكلة في تحميل الشيت:", err);
-            document.getElementById('cards-zone').innerHTML = '<h3 style="text-align:center; color:red;">تأكد من نشر الشيت على الويب!</h3>';
-        }
-    });
-
-    function renderData(data) {
-        const container = document.getElementById('cards-zone');
-        container.innerHTML = '';
-        
-        data.forEach(item => {
-            // اتأكد إن اسم العمود "الاسم" موجود في الشيت بتاعك
-            if (!item.الاسم || item.الاسم.trim() === "") return;
-            
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${item.الاسم}</h3>
-                    <span class="label">ماهو / سببه:</span> <div class="text-block">${item['ماهو / سببه'] || '---'}</div>
-                    <span class="label">التحليل:</span> <div class="text-block">${item.التحليل || '---'}</div>
-                    <span class="label">العلاج:</span> <div class="text-block">${item.العلاج || '---'}</div>
-                    <span class="label">معدي:</span> ${item.معدي || '---'}
-                    <div class="values-line">
-                        <span>طبيعي: ${item.الطبيعي || '-'}</span> | 
-                        <span>عالي: ${item.العالي || '-'}</span> | 
-                        <span>واطي: ${item['الواطي'] || '-'}</span>
-                    </div>
-                    ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
-                </div>
-            `;
-        });
-    }
-
-    function filterData() {
-        let val = document.getElementById("searchInput").value.toUpperCase();
-        renderData(allData.filter(item => JSON.stringify(item).toUpperCase().includes(val)));
-    }
-</script>
-</body>
-</html>
+    const csvUrl = '
