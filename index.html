@@ -26,14 +26,13 @@
         h3 { color: var(--main-color); margin: 0 0 10px 0; font-size: 1.4rem; }
         .label { font-weight: bold; color: #555; display: block; margin-top: 10px; font-size: 0.95rem; }
         
-        /* التعديل هنا: منع التفاف النص ليظهر السطر كاملاً */
-        ul { margin: 5px 0; padding-right: 20px; color: #2e7d32; font-size: 0.9rem; font-weight: 500; list-style-type: disc; }
+        /* التنسيق الجديد: بدون نقط (disc) وبدون سكرول */
+        ul { margin: 5px 0; padding-right: 0; color: #2e7d32; font-size: 0.9rem; font-weight: 500; list-style-type: none; }
         li { 
-            margin-bottom: 4px; 
-            white-space: nowrap;  /* يمنع النص من النزول سطر جديد */
-            overflow-x: auto;     /* إضافة سكرول أفقي للسطر الطويل فقط */
-            display: block;
-            padding-bottom: 2px;
+            margin-bottom: 8px; 
+            white-space: normal; 
+            word-wrap: break-word; 
+            line-height: 1.6;
         }
         
         .values-line { 
