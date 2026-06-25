@@ -7,20 +7,46 @@
     <style>
         :root { --bg-color: #f8fdf8; --main-color: #2e7d32; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 10px; background: var(--bg-color); margin: 0; }
+        
         #searchInput { width: 90%; max-width: 500px; display: block; margin: 15px auto; padding: 12px; border: 2px solid var(--main-color); border-radius: 25px; outline: none; text-align: center; font-size: 16px; }
-        #cards-zone { display: grid; gap: 15px; padding: 10px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 900px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 20px; border-top: 8px solid var(--main-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h3 { color: var(--main-color); margin: 0 0 15px 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.4rem; }
-        .label { font-weight: bold; color: var(--main-color); margin-top: 10px; display: block; }
-        /* تنسيق خاص للقيم التلاتة في سطر واحد */
-        .values-line { font-size: 0.9rem; color: #555; margin-top: 5px; font-weight: bold; }
-        .card img { width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; }
+        
+        #cards-zone { 
+            display: grid; 
+            gap: 15px; 
+            padding: 10px; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
+        
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 20px; 
+            border-top: 8px solid var(--main-color); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+        
+        h3 { color: var(--main-color); margin: 0 0 15px 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 1.3rem; }
+        
+        .label { font-weight: bold; color: var(--main-color); margin-top: 10px; display: block; font-size: 0.95rem; }
+        
+        .values-line { 
+            font-size: 0.85rem; 
+            color: #444; 
+            margin-top: 10px; 
+            padding-top: 5px;
+            font-weight: bold; 
+            border-top: 1px dashed #ccc;
+        }
+        
+        .card img { width: 100%; height: auto; max-height: 200px; object-fit: cover; border-radius: 12px; margin-top: 15px; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
-    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث بأي كلمة...">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 ابحث هنا...">
     <div id="cards-zone"></div>
 
 <script>
@@ -56,11 +82,11 @@
                     <h3>${item.الاسم}</h3>
                     <span class="label">ماهو:</span> ${item['ماهو / سببه'] || '---'}
                     <span class="label">التحليل:</span> ${item.التحليل || '---'}
-                    <span class="label">العلاج:</span> ${item.العلاج.join('<br>')}
+                    <span class="label">العلاج:</span> ${item.العلاج.filter(e => e).join('، ')}
                     <span class="label">معدي:</span> ${item.معدي || '---'}
                     
                     <div class="values-line">
-                        طبيعي: ${item.الطبيعي || '-'} | عالي: ${item.العالي || '-'} | واطي: ${item.الواطي || '-'}
+                        طبيعي: ${item.الطبيعي || '-'} | عالي: ${item.العالي || '-'} | واطي: ${item['الواطي'] || '-'}
                     </div>
 
                     ${item['رابط الصور'] && item['رابط الصور'] !== 'رابط' ? `<img src="${item['رابط الصور']}" alt="صورة">` : ''}
