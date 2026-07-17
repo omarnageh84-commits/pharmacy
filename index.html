@@ -1,179 +1,166 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صيدلية الشفاء - 3 مستويات فلترة</title>
+<title>صيدلية د. خالد سالم</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<style>*{font-family:'Tajawal',sans-serif}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}</style>
+<style>
+*{font-family:'Tajawal',sans-serif}
+:root{--primary:#E14A4A;--bg:#F2F5F9;--navy:#1E2142;--border:#CBBFA8;}
+body{background:var(--bg)}
+.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
 </head>
-<body class="bg-[#f8faf9] text-zinc-900">
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b">
-  <div class="max-w-[1280px] mx-auto px-4 md:px-6 h-[68px] flex items-center justify-between gap-3">
-    <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-[#0ea573] text-white flex items-center justify-center font-black">ش</div><div><div class="font-black text-[15px]">صيدلية الشفاء</div><div id="status" class="text-[11px] text-amber-600">⏳ جاري تحميل الشيت...</div></div></div>
-    <div class="hidden md:flex flex-1 max-w-[480px] relative"><span class="absolute right-3.5 top-1/2 -translate-y-1/2">🔍</span><input id="searchD" placeholder="ابحث بالاسم، المادة الفعالة..." class="w-full h-11 pr-11 pl-4 rounded-full bg-zinc-50 border text-[13px]"></div>
-    <button id="cartBtn" class="h-11 px-5 rounded-full bg-zinc-900 text-white text-[13px] font-bold">🛒 <span id="cartCount" class="bg-white text-zinc-900 min-w-[20px] h-5 rounded-full inline-flex items-center justify-center text-[11px] font-black mr-1">0</span></button>
+<body class="bg-[#F2F5F9] text-[#1E293B]">
+<header class="sticky top-0 z-40 bg-[#13375C] border-b border-[#2E2E5D] shadow-[0_8px_24px_rgba(0,0,0,0.12)] rounded-b-[20px]">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-white text-[#13375C] flex items-center justify-center font-black text-[18px] shadow-sm">خ</div>
+      <div>
+        <div class="font-black leading-none text-[15px] text-white">صيدلية د. خالد سالم</div>
+        <div class="text-[11px] text-white/60 mt-0.5"><a href="https://maps.app.goo.gl/4CHGc5azwNdFxJ3g6" target="_blank" class="hover:text-white">📍 ميدان زينهم بلوك 5 - السيدة زينب • خدمه 24 ساعه</a></div>
+      </div>
+    </div>
+    <div class="flex-1 max-w-[480px] hidden md:block">
+      <div class="relative"><input id="searchDesktop" placeholder="ابحث بالاسم أو المادة الفعالة..." class="w-full h-11 pr-11 pl-4 rounded-full bg-white border border-white text-[#1E293B] placeholder:text-[#94A3B8] text-[13px] focus:outline-none focus:bg-white focus:text-zinc-900"><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/50">🔍</span></div>
+    </div>
+    <button id="cartBtn" class="relative h-11 px-4 rounded-full bg-[#0EB77F] text-white text-[13px] font-bold flex items-center gap-2 shadow-lg">🛒 السلة <span id="cartCount" class="bg-white text-zinc-900 min-w-[20px] h-5 rounded-full text-[11px] font-black flex items-center justify-center px-1">0</span></button>
   </div>
-  <div class="md:hidden px-4 pb-3"><input id="searchM" placeholder="ابحث..." class="w-full h-11 px-4 rounded-full bg-zinc-50 border text-[13px]"></div>
+  <div class="md:hidden px-4 pb-3"><div class="relative"><input id="searchMobile" placeholder="ابحث..." class="w-full h-11 pr-11 pl-4 rounded-full bg-white border border-white text-[#1E293B] placeholder:text-[#94A3B8] text-[13px]"><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/50">🔍</span></div></div>
 </header>
 
-<!-- Main Tabs Always Visible + Auto Sub Filters -->
-<div class="max-w-[1280px] mx-auto px-4 md:px-6 mt-2.5 space-y-1.5">
-  <!-- التبويبات الأساسية ظاهرة دائما -->
-  <div class="bg-white rounded-xl border border-zinc-200/70 p-1.5 flex items-center gap-2">
-    <div id="level1" class="flex gap-1.5 overflow-x-auto no-scrollbar flex-1"></div>
-    <button id="clearFilters" class="shrink-0 h-[26px] px-3 rounded-full bg-zinc-100 border border-zinc-200 text-[11px] hover:bg-zinc-200 transition">مسح</button>
+<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-3">
+  <div class="mx-auto w-fit rounded-full bg-[#13375C] border border-white/10 text-white px-4 py-1.5 text-center shadow-sm">
+    <span class="text-[10px]">💡 لو الدواء ناقص، اضغط على <b class="bg-[#0EB77F] text-white px-2 py-0.5 rounded-full text-[9px]">يوجد بدائل</b> نفس المادة أرخص</span>
   </div>
-  <!-- الفلاتر الفرعية تظهر أوتوماتيك لما تختار تبويب -->
-  <div id="subFilters" class="hidden space-y-1.5">
-    <div class="bg-white rounded-xl border border-zinc-200/70 p-1.5 animate-[slideDown_0.22s_ease]"><div id="level2" class="flex gap-1.5 overflow-x-auto no-scrollbar"></div></div>
-    <div class="bg-white rounded-xl border border-zinc-200/70 p-1.5 animate-[slideDown_0.25s_ease]"><div id="level3" class="flex gap-1.5 overflow-x-auto no-scrollbar"></div></div>
-  </div>
-</div>
-<style>@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}</style>
-
-<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-4 pb-24">
-  <div class="flex justify-between items-center mb-3"><h2 class="font-black">النتائج <span id="count" class="text-zinc-400 text-[13px]"></span></h2><span id="filterSummary" class="text-[11px] text-zinc-500"></span></div>
-  <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"></div>
-  <div id="empty" class="hidden py-16 text-center bg-white rounded-[20px] border mt-6">لا توجد نتائج للفلاتر الحالية</div>
 </section>
 
-<!-- Modal -->
-<div id="modal" class="fixed inset-0 z-50 hidden"><div id="mBg" class="absolute inset-0 bg-black/40"></div><div class="relative w-full md:max-w-[820px] mx-auto bg-white md:rounded-[24px] rounded-t-[24px] mt-auto md:mt-[5vh] max-h-[93vh] flex flex-col overflow-hidden"><div class="p-4 border-b flex justify-between gap-3"><div class="flex gap-3"><img id="mImg" class="w-16 h-16 rounded-xl object-cover border bg-zinc-50"><div><div id="mName" class="font-black text-[15px]"></div><div id="mMeta" class="text-[11px] text-zinc-500 mt-1"></div><div id="mBarcode" class="text-[10px] text-zinc-400"></div></div></div><button id="mClose" class="w-9 h-9 rounded-full bg-zinc-100">✕</button></div><div class="flex gap-2 p-3 bg-zinc-50 border-b"><button id="t1" class="flex-1 h-10 rounded-full bg-[#0ea573] text-white font-bold text-[13px]">التفاصيل</button><button id="t2" class="flex-1 h-10 rounded-full bg-white border font-bold text-[13px]">البدائل <span id="altN" class="bg-zinc-100 px-1.5 rounded-full text-[11px]">0</span></button></div><div id="mBody" class="flex-1 overflow-auto p-5"></div></div></div>
+<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-4 space-y-2">
+  <div class="bg-[#FFFEFB] rounded-full border border-[#E2E8F0] p-1 flex items-center gap-1 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <div id="level1" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div>
+    <button id="clearFilters" class="shrink-0 h-[26px] px-3 rounded-full bg-[#F2F5F9] border border-[#E2E8F0] text-[10px] font-bold">مسح</button>
+  </div>
+  <div id="subFilters" class="hidden space-y-1.5">
+    <div class="bg-[#FFFEFB]/90 backdrop-blur rounded-full border border-[#E2E8F0]/70 p-1 flex items-center gap-1"><span class="text-[9px] text-zinc-500 mr-2 hidden md:block">تصنيف:</span><div id="level2" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div></div>
+    <div class="bg-[#FFFEFB]/90 backdrop-blur rounded-full border border-[#E2E8F0]/70 p-1 flex items-center gap-1"><span class="text-[9px] text-zinc-500 mr-2 hidden md:block">فلتر:</span><div id="level3" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div></div>
+  </div>
+</section>
 
-<div id="cart" class="fixed inset-0 z-[60] hidden"><div id="cBg" class="absolute inset-0 bg-black/30"></div><div class="absolute left-0 top-0 bottom-0 w-full max-w-[380px] bg-white flex flex-col"><div class="h-[60px] px-5 flex justify-between items-center border-b font-black">السلة <button id="cClose" class="w-9 h-9 rounded-full bg-zinc-100">✕</button></div><div id="cList" class="flex-1 overflow-auto p-4 space-y-3"></div><div class="p-4 bg-zinc-50 border-t"><div class="bg-white rounded-2xl border p-3 text-[13px] space-y-2"><div class="flex justify-between"><span class="text-zinc-500">المجموع</span><span id="cSub">0 ج</span></div><div class="flex justify-between"><span>التوصيل</span><span>15 ج</span></div><div class="flex justify-between font-black border-t pt-2"><span>الإجمالي</span><span id="cTotal">0 ج</span></div></div><button id="coBtn" class="w-full h-12 rounded-full bg-[#0ea573] text-white font-black mt-3">إتمام الطلب</button></div></div></div>
+<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-5 pb-24">
+  <div class="flex items-center justify-between mb-3"><span id="filterSummary" class="text-[11px] text-zinc-600"></span><span id="resultCount" class="hidden"></span><span id="statusText" class="hidden"></span></div>
+  <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"></div>
+  <div id="empty" class="hidden py-16 text-center bg-[#FFFEFB] rounded-[20px] border border-[#E2E8F0] mt-6 text-[13px]">لا توجد نتائج</div>
+</section>
 
-<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 hidden bg-zinc-900 text-white px-4 py-2.5 rounded-full text-[13px] z-[80]"></div>
+<div id="modal" class="fixed inset-0 z-50 hidden"><div id="modalBg" class="absolute inset-0 bg-[#13375C]/60 backdrop-blur-sm"></div><div class="relative w-full md:max-w-[560px] mx-auto mt-auto md:mt-[8vh] bg-[#FFFEFB] rounded-t-[24px] md:rounded-[24px] shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"><div class="flex items-center justify-between p-4 border-b border-[#E2E8F0] shrink-0 bg-[#FFFEFB]"><div class="flex items-center gap-2"><div class="w-9 h-9 rounded-full bg-[#13375C] text-white flex items-center justify-center">💊</div><div><div id="mName" class="font-black text-[14px]"></div><div id="mSub" class="text-[11px] text-zinc-500"></div></div></div><button id="mClose" class="w-9 h-9 rounded-full bg-[#F2F5F9]">✕</button></div><div class="flex gap-2 p-3 bg-[#F5F1EB] border-b border-[#E2E8F0] shrink-0"><button id="tabDetails" class="flex-1 h-10 rounded-full text-[13px] font-bold border bg-[#0EB77F] border-[#0EB77F] text-white">التفاصيل</button><button id="tabAlts" class="flex-1 h-10 rounded-full text-[13px] font-bold border bg-white border-[#E2E8F0]">البدائل <span id="altBadge" class="text-[11px] px-1.5 py-0.5 rounded-full bg-zinc-100 mr-1">0</span></button></div><div id="mBody" class="flex-1 overflow-auto p-5 bg-[#FFFEFB]"></div></div></div>
+
+<div id="cartDrawer" class="fixed inset-0 z-[60] hidden"><div id="cartBg" class="absolute inset-0 bg-[#13375C]/50"></div><div class="absolute left-0 top-0 bottom-0 w-full max-w-[380px] bg-[#FFFEFB] shadow-2xl flex flex-col"><div class="h-[60px] px-5 flex items-center justify-between border-b border-[#E2E8F0] shrink-0 bg-[#13375C] text-white"><div class="font-black">السلة</div><button id="cartClose" class="w-9 h-9 rounded-full bg-white/10">✕</button></div><div id="cartList" class="flex-1 overflow-auto p-4 space-y-3 bg-[#F2F5F9]"></div><div class="p-4 border-t border-[#E2E8F0] bg-[#FFFEFB] space-y-3"><div class="bg-white rounded-2xl border border-[#E2E8F0] p-3 text-[13px] space-y-2"><div class="flex justify-between"><span class="text-zinc-500">المجموع</span><span id="cSub">0 ج</span></div><div class="flex justify-between"><span class="text-zinc-500">التوصيل</span><span>15 ج</span></div><div class="flex justify-between font-black text-[16px] border-t border-[#E2E8F0] pt-2"><span>الإجمالي</span><span id="cTotal">0 ج</span></div></div><button id="checkoutBtn" class="w-full h-12 rounded-full bg-[#0EB77F] text-white font-black shadow-lg">إتمام الطلب</button></div></div></div>
+
+<footer class="mt-10 border-t border-[#13375C] bg-[#13375C] text-white/70"><div class="max-w-[1280px] mx-auto px-4 md:px-6 py-8 grid md:grid-cols-3 gap-6 text-[12px]"><div><div class="font-black flex items-center gap-2 mb-2 text-white"><div class="w-8 h-8 rounded-full bg-white text-[#13375C] flex items-center justify-center">خ</div>صيدلية د. خالد سالم</div><div>خدمة توصيل للمنازل<br>قياس الضغط والسكر<br>خدمه 24 ساعه</div></div><div><div class="font-bold mb-2 text-white">العنوان</div><a href="https://maps.app.goo.gl/4CHGc5azwNdFxJ3g6" target="_blank" class="hover:text-white">📍 ميدان زينهم بلوك 5 - السيدة زينب<br><span class="text-[#E14A4A] underline">افتح على الخريطة</span></a></div><div><div class="font-bold mb-2 text-white">تواصل</div><div>🟢 010 255 3 266 3<br>☎️ 253 24 0 42</div></div></div></footer>
+
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 hidden bg-[#13375C] text-white px-4 py-2.5 rounded-full text-[13px] z-[80] shadow-xl"></div>
 
 <script>
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5H9ypxtxmUGqvuoWRF4hayQGlKe53PgOTWtXkeJdBiy0sVSivJg0XUBlsSJDun9r1MA4G3jcw9cYG/pub?output=csv";
-
-let SHEET_DATA=[];
-let level1='الكل', level2='الكل', level3='الكل', q='', cart=[], sel=null, tab='details';
-
-function showSubFilters(){document.getElementById('subFilters').classList.remove('hidden');}
-function hideSubFilters(){document.getElementById('subFilters').classList.add('hidden');}
-function updateFilterBadge(){let parts=[]; if(level1!=='الكل') parts.push(level1); if(level2!=='الكل') parts.push(level2); if(level3!=='الكل') parts.push(level3); const sum=document.getElementById('filterSummary'); if(sum) sum.textContent=parts.join(' • ');}
-
+let SHEET_DATA=[], level1='الكل', level2='الكل', level3='الكل', q='', cart=[], selected=null, tab='details';
 const $=s=>document.querySelector(s);
-const getAlts=p=>SHEET_DATA.filter(x=>x.active && p.active && x.active.trim().toLowerCase()===p.active.trim().toLowerCase() && x.name!==p.name);
-const finalPrice=p=>{let d=Number(p.priceDiscount);let c=Number(p.priceCurrent);if(!isNaN(d)&&d>0&&d<c) return d; return c||0;};
-const oldPrice=p=>{let d=Number(p.priceDiscount);let c=Number(p.priceCurrent);if(!isNaN(d)&&d>0&&d<c) return c; return null;};
-
+const toNum=v=>{if(v==null) return 0; let s=String(v).replace(/[^0-9.]/g,''); return Number(s)||0;};
+const finalPrice=p=>{let d=toNum(p.priceDiscount); let c=toNum(p.priceCurrent); if(d>0 && d<c) return d; return c;};
+const oldPrice=p=>{let d=toNum(p.priceDiscount); let c=toNum(p.priceCurrent); if(d>0 && d<c) return c; return null;};
+const getAlts=p=>{
+  if(p.active && p.active.trim()){
+    const a=SHEET_DATA.filter(x=>x.active && x.active.trim().toLowerCase()===p.active.trim().toLowerCase() && x.name!==p.name);
+    if(a.length>0) return a;
+  }
+  return SHEET_DATA.filter(x=>x.name!==p.name && x.subCategory===p.subCategory && x.category===p.category).slice(0,8);
+};
+function showSub(){document.getElementById('subFilters')?.classList.remove('hidden');}
+function hideSub(){if(level1==='الكل'&&level2==='الكل'&&level3==='الكل') document.getElementById('subFilters')?.classList.add('hidden');}
+function updateSummary(){let a=[]; if(level1!=='الكل') a.push(level1); if(level2!=='الكل') a.push(level2); if(level3!=='الكل') a.push(level3); const el=$('#filterSummary'); if(el) el.textContent=a.join(' • ');}
 function parseSheet(csvText){
-  const res=Papa.parse(csvText,{header:false,skipEmptyLines:true});
-  let rows=res.data;
-  if(rows.length && rows[0][0] && rows[0][0].includes('اسم الدواء')) rows=rows.slice(1);
+  let rows; try{ rows=Papa.parse(csvText,{header:false,skipEmptyLines:true}).data; }catch(e){ rows=csvText.split('\n').map(l=>l.split(',')); }
+  if(!rows.length) return [];
+  if(rows[0][0] && String(rows[0][0]).includes('اسم الدواء')) rows=rows.slice(1);
   const out=[];
   rows.forEach(r=>{
-    if(!r||r.length<5) return;
-    // دعم الشيت القديم 13 عمود والجديد 16 عمود
-    let name,cat,sub,active,mostSold=false,offer=false,isNew=false,pc,pd,box,r1,r2,shortD,usage,barcode,img;
-    if(r.length>=16){
-      // جديد: A-P
-      name=r[0]||''; cat=r[1]||''; sub=r[2]||''; active=r[3]||'';
-      mostSold=(r[4]||'').trim()==='نعم';
-      offer=(r[5]||'').trim()==='نعم';
-      isNew=(r[6]||'').trim()==='نعم';
-      pc=r[7]; pd=r[8]; box=r[9]||''; r1=r[10]||''; r2=r[11]||''; shortD=r[12]||''; usage=r[13]||''; barcode=r[14]||''; img=r[15]||'';
-    }else if(r.length>=13){
-      // قديم
-      name=r[0]||''; cat=r[1]||''; sub=r[2]||''; active=r[3]||''; pc=r[4]; pd=r[5]; box=r[6]||''; r1=r[7]||''; r2=r[8]||''; shortD=r[9]||''; usage=r[10]||''; barcode=r[11]||''; img=r[12]||'';
-    }else{
-      // حاول تجميع المادة الفعالة لو فيها فاصلة
-      name=r[0]||''; cat=r[1]||''; sub=r[2]||''; 
-      let idx=3; let parts=[]; while(idx<r.length && isNaN(Number(r[idx]))){parts.push(r[idx]); idx++; if(idx>6) break;}
-      active=parts.join(','); pc=r[idx]||0; pd=r[idx+1]||0; box=r[idx+2]||''; r1=r[idx+3]||''; r2=r[idx+4]||''; shortD=r[idx+5]||''; usage=r[idx+6]||''; barcode=r[idx+7]||''; img=r[idx+8]||'';
-    }
-    if(!name) return;
-    out.push({name:name.trim(),category:cat.trim(),subCategory:sub.trim(),active:active.trim(),mostSold,offer,isNew,priceCurrent:pc,priceDiscount:pd,box:box.trim(),retail1:r1.trim(),retail2:r2.trim(),shortDesc:shortD.trim(),usage:usage.trim(),barcode:(barcode+'' ).trim(),image:(img+'').trim()});
-  });
-  return out;
+    if(!r||r.length<3) return;
+    let name=(r[0]||'').toString().trim(); if(!name) return;
+    let cat=(r[1]||'').toString().trim();
+    let sub=(r[2]||'').toString().trim();
+    let active=(r[3]||'').toString().trim();
+    let mostSold=(r[4]||'').toString().trim()==='نعم';
+    let offer=(r[5]||'').toString().trim()==='نعم';
+    let isNew=(r[6]||'').toString().trim()==='نعم';
+    let pc=r[7], pd=r[8], box=(r[9]||'').toString().trim(), r1=(r[10]||'').toString().trim(), r2=(r[11]||'').toString().trim(), shortD=(r[12]||'').toString().trim(), usage=(r[13]||'').toString().trim(), barcode=(r[14]||'').toString().trim(), img=(r[15]||'').toString().trim();
+    if(r.length===13){ pc=r[4]; pd=r[5]; box=(r[6]||'').toString().trim(); r1=(r[7]||'').toString().trim(); r2=(r[8]||'').toString().trim(); shortD=(r[9]||'').toString().trim(); usage=(r[10]||'').toString().trim(); barcode=(r[11]||'').toString().trim(); img=(r[12]||'').toString().trim(); mostSold=false; offer=false; isNew=false; }
+    out.push({name,category:cat,subCategory:sub,active,mostSold,offer,isNew,priceCurrent:pc,priceDiscount:pd,box,retail1:r1,retail2:r2,shortDesc:shortD,usage,barcode,image:img});
+  }); return out;
 }
-
 async function loadSheet(){
-  $('#status').textContent='⏳ جاري تحميل البيانات...';
-  try{
-    const res=await fetch(CSV_URL+'&t='+Date.now());
-    const txt=await res.text();
-    const parsed=parseSheet(txt);
-    if(!parsed.length) throw new Error('empty');
-    SHEET_DATA=parsed;
-    $('#status').textContent=`✅ تم تحميل ${SHEET_DATA.length} صنف - الفلاتر جاهزة`;
-    $('#status').className='text-[11px] text-emerald-600';
-    initFilters(); renderGrid(); upd();
-  }catch(e){console.error(e); $('#status').textContent='⚠️ فشل التحميل - اعرض بيانات تجريبية'; SHEET_DATA=[
-      {name:"PANADOL EXTRA 24 TAB / بنادول اكسترا",category:"دواء",subCategory:"مسكن",active:"PARA",mostSold:true,offer:false,isNew:true,priceCurrent:48,priceDiscount:30,box:"اقراص",retail1:"4 شريط",retail2:"10 قرص",shortDesc:"مسكن قوي",usage:"صداع",barcode:"202020",image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyYi1ioQZpcxAkiUXQ8nrlG2XWYA51AWQ6w-9uZ9I9UA&s=10"},
-      {name:"Eucerin Sensitive 50+",category:"كوزمتكس",subCategory:"واقي شمس",active:"Butyl Methoxy",mostSold:false,offer:true,isNew:false,priceCurrent:1438,priceDiscount:1250,box:"علبه",retail1:"1",retail2:"1",shortDesc:"واقي",usage:"حماية",barcode:"4005800320354",image:"https://www.eucerin.com.eg/-/media/eucerin/products/sun/hydro-fluid-spf50plus_50ml.png"},
-      {name:"مستلزم طبي - قطن",category:"مستلزمات",subCategory:"مستلزمات",active:"COTTON",mostSold:false,offer:false,isNew:true,priceCurrent:50,priceDiscount:40,box:"كيس",retail1:"1",retail2:"1",shortDesc:"قطن طبي",usage:"استخدام عام",barcode:"123",image:""}
-    ]; initFilters(); renderGrid(); upd();}
+  const st=$('#statusText'); if(st) st.textContent='⏳ تحميل...';
+  try{ const res=await fetch(CSV_URL+'&t='+Date.now(),{cache:'no-store'}); const txt=await res.text(); const parsed=parseSheet(txt); if(!parsed.length) throw new Error('empty'); SHEET_DATA=parsed; if(st) st.textContent=`✅ ${SHEET_DATA.length} صنف`; }catch(e){ if(st) st.textContent='⚠️ تجريبي'; SHEET_DATA=[
+    {name:"بنادول إكسترا 24 قرص / PANADOL EXTRA 24 TAB",category:"دواء",subCategory:"مسكن",active:"Paracetamol + Caffeine",mostSold:true,offer:false,isNew:false,priceCurrent:48,priceDiscount:30,box:"علبة 24 قرص",retail1:"",retail2:"",shortDesc:"مسكن سريع وقوي للصداع",usage:"الصداع النصفي",barcode:"",image:"https://via.placeholder.com/200"}
+  ];}
+  initFilters(); renderGrid(); upd();
 }
-
 function initFilters(){
-  // Level1: الفئة - دواء,كوزمتكس,مستلزمات,مستحضرات + الكل
-  const cats = ['الكل','دواء','كوزمتكس','مستلزمات','مستحضرات'];
-  // أضف أي فئات جديدة موجودة في الشيت لو مش في القائمة
-  const sheetCats=[...new Set(SHEET_DATA.map(r=>r.category).filter(Boolean))];
-  sheetCats.forEach(c=>{if(!cats.includes(c)) cats.push(c);});
-  const l1=$('#level1'); l1.innerHTML=''; cats.forEach(n=>{const b=document.createElement('button'); b.textContent=n; b.className=`shrink-0 h-[28px] px-3.5 rounded-full text-[11px] font-bold border transition ${level1===n?'bg-[#0ea573] text-white border-[#0ea573] shadow-sm':'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-300'}`; b.onclick=()=>{level1=n; level2='الكل'; level3='الكل'; if(n==='الكل'){hideSubFilters();} else {showSubFilters();} initFilters(); updateFilterBadge(); renderGrid();}; l1.appendChild(b);});
-
-  // Level2: التصنيف - عمود C - يتفلتر حسب Level1
-  let subs = SHEET_DATA;
-  if(level1!=='الكل') subs=subs.filter(r=>r.category===level1);
-  let subList=['الكل', ...new Set(subs.map(r=>r.subCategory).filter(Boolean))];
-  const l2=$('#level2'); l2.innerHTML=''; subList.forEach(n=>{const b=document.createElement('button'); b.textContent=n; b.className=`shrink-0 h-[26px] px-3 rounded-full text-[11px] font-medium border transition ${level2===n?'bg-zinc-900 text-white border-zinc-900':'bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-zinc-100'}`; b.onclick=()=>{level2=n; initFiltersLevel2Active(); updateFilterBadge(); renderGrid();}; l2.appendChild(b);});
-
-  // Level3: F,G,E - الأكثر مبيعا, عرض, جديد + بدائل
-  const l3=$('#level3'); l3.innerHTML='';
-  const third=[{id:'الكل',label:'الكل'},{id:'الأكثر مبيعا',label:'🔥 الأكثر مبيعا (E)'},{id:'عروض',label:'🏷️ عروض (F)'},{id:'جديد',label:'✨ جديد (G)'},{id:'بدائل متوفرة',label:'↔ بدائل متوفرة'}];
-  third.forEach(t=>{const b=document.createElement('button'); b.textContent=t.label; b.className=`shrink-0 h-[26px] px-3 rounded-full text-[11px] font-medium border transition ${level3===t.id?'bg-[#0ea573] text-white border-[#0ea573]':'bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50'}`; b.onclick=()=>{level3=t.id; document.querySelectorAll('#level3 button').forEach(x=>x.className='shrink-0 h-8 px-4 rounded-full text-[12px] font-medium border bg-white border-zinc-200 text-zinc-600'); b.className='shrink-0 h-[26px] px-3 rounded-full text-[11px] font-medium border bg-[#0ea573] text-white border-[#0ea573]'; renderGrid();}; l3.appendChild(b);});
+  const mainCats=['الكل','دواء','كوزمتكس','مستحضرات','مستلزمات'];
+  const l1=$('#level1'); l1.innerHTML='';
+  mainCats.forEach(n=>{const b=document.createElement('button'); b.textContent=n; b.className=`shrink-0 h-[26px] px-3 rounded-full text-[11px] font-bold border transition ${level1===n?'bg-[#0EB77F] text-white border-[#0EB77F]':'bg-white border-[#E2E8F0] text-zinc-600'}`; b.onclick=()=>{level1=n; level2='الكل'; level3='الكل'; if(n!=='الكل') showSub(); else hideSub(); initFilters(); updateSummary(); renderGrid();}; l1.appendChild(b);});
+  let subs=SHEET_DATA; if(level1!=='الكل') subs=subs.filter(r=>r.category===level1);
+  const subList=['الكل',...new Set(subs.map(r=>r.subCategory).filter(Boolean))].slice(0,20);
+  const l2=$('#level2'); l2.innerHTML=''; subList.forEach(n=>{const b=document.createElement('button'); b.textContent=n; b.className=`shrink-0 h-[22px] px-2.5 rounded-full text-[10px] border ${level2===n?'bg-[#13375C] text-white border-[#13375C]':'bg-white border-[#E2E8F0] text-zinc-600'}`; b.onclick=()=>{level2=n; updateSummary(); renderGrid();}; l2.appendChild(b);});
+  const l3=$('#level3'); l3.innerHTML=''; const third=[{id:'الكل',label:'الكل'},{id:'الأكثر طلبا',label:'🔥 الأكثر طلبا'},{id:'عروض',label:'🏷️ عروض'},{id:'جديد',label:'✨ جديد'},{id:'بدائل متوفرة',label:'↔ بدائل'}]; third.forEach(t=>{const b=document.createElement('button'); b.textContent=t.label; b.className=`shrink-0 h-[22px] px-2.5 rounded-full text-[10px] border ${level3===t.id?'bg-[#0EB77F] text-white border-[#0EB77F]':'bg-white border-[#E2E8F0] text-zinc-600'}`; b.onclick=()=>{level3=t.id; updateSummary(); renderGrid();}; l3.appendChild(b);});
 }
-function initFiltersLevel2Active(){
-  const l2=document.querySelectorAll('#level2 button'); l2.forEach(b=>{if(b.textContent===level2) b.className='shrink-0 h-[26px] px-3 rounded-full text-[11px] font-medium border bg-zinc-900 text-white border-zinc-900'; else b.className='shrink-0 h-[26px] px-3 rounded-full text-[11px] font-medium border bg-zinc-50 border-zinc-200 text-zinc-700';});
-}
-
-function filtered(){
-  return SHEET_DATA.filter(r=>{
-    const ok1 = level1==='الكل' || r.category===level1;
-    const ok2 = level2==='الكل' || r.subCategory===level2;
-    let ok3=true;
-    if(level3==='الأكثر مبيعا') ok3=r.mostSold;
-    else if(level3==='عروض') ok3=r.offer;
-    else if(level3==='جديد') ok3=r.isNew;
-    else if(level3==='بدائل متوفرة') ok3=getAlts(r).length>0;
-    const okQ = !q || r.name.toLowerCase().includes(q.toLowerCase()) || r.active.toLowerCase().includes(q.toLowerCase());
-    return ok1&&ok2&&ok3&&okQ;
-  });
-}
-
+function filtered(){return SHEET_DATA.filter(r=>{const ok1=level1==='الكل'||r.category===level1; const ok2=level2==='الكل'||r.subCategory===level2; let ok3=true; if(level3==='الأكثر طلبا') ok3=r.mostSold; else if(level3==='عروض') ok3=r.offer; else if(level3==='جديد') ok3=r.isNew; else if(level3==='بدائل متوفرة') ok3=getAlts(r).length>0; const qq=q.toLowerCase(); const okQ=!q||r.name.toLowerCase().includes(qq)||r.active.toLowerCase().includes(qq); return ok1&&ok2&&ok3&&okQ;});}
 function renderGrid(){
-  const list=filtered(); $('#count').textContent=`(${list.length})`; const g=$('#grid'); g.innerHTML=''; if(!list.length){$('#empty').classList.remove('hidden'); return;} $('#empty').classList.add('hidden');
+  const list=filtered(); $('#resultCount').textContent=`(${list.length})`; const g=$('#grid'); g.innerHTML=''; if(!list.length){$('#empty').classList.remove('hidden'); return;} $('#empty').classList.add('hidden');
   list.forEach(r=>{
-    const alts=getAlts(r); const fp=finalPrice(r); const op=oldPrice(r);
-    const badges = [];
-    if(r.mostSold) badges.push('<span class="text-[9px] px-2 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-600">الأكثر مبيعا</span>');
-    if(r.offer) badges.push('<span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700">عرض</span>');
-    if(r.isNew) badges.push('<span class="text-[9px] px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600">جديد</span>');
-    const div=document.createElement('div'); div.className='bg-white rounded-[18px] border p-3 flex flex-col shadow-sm cursor-pointer';
-    div.innerHTML=`<div class="flex gap-1 flex-wrap mb-2">${badges.join('')}</div><div class="h-[110px] bg-zinc-50 border rounded-xl flex items-center justify-center overflow-hidden"><img src="${r.image}" onerror="this.src='https://via.placeholder.com/200?text=No+Img'" class="w-full h-full object-contain p-2"></div><div class="mt-2 flex-1"><div class="font-bold text-[12.5px] leading-5 line-clamp-2">${r.name}</div><div class="text-[10px] text-zinc-500 mt-1">${r.category} • ${r.subCategory}</div><div class="text-[10px] text-zinc-400">${r.box} • ${r.retail1} • ${r.barcode}</div></div><div class="mt-2"><div class="flex gap-2 items-baseline"><b>${fp}</b><span class="text-[10px]">ج</span>${op?`<span class="text-[10px] line-through text-zinc-400">${op}</span>`:''}</div>${alts.length?`<div class="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full h-6 flex items-center justify-center mt-1">${alts.length} بدائل</div>`:''}</div><button class="add mt-2 w-full h-9 rounded-full bg-zinc-900 text-white text-[12px] font-bold">+ أضف</button>`;
-    div.querySelector('.add').onclick=e=>{e.stopPropagation(); addCart(r)}; div.onclick=()=>openM(r,'details'); g.appendChild(div);
+    const fp=finalPrice(r); const op=oldPrice(r);
+    const div=document.createElement('div'); div.className='bg-white rounded-[16px] border border-[#E2E8F0] p-0 flex flex-col shadow-[0_2px_10px_rgba(19,55,92,0.06)] hover:shadow-[0_10px_28px_rgba(19,55,92,0.12)] transition-all cursor-pointer overflow-hidden min-h-[360px]';
+    div.innerHTML=`<div class="h-[190px] bg-[#F8FAFC] flex items-center justify-center overflow-hidden p-3"><img src="${r.image||'https://via.placeholder.com/200'}" class="w-full h-full object-contain mix-blend-multiply bg-white rounded-[12px] p-2"></div><div class="p-3 flex flex-col flex-1 bg-white"><div class="text-center flex-1"><div class="font-bold text-[12px] leading-5 text-[#0F172A] line-clamp-2">${r.name}</div><div class="text-[10px] text-[#94A3B8] mt-1">${r.subCategory||'صن بلوك'}</div></div><div class="mt-3"><div class="flex items-center justify-between"><span class="text-[10px] bg-[#DCFCE7] text-[#166534] px-2.5 py-0.5 rounded-full border border-[#BBF7D0] font-bold">متوفر</span><div class="flex items-baseline gap-1"><b class="text-[14px] text-[#13375C]">${fp}</b><span class="text-[10px] text-[#64748B]">جنيه</span></div></div><button class="mt-3 w-full h-[38px] rounded-[10px] bg-[#10B981] hover:bg-[#0EA371] text-white text-[12px] font-bold">طلب المنتج</button></div></div>`;
+    div.querySelector('button').onclick=e=>{e.stopPropagation(); addCart(r);}; div.onclick=()=>openM(r); g.appendChild(div);
   });
 }
-
-function openM(r,t){sel=r; tab=t; $('#mName').textContent=r.name; $('#mMeta').textContent=`${r.category} • ${r.subCategory} • ${r.box}/${r.retail1}/${r.retail2}`; $('#mBarcode').textContent=`${r.barcode} | ${r.active}`; $('#mImg').src=r.image; $('#altN').textContent=getAlts(r).length; switchT(t); $('#modal').classList.remove('hidden');}
-function switchT(t){tab=t; $('#t1').className=t==='details'?'flex-1 h-10 rounded-full bg-[#0ea573] text-white font-bold text-[13px]':'flex-1 h-10 rounded-full bg-white border font-bold text-[13px]'; $('#t2').className=t==='alts'?'flex-1 h-10 rounded-full bg-zinc-900 text-white font-bold text-[13px]':'flex-1 h-10 rounded-full bg-white border font-bold text-[13px]'; renderM();}
-function renderM(){if(!sel)return;if(tab==='details'){const fp=finalPrice(sel),op=oldPrice(sel);$('#mBody').innerHTML=`<div class="grid md:grid-cols-2 gap-4"><div><div class="text-[26px] font-black">${fp} ج ${op?`<span class="text-[13px] line-through text-zinc-400">${op}</span>`:''}</div><div class="grid grid-cols-3 gap-2 mt-3 text-[11px]"><div class="p-2 bg-zinc-50 border rounded-xl text-center"><div class="text-zinc-500">العلبة</div><b>${sel.box}</b></div><div class="p-2 bg-zinc-50 border rounded-xl text-center"><div>التجزئة 1</div><b>${sel.retail1}</b></div><div class="p-2 bg-zinc-50 border rounded-xl text-center"><div>التجزئة 2</div><b>${sel.retail2}</b></div></div><div class="mt-3 p-3 bg-amber-50 border rounded-xl text-[12px]"><b>وصف:</b> ${sel.shortDesc}</div><div class="mt-2 p-3 bg-zinc-50 border rounded-xl text-[12px] leading-6"><b>الاستخدام:</b> ${sel.usage}</div></div><div><div class="text-[12px] font-bold">المادة الفعالة</div><div class="p-3 bg-zinc-50 border rounded-xl text-[12px] mt-1">${sel.active}</div><div class="flex gap-2 mt-3 flex-wrap">${sel.mostSold?'<span class="px-2 py-1 rounded-full bg-red-50 border text-red-600 text-[11px]">الأكثر مبيعا</span>':''}${sel.offer?'<span class="px-2 py-1 rounded-full bg-amber-50 border text-amber-700 text-[11px]">عرض</span>':''}${sel.isNew?'<span class="px-2 py-1 rounded-full bg-blue-50 border text-blue-600 text-[11px]">جديد</span>':''}</div><button id="mAdd" class="w-full h-11 rounded-full bg-zinc-900 text-white font-bold mt-4">+ أضف - ${fp} ج</button></div></div>`;document.getElementById('mAdd').onclick=()=>addCart(sel);}else{const alts=getAlts(sel);const all=[sel,...alts].sort((a,b)=>finalPrice(a)-finalPrice(b));let h=`<div class="p-3 bg-emerald-50 border rounded-xl text-[12px]">نفس المادة: <b>${sel.active}</b></div><div class="mt-3 space-y-2">`;all.forEach(it=>{const fp=finalPrice(it);const cur=it.name===sel.name;h+=`<div class="flex justify-between items-center p-3 border rounded-2xl ${cur?'bg-emerald-50 border-emerald-200':'bg-white'}"><div class="flex gap-2 items-center"><img src="${it.image}" class="w-11 h-11 rounded-xl border object-contain bg-white"><div><div class="font-bold text-[12px]">${it.name.split('/')[0]}</div><div class="text-[11px] text-zinc-500">${it.box} • ${fp} ج</div></div></div><button data-p="${it.name.replace(/"/g,'&quot;')}" class="h-8 px-3 rounded-full text-[11px] font-bold ${cur?'bg-zinc-100':'bg-zinc-900 text-white'}">${cur?'الحالي':'اختر'}</button></div>`});h+=`</div>`;$('#mBody').innerHTML=h;$('#mBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const f=SHEET_DATA.find(x=>x.name===b.dataset.p); if(f) addCart(f);});}}
-function addCart(r){const f=cart.find(x=>x.item.name===r.name);if(f)f.qty++;else cart.push({item:r,qty:1});upd();toast('تمت إضافة');}
-function upd(){let c=0,s=0;cart.forEach(i=>{c+=i.qty; s+=finalPrice(i.item)*i.qty;});$('#cartCount').textContent=c;$('#cSub').textContent=s+' ج';$('#cTotal').textContent=(s+15)+' ج';const l=$('#cList');l.innerHTML='';if(!cart.length)l.innerHTML='<div class="py-12 text-center text-zinc-500 text-[12px]">السلة فاضية</div>';else cart.forEach((it,idx)=>{const d=document.createElement('div');d.className='flex gap-2 p-2 border rounded-xl bg-white';d.innerHTML=`<img src="${it.item.image}" class="w-10 h-10 rounded-lg border object-contain"><div class="flex-1"><div class="font-bold text-[11px]">${it.item.name}</div><div class="text-[10px] text-zinc-500">${finalPrice(it.item)} ج</div><div class="flex gap-1 items-center mt-1"><button class="w-6 h-6 rounded-full bg-zinc-100 dec">-</button><span class="text-[12px] w-5 text-center">${it.qty}</span><button class="w-6 h-6 rounded-full bg-zinc-900 text-white inc">+</button></div></div><button class="text-[10px] text-red-500 del">حذف</button>`;d.querySelector('.inc').onclick=()=>{it.qty++;upd();};d.querySelector('.dec').onclick=()=>{it.qty--;if(it.qty<=0)cart.splice(idx,1);upd();};d.querySelector('.del').onclick=()=>{cart.splice(idx,1);upd();};l.appendChild(d);});}
-function toast(t){const e=$('#toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),2000);}
-$('#searchD').oninput=e=>{q=e.target.value;renderGrid();};$('#searchM').oninput=e=>{q=e.target.value;renderGrid();};
-$('#cartBtn').onclick=()=>$('#cart').classList.remove('hidden');$('#cClose').onclick=$('#cBg').onclick=()=>$('#cart').classList.add('hidden');
-$('#mClose').onclick=$('#mBg').onclick=()=>$('#modal').classList.add('hidden');$('#t1').onclick=()=>switchT('details');$('#t2').onclick=()=>switchT('alts');
-$('#coBtn').onclick=()=>{if(!cart.length){toast('السلة فاضية');return;}toast('تم الطلب');cart=[];upd();$('#cart').classList.add('hidden');};
-$('#clearFilters').onclick=()=>{level1='الكل';level2='الكل';level3='الكل';q='';$('#searchD').value='';$('#searchM').value='';hideSubFilters();initFilters();updateFilterBadge();renderGrid();};
-
+function openM(r){selected=r; $('#mName').textContent=r.name.split('/')[0]; $('#mSub').textContent=`${r.category} • ${r.subCategory}`; $('#altBadge').textContent=getAlts(r).length; tab='details'; switchT('details'); $('#modal').classList.remove('hidden');}
+function switchT(t){tab=t; $('#tabDetails').className=t==='details'?'flex-1 h-10 rounded-full bg-[#0EB77F] text-white font-bold text-[13px] border':'flex-1 h-10 rounded-full bg-white border border-[#E2E8F0] font-bold text-[13px]'; $('#tabAlts').className=t==='alts'?'flex-1 h-10 rounded-full bg-[#13375C] text-white font-bold text-[13px] border':'flex-1 h-10 rounded-full bg-white border border-[#E2E8F0] font-bold text-[13px]'; renderM();}
+function renderM(){
+  if(!selected) return; const p=selected; const fp=finalPrice(p); const op=oldPrice(p);
+  if(tab==='details'){
+    document.getElementById('mBody').innerHTML=`<div>
+      <div class="flex items-baseline gap-2"><span class="text-[28px] font-black text-[#13375C]">${fp} ج</span> ${op?`<span class="line-through text-zinc-400 text-[13px]">${op} ج</span>`:''}<span class="text-[11px] text-zinc-500">/ ${p.box||'علبة'}</span></div>
+      <div class="mt-3 p-3 bg-[#F0E6D3]/70 border border-[#E2E8F0] rounded-2xl text-[12px] leading-6">
+        <div><b>العلبة:</b> ${p.box||'علبة'}</div>
+        <div><b>الاستخدام:</b> ${p.usage||'-'}</div>
+        <div class="mt-2 pt-2 border-t border-[#E2E8F0]/50 text-[11px] text-zinc-600"><b>المادة الفعالة:</b> ${p.active||'-'}</div>
+      </div>
+      <div class="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-[12px]">${p.shortDesc||''}</div>
+      <button id="mAdd" class="mt-4 w-full h-11 rounded-full bg-[#0EB77F] text-white font-bold shadow-lg">+ أضف للسلة - ${fp} ج</button>
+      <div class="text-[10px] text-zinc-500 text-center mt-2">السعر للعلبة فقط • خدمه 24 ساعه</div>
+    </div>`;
+    document.getElementById('mAdd').onclick=()=>{addCart(p); document.getElementById('modal').classList.add('hidden');};
+  }else{
+    const alts=getAlts(p); let h=`<div class="text-[12px]">بدائل نفس المادة <b>${p.active||p.subCategory}</b></div><div class="mt-3 space-y-2">`; alts.forEach(it=>{h+=`<div class="flex items-center justify-between gap-3 p-3 rounded-2xl border ${it.name===p.name?'border-[#0EB77F] bg-[#FFFCF7]':'border-[#E2E8F0] bg-white'}"><div class="flex-1"><div class="font-bold text-[13px]">${it.name}</div><div class="text-[11px] text-zinc-500">${it.box||'علبة'}</div><div class="text-[13px] font-black mt-1">${finalPrice(it)} ج</div></div><button data-pick="${it.name}" class="h-9 px-4 rounded-full text-[12px] font-bold ${it.name===p.name?'bg-zinc-100':'bg-[#13375C] text-white'}">${it.name===p.name?'اختيارك':'اختر'}</button></div>`}); h+=`</div>`; document.getElementById('mBody').innerHTML=h;
+    document.querySelectorAll('[data-pick]').forEach(b=>{b.onclick=()=>{const pr=SHEET_DATA.find(x=>x.name===b.dataset.pick); if(pr){selected=pr; switchT('details');}}});
+  }
+}
+function addCart(r){const f=cart.find(x=>x.name===r.name); if(f) f.qty++; else cart.push(Object.assign({},r,{qty:1})); upd(); toast('تمت الإضافة');}
+function upd(){
+  let c=0,s=0; cart.forEach(i=>{c+=i.qty; s+=finalPrice(i)*i.qty;});
+  $('#cartCount').textContent=c; $('#cSub').textContent=s+' ج'; $('#cTotal').textContent=(s+15)+' ج';
+  const l=$('#cartList'); l.innerHTML=''; if(!cart.length) l.innerHTML='<div class="py-16 text-center text-[12px] text-zinc-500">السلة فاضية</div>'; else cart.forEach((it,idx)=>{const pr=finalPrice(it); const d=document.createElement('div'); d.className='flex gap-2 p-3 border border-[#E2E8F0] rounded-xl bg-[#FFFEFB]'; d.innerHTML=`<div class="flex-1"><div class="text-[12px] font-bold">${it.name}</div><div class="text-[10px] text-zinc-500">${it.box||'علبة'} • ${pr} ج × ${it.qty} = ${pr*it.qty} ج</div></div><button class="text-[11px] text-red-500 font-bold">حذف</button>`; d.querySelector('button').onclick=()=>{cart.splice(idx,1); upd();}; l.appendChild(d);});
+}
+function toast(t){const e=$('#toast'); e.textContent=t; e.classList.remove('hidden'); setTimeout(()=>e.classList.add('hidden'),2200);}
+$('#searchDesktop').oninput=e=>{q=e.target.value; renderGrid();}; $('#searchMobile').oninput=e=>{q=e.target.value; renderGrid();};
+$('#cartBtn').onclick=()=>$('#cartDrawer').classList.remove('hidden'); $('#cartClose').onclick=$('#cartBg').onclick=()=>$('#cartDrawer').classList.add('hidden');
+$('#mClose').onclick=$('#modalBg').onclick=()=>$('#modal').classList.add('hidden'); $('#tabDetails').onclick=()=>switchT('details'); $('#tabAlts').onclick=()=>switchT('alts');
+$('#checkoutBtn').onclick=()=>{if(!cart.length){toast('السلة فاضية'); return;} toast('تم الطلب ✓ سيتم التواصل'); cart=[]; upd(); $('#cartDrawer').classList.add('hidden');};
+$('#clearFilters').onclick=()=>{level1='الكل';level2='الكل';level3='الكل';q='';const sd=$('#searchDesktop'); if(sd) sd.value=''; const sm=$('#searchMobile'); if(sm) sm.value=''; hideSub(); initFilters(); updateSummary(); renderGrid();};
 loadSheet();
 </script>
 </body>
