@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صيدلية د. خالد سالم - V2</title>
+<title>صيدلية د. خالد سالم</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
@@ -12,6 +12,13 @@
 body{background:#F2F5F9}
 .no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* تكبير الصورة و لايقة ع الكارت */
+.product-img-wrap{position:relative; overflow:hidden; background:#fff;}
+.product-img{width:100%; height:100%; object-fit:contain; transition: transform 0.3s ease;}
+.card:hover .product-img{transform: scale(1.08);}
+@media(min-width:768px){
+  .product-img{object-fit:cover; object-position:center;}
+}
 </style>
 </head>
 <body class="bg-[#F2F5F9] text-[#1E293B]">
@@ -21,7 +28,7 @@ body{background:#F2F5F9}
       <div class="w-10 h-10 rounded-full bg-white text-[#13375C] flex items-center justify-center font-black">خ</div>
       <div>
         <div class="font-black text-[15px] text-white">صيدلية د. خالد سالم</div>
-        <div class="text-[11px] text-white/60"><a href="https://maps.app.goo.gl/4CHGc5azwNdFxJ3g6" target="_blank">📍 ميدان زينهم بلوك 5 - خدمه 24 ساعه</a></div>
+        <div class="text-[11px] text-white/60">📍 ميدان زينهم بلوك 5 - خدمه 24 ساعه</div>
       </div>
     </div>
     <div class="flex-1 max-w-[480px] hidden md:block">
@@ -33,15 +40,11 @@ body{background:#F2F5F9}
 </header>
 
 <section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-4 space-y-2">
-  <!-- المستوى 1: التبويبات الاساسية من العمود B الجديد -->
   <div class="bg-white rounded-full border border-[#E2E8F0] p-1 flex items-center gap-1 shadow-sm">
-    <span class="text-[9px] text-zinc-400 mr-2 hidden md:block">القسم:</span>
     <div id="level1" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div>
     <button id="clearFilters" class="shrink-0 h-[26px] px-3 rounded-full bg-[#F2F5F9] border text-[10px] font-bold">مسح</button>
   </div>
-  <!-- المستوى 2: الفلترة من العمود C بناء على B -->
   <div id="subFilters" class="bg-white/90 rounded-full border border-[#E2E8F0]/70 p-1 flex items-center gap-1">
-    <span class="text-[9px] text-zinc-500 mr-2 hidden md:block">فلتر حسب:</span>
     <div id="level2" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div>
     <div id="level3" class="flex gap-1 overflow-x-auto no-scrollbar border-r border-[#E2E8F0] mr-2 pr-2"></div>
   </div>
@@ -53,12 +56,28 @@ body{background:#F2F5F9}
   <div id="empty" class="hidden py-16 text-center bg-white rounded-[20px] border mt-6">لا توجد نتائج</div>
 </section>
 
-<div id="modal" class="fixed inset-0 z-50 hidden"><div id="modalBg" class="absolute inset-0 bg-[#13375C]/60 backdrop-blur-sm"></div><div class="relative w-full md:max-w-[560px] mx-auto mt-auto md:mt-[8vh] bg-white rounded-t-[24px] md:rounded-[24px] shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"><div class="flex items-center justify-between p-4 border-b"><div id="mName" class="font-black"></div><button id="mClose" class="w-9 h-9 rounded-full bg-[#F2F5F9]">✕</button></div><div id="mBody" class="flex-1 overflow-auto p-5"></div></div></div>
-<div id="cartDrawer" class="fixed inset-0 z-[60] hidden"><div id="cartBg" class="absolute inset-0 bg-[#13375C]/50"></div><div class="absolute left-0 top-0 bottom-0 w-full max-w-[380px] bg-white shadow-2xl flex flex-col"><div class="h-[60px] px-5 flex items-center justify-between bg-[#13375C] text-white"><div class="font-black">السلة</div><button id="cartClose">✕</button></div><div id="cartList" class="flex-1 overflow-auto p-4 space-y-3 bg-[#F2F5F9]"></div><div class="p-4 border-t space-y-3"><div class="flex justify-between"><span>المجموع</span><span id="cSub">0 ج</span></div><div class="flex justify-between font-black"><span>الإجمالي</span><span id="cTotal">0 ج</span></div><button id="checkoutBtn" class="w-full h-12 rounded-full bg-[#0EB77F] text-white font-black">إتمام الطلب واتساب</button></div></div></div>
+<div id="modal" class="fixed inset-0 z-50 hidden"><div id="modalBg" class="absolute inset-0 bg-[#13375C]/60 backdrop-blur-sm"></div><div class="relative w-full md:max-w-[560px] mx-auto mt-auto md:mt-[5vh] bg-white rounded-[24px] shadow-2xl max-h-[92vh] flex flex-col overflow-hidden"><div class="flex items-center justify-between p-4 border-b"><div><div id="mName" class="font-black text-[14px]"></div><div id="mSub" class="text-[11px] text-zinc-500"></div></div><button id="mClose" class="w-9 h-9 rounded-full bg-[#F2F5F9]">✕</button></div><div id="mBody" class="flex-1 overflow-auto p-5"></div></div></div>
+
+<div id="cartDrawer" class="fixed inset-0 z-[60] hidden"><div id="cartBg" class="absolute inset-0 bg-[#13375C]/50"></div><div class="absolute left-0 top-0 bottom-0 w-full max-w-[400px] bg-white shadow-2xl flex flex-col"><div class="h-[60px] px-5 flex items-center justify-between bg-[#13375C] text-white"><div class="font-black">السلة والدفع</div><button id="cartClose">✕</button></div><div id="cartList" class="flex-1 overflow-auto p-4 space-y-3 bg-[#F2F5F9]"></div>
+<div class="p-4 border-t space-y-3 bg-white max-h-[55vh] overflow-auto">
+  <div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-3 space-y-2">
+    <div class="font-black text-[12px]">💳 اختر طريقة الدفع:</div>
+    <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentMethod" value="كاش عند الاستلام" checked class="accent-[#0EB77F]"><span class="text-[12px]">💵 كاش عند الاستلام</span></label>
+    <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentMethod" value="انستا باي - 01007036085" class="accent-[#7C3AED]"><span class="text-[12px]">💸 انستا باي - <b>01007036085</b></span><button type="button" onclick="copyNum('01007036085')" class="mr-auto text-[10px] bg-[#13375C] text-white px-2.5 py-1 rounded-full">نسخ</button></label>
+    <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentMethod" value="فودافون كاش - 01096084265" class="accent-[#E11D48]"><span class="text-[12px]">📱 فودافون كاش - <b>01096084265</b></span><button type="button" onclick="copyNum('01096084265')" class="mr-auto text-[10px] bg-[#E11D48] text-white px-2.5 py-1 rounded-full">نسخ</button></label>
+  </div>
+  <div class="bg-[#F8FAFC] rounded-2xl border p-3 text-[13px] space-y-2"><div class="flex justify-between"><span>المجموع</span><span id="cSub">0 ج</span></div><div class="flex justify-between font-black text-[16px] border-t pt-2"><span>الإجمالي + شحن 15ج</span><span id="cTotal">0 ج</span></div></div>
+  <button id="checkoutBtn" class="w-full h-12 rounded-full bg-[#25D366] text-white font-black shadow-lg">📲 إتمام الطلب واتساب</button>
+</div></div></div>
+
 <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 hidden bg-[#13375C] text-white px-4 py-2.5 rounded-full text-[13px] z-[80]"></div>
 
 <script>
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfLEsFdxl_lZIRBBwoVI30rAhd4G82kB8Ji4bndsOW48marqrlVon7wY4yBxib94boPXm626ZO44Ts/pub?output=csv";
+const WHATSAPP_NUMBER = "201096084265";
+const INSTAPAY_NUM = "01007036085";
+const VODAFONE_NUM = "01096084265";
+
 let SHEET_DATA=[], level1='الكل', level2='الكل', level3='الكل', q='', cart=[], selected=null;
 const $=s=>document.querySelector(s);
 const toNum=v=>{if(!v) return 0; return Number(String(v).replace(/[^0-9.]/g,''))||0;};
@@ -72,72 +91,62 @@ const cleanImageUrl=url=>{
   return url;
 };
 const finalPrice=p=>{let c=toNum(p.priceCurrent), d=toNum(p.priceDiscount); if(d>0&&d<c) return d; return c;};
+function copyNum(num){navigator.clipboard.writeText(num).then(()=>toast('تم نسخ '+num));}
+function getSelectedPayment(){const el=document.querySelector('input[name="paymentMethod"]:checked'); return el?el.value:'كاش عند الاستلام';}
+function getSelectedPaymentSingle(){const el=document.querySelector('input[name="paymentSingle"]:checked'); return el?el.value:'كاش عند الاستلام';}
 
-// 🔥 Parser الجديد اللي بيفهم العمود الجديد
+function orderSingleProductWhatsApp(product){
+  const payment=getSelectedPaymentSingle();
+  const message=`السلام عليكم صيدلية د. خالد سالم 👋
+عايز اطلب المنتج ده:
+📦 *${product.name}*
+
+💰 السعر: ${finalPrice(product)} جنيه
+💳 طريقة الدفع: ${payment}
+
+ممكن تأكيد التوفر والتوصيل؟
+
+---
+طرق الدفع:
+💵 كاش
+💸 انستا باي: ${INSTAPAY_NUM}
+📱 فودافون كاش: ${VODAFONE_NUM}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,'_blank');
+}
+function orderCartWhatsApp(){
+  if(!cart.length){toast('السلة فاضية');return;}
+  const payment=getSelectedPayment();
+  let message=`السلام عليكم صيدلية د. خالد سالم 👋\nعايز اطلب الأوردر ده:\n\n`;
+  cart.forEach((it,idx)=>{message+=`${idx+1}. 📦 *${it.name}* - ${it.qty} × ${finalPrice(it)} = ${finalPrice(it)*it.qty} ج\n`;});
+  const total=cart.reduce((s,i)=>s+finalPrice(i)*i.qty,0)+15;
+  message+=`\n💰 الإجمالي بالشحن: ${total} ج\n💳 الدفع: ${payment}\nممكن تأكيد التوفر والتوصيل؟`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,'_blank');
+}
+
 function parseSheet(csvText){
-  let rows = Papa.parse(csvText.trim(), {header:false, skipEmptyLines:true}).data;
+  let rows=Papa.parse(csvText.trim(),{header:false,skipEmptyLines:true}).data;
   if(!rows.length) return [];
-  // شيل الهيدر
-  let header = rows[0].map(h=>String(h).trim());
-  rows = rows.slice(1);
-
-  // هل الشيت فيه العمود الجديد (15 عمود) ولا القديم (14) ؟
-  const hasNewColumn = header.includes('القسم الرئيسي') || header.includes('القسم الأساسي') || header[1].includes('رئيسي') || rows[0]?.length >= 15;
-
+  let header=rows[0].map(h=>String(h).trim());
+  rows=rows.slice(1);
+  const hasNewColumn=header.includes('القسم الرئيسي')||header[1].includes('رئيسي')||rows[0]?.length>=15;
   const out=[];
   rows.forEach(r=>{
-    if(!r || r.length<3) return;
+    if(!r||r.length<3) return;
     while(r.length<15) r.push('');
-
-    let idx=0;
-    let name, mainCat, subCat, priceCurrent, priceDiscount, box, retailPrice, active, image, shortDesc, available, isNew, offer, mostSold, keywords;
-
+    let name,mainCat,subCat,priceCurrent,priceDiscount,box,retailPrice,active,image,shortDesc,available,isNew,offer,mostSold,keywords;
     if(hasNewColumn){
-      // النظام الجديد: A=اسم, B=قسم رئيسي, C=قسم فرعي
-      name = (r[0]||'').trim();
-      mainCat = (r[1]||'').trim() || 'عام';
-      subCat = (r[2]||'').trim() || mainCat;
-      priceCurrent = r[3];
-      priceDiscount = r[4];
-      box = (r[5]||'').trim();
-      retailPrice = (r[6]||'').trim();
-      active = (r[7]||'').trim();
-      image = cleanImageUrl((r[8]||'').trim());
-      shortDesc = (r[9]||'').trim();
-      available = (r[10]||'').trim();
-      isNew = (r[11]||'').trim()==='نعم';
-      offer = (r[12]||'').trim()==='نعم';
-      mostSold = (r[13]||'').trim()==='نعم';
-      keywords = (r[14]||'').trim();
+      name=(r[0]||'').trim(); mainCat=(r[1]||'').trim()||'عام'; subCat=(r[2]||'').trim()||mainCat;
+      priceCurrent=r[3]; priceDiscount=r[4]; box=(r[5]||'').trim(); retailPrice=(r[6]||'').trim();
+      active=(r[7]||'').trim(); image=cleanImageUrl((r[8]||'').trim()); shortDesc=(r[9]||'').trim();
+      available=(r[10]||'').trim(); isNew=(r[11]||'').trim()==='نعم'; offer=(r[12]||'').trim()==='نعم'; mostSold=(r[13]||'').trim()==='نعم'; keywords=(r[14]||'').trim();
     }else{
-      // النظام القديم (14 عمود) للتوافق
-      name = (r[0]||'').trim();
-      mainCat = (r[1]||'').trim() || 'عام';
-      subCat = mainCat;
-      priceCurrent = r[2];
-      priceDiscount = r[3];
-      box = (r[4]||'').trim();
-      retailPrice = (r[5]||'').trim();
-      active = (r[6]||'').trim();
-      image = cleanImageUrl((r[7]||'').trim());
-      shortDesc = (r[8]||'').trim();
-      available = (r[9]||'').trim();
-      isNew = (r[10]||'').trim()==='نعم';
-      offer = (r[11]||'').trim()==='نعم';
-      mostSold = (r[12]||'').trim()==='نعم';
-      keywords = (r[13]||'').trim();
+      name=(r[0]||'').trim(); mainCat=(r[1]||'').trim()||'عام'; subCat=mainCat;
+      priceCurrent=r[2]; priceDiscount=r[3]; box=(r[4]||'').trim(); retailPrice=(r[5]||'').trim();
+      active=(r[6]||'').trim(); image=cleanImageUrl((r[7]||'').trim()); shortDesc=(r[8]||'').trim();
+      available=(r[9]||'').trim(); isNew=(r[10]||'').trim()==='نعم'; offer=(r[11]||'').trim()==='نعم'; mostSold=(r[12]||'').trim()==='نعم'; keywords=(r[13]||'').trim();
     }
-
     if(!name) return;
-    out.push({
-      name, 
-      category: mainCat, // ده التبويب الاساسي من العمود B
-      subCategory: subCat, // ده الفلتر من العمود C بناء على B
-      priceCurrent, priceDiscount, box, retailPrice, active, shortDesc, keywords,
-      image: image||'https://via.placeholder.com/300',
-      available: available!=='لا',
-      isNew, offer, mostSold
-    });
+    out.push({name,category:mainCat,subCategory:subCat,priceCurrent,priceDiscount,box,retailPrice,active,shortDesc,keywords,image:image||'https://via.placeholder.com/400',available:available!=='لا',isNew,offer,mostSold});
   });
   return out;
 }
@@ -149,12 +158,11 @@ async function loadSheet(){
     const txt=await res.text();
     SHEET_DATA=parseSheet(txt);
     st.textContent=`✅ ${SHEET_DATA.length} صنف`;
-  }catch(e){st.textContent='⚠ خطأ'; console.error(e);}
+  }catch(e){st.textContent='⚠ خطأ';}
   initFilters(); renderGrid(); upd();
 }
 
 function initFilters(){
-  // LEVEL 1: من العمود B (القسم الرئيسي)
   const mainCats=['الكل',...new Set(SHEET_DATA.map(r=>r.category).filter(Boolean))];
   const l1=$('#level1'); l1.innerHTML='';
   mainCats.forEach(n=>{
@@ -164,10 +172,7 @@ function initFilters(){
     b.onclick=()=>{level1=n; level2='الكل'; level3='الكل'; initFilters(); renderGrid(); updateSummary();};
     l1.appendChild(b);
   });
-
-  // LEVEL 2: من العمود C (القسم الفرعي) - يتفلتر بناء على B
-  let subs = SHEET_DATA;
-  if(level1!=='الكل') subs = subs.filter(r=>r.category===level1);
+  let subs=SHEET_DATA; if(level1!=='الكل') subs=subs.filter(r=>r.category===level1);
   const subCats=['الكل',...new Set(subs.map(r=>r.subCategory).filter(Boolean))];
   const l2=$('#level2'); l2.innerHTML='';
   subCats.forEach(n=>{
@@ -177,8 +182,6 @@ function initFilters(){
     b.onclick=()=>{level2=n; renderGrid(); updateSummary();};
     l2.appendChild(b);
   });
-
-  // LEVEL 3: عروض
   const l3=$('#level3'); l3.innerHTML='';
   [{id:'الكل',label:'الكل'},{id:'عروض',label:'عروض'},{id:'الأكثر طلبا',label:'🔥 الأكثر طلبا'}].forEach(t=>{
     const b=document.createElement('button');
@@ -188,19 +191,12 @@ function initFilters(){
     l3.appendChild(b);
   });
 }
-
-function updateSummary(){
-  let a=[]; if(level1!=='الكل') a.push(level1); if(level2!=='الكل') a.push(level2); if(level3!=='الكل') a.push(level3);
-  $('#filterSummary').textContent=a.join(' • ');
-}
-
+function updateSummary(){let a=[]; if(level1!=='الكل') a.push(level1); if(level2!=='الكل') a.push(level2); if(level3!=='الكل') a.push(level3); $('#filterSummary').textContent=a.join(' • ');}
 function filtered(){
   return SHEET_DATA.filter(r=>{
     const ok1=level1==='الكل'||r.category===level1;
     const ok2=level2==='الكل'||r.subCategory===level2;
-    let ok3=true;
-    if(level3==='عروض') ok3=r.offer;
-    if(level3==='الأكثر طلبا') ok3=r.mostSold;
+    let ok3=true; if(level3==='عروض') ok3=r.offer; if(level3==='الأكثر طلبا') ok3=r.mostSold;
     const qq=q.toLowerCase();
     const okQ=!q||r.name.toLowerCase().includes(qq)||r.active.toLowerCase().includes(qq)||r.keywords.toLowerCase().includes(qq);
     return ok1&&ok2&&ok3&&okQ;
@@ -215,18 +211,22 @@ function renderGrid(){
   list.forEach(r=>{
     const fp=finalPrice(r);
     const div=document.createElement('div');
-    div.className='bg-white rounded-[16px] border p-0 flex flex-col min-h-[360px] cursor-pointer';
+    div.className='card group bg-white rounded-[16px] border border-[#E2E8F0] flex flex-col min-h-[380px] cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden';
     div.innerHTML=`
-      <div class="h-[190px] bg-[#F8FAFC] flex items-center justify-center p-3">
-        <img src="${r.image}" onerror="this.src='https://via.placeholder.com/300'" class="w-full h-full object-contain">
+      <!-- الصورة كبيرة و مليانة -->
+      <div class="product-img-wrap h-[220px] md:h-[250px] w-full bg-white">
+        <img src="${r.image}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'" class="product-img">
+        <div class="absolute top-2 right-2 ${r.available?'bg-[#0EB77F]':'bg-red-500'} text-white text-[9px] font-bold px-2 py-0.5 rounded-full">${r.available?'متوفر':'غير متوفر'}</div>
       </div>
-      <div class="p-3 flex-1 flex flex-col">
-        <div class="font-bold text-[12px] line-clamp-2 text-center flex-1">${r.name}</div>
-        <div class="text-[10px] text-zinc-400 text-center">${r.category} • ${r.subCategory}</div>
-        <div class="flex justify-between items-center mt-3"><span class="text-[10px] bg-green-100 px-2 rounded-full">${r.available?'متوفر':'غير متوفر'}</span><b>${fp} ج</b></div>
-        <button class="mt-3 w-full h-[38px] rounded-[10px] bg-[#10B981] text-white text-[12px] font-bold">طلب المنتج</button>
+      <div class="p-3 flex-1 flex flex-col bg-[#FFFEFB]">
+        <div class="font-bold text-[12px] leading-5 line-clamp-2 text-center flex-1 text-[#0F172A]">${r.name}</div>
+        <div class="text-[10px] text-[#94A3B8] text-center mt-1">${r.category} • ${r.subCategory}</div>
+        <div class="flex justify-center items-baseline gap-1 mt-2"><b class="text-[16px] text-[#13375C]">${fp}</b><span class="text-[10px] text-zinc-500">جنيه</span></div>
+        <button class="btn-order mt-3 w-full h-[40px] rounded-[10px] bg-[#25D366] hover:bg-[#20bd5a] text-white text-[12px] font-black flex items-center justify-center gap-1 shadow-sm">📲 طلب واتساب</button>
+        <button class="btn-cart mt-2 w-full h-[32px] rounded-[8px] bg-[#F2F5F9] hover:bg-[#E2E8F0] text-[11px] font-bold text-zinc-600">+ أضف للسلة</button>
       </div>`;
-    div.querySelector('button').onclick=e=>{e.stopPropagation(); addCart(r);};
+    div.querySelector('.btn-order').onclick=e=>{e.stopPropagation(); openM(r);};
+    div.querySelector('.btn-cart').onclick=e=>{e.stopPropagation(); addCart(r);};
     div.onclick=()=>openM(r);
     g.appendChild(div);
   });
@@ -235,32 +235,47 @@ function renderGrid(){
 function openM(r){
   selected=r;
   document.getElementById('mName').textContent=r.name;
+  document.getElementById('mSub').textContent=`${r.category} • ${r.subCategory}`;
   document.getElementById('mBody').innerHTML=`
-    <img src="${r.image}" class="w-full h-48 object-contain bg-[#F8FAFC] rounded-xl mb-3">
-    <div class="text-[22px] font-black">${finalPrice(r)} ج</div>
-    <div class="mt-2 p-3 bg-[#F5F1EB] rounded-xl text-[12px]"><b>القسم الرئيسي:</b> ${r.category}<br><b>الفرعي:</b> ${r.subCategory}<br><b>المادة:</b> ${r.active}</div>
-    <div class="mt-3 p-3 bg-amber-50 rounded-xl text-[12px]">${r.shortDesc}</div>
-    <button id="mAdd" class="mt-4 w-full h-11 rounded-full bg-[#0EB77F] text-white font-bold">أضف للسلة</button>`;
-  document.getElementById('mAdd').onclick=()=>{addCart(r); document.getElementById('modal').classList.add('hidden');};
+    <div class="w-full h-[320px] bg-white rounded-xl mb-3 overflow-hidden border">
+      <img src="${r.image}" onerror="this.src='https://via.placeholder.com/500'" class="w-full h-full object-contain md:object-cover">
+    </div>
+    <div class="flex items-baseline gap-2"><span class="text-[28px] font-black text-[#13375C]">${finalPrice(r)} ج</span></div>
+    <div class="mt-3 p-3 bg-[#F0E6D3]/60 border rounded-2xl text-[12px]"><b>القسم:</b> ${r.category} - ${r.subCategory}<br><b>المادة:</b> ${r.active||'-'}</div>
+    <div class="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-[12px]">${r.shortDesc||''}</div>
+    <div class="mt-4 bg-[#F8FAFC] border rounded-2xl p-3 space-y-2">
+      <div class="font-black text-[12px]">💳 طريقة الدفع:</div>
+      <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentSingle" value="كاش عند الاستلام" checked><span class="text-[12px]">💵 كاش عند الاستلام</span></label>
+      <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentSingle" value="انستا باي - ${INSTAPAY_NUM}"><span class="text-[12px]">💸 انستا باي - <b>${INSTAPAY_NUM}</b></span><button type="button" onclick="copyNum('${INSTAPAY_NUM}')" class="mr-auto text-[10px] bg-[#13375C] text-white px-2 py-1 rounded-full">نسخ</button></label>
+      <label class="flex items-center gap-2 p-2.5 border rounded-xl bg-white cursor-pointer"><input type="radio" name="paymentSingle" value="فودافون كاش - ${VODAFONE_NUM}"><span class="text-[12px]">📱 فودافون كاش - <b>${VODAFONE_NUM}</b></span><button type="button" onclick="copyNum('${VODAFONE_NUM}')" class="mr-auto text-[10px] bg-[#E11D48] text-white px-2 py-1 rounded-full">نسخ</button></label>
+    </div>
+    <button id="mOrderWA" class="mt-4 w-full h-12 rounded-full bg-[#25D366] text-white font-black shadow-lg">📲 اطلب المنتج ده واتساب</button>
+    <button id="mAddCart" class="mt-2 w-full h-11 rounded-full bg-[#13375C] text-white font-bold">+ أضف للسلة</button>
+  `;
+  document.getElementById('mOrderWA').onclick=()=>{ orderSingleProductWhatsApp(r); };
+  document.getElementById('mAddCart').onclick=()=>{ addCart(r); document.getElementById('modal').classList.add('hidden'); };
   document.getElementById('modal').classList.remove('hidden');
 }
-function addCart(r){const f=cart.find(x=>x.name===r.name); if(f) f.qty++; else cart.push({...r,qty:1}); upd(); toast('تمت الإضافة');}
+
+function addCart(r){const f=cart.find(x=>x.name===r.name); if(f) f.qty++; else cart.push({...r,qty:1}); upd(); toast('تمت الإضافة للسلة');}
 function upd(){
   let c=0,s=0; cart.forEach(i=>{c+=i.qty; s+=finalPrice(i)*i.qty;});
   $('#cartCount').textContent=c; $('#cSub').textContent=s+' ج'; $('#cTotal').textContent=(s+15)+' ج';
-  const l=$('#cartList'); l.innerHTML=''; cart.forEach((it,idx)=>{const d=document.createElement('div'); d.className='flex justify-between p-3 border rounded-xl bg-white'; d.innerHTML=`<div><div class="text-[12px] font-bold">${it.name}</div><div class="text-[10px]">${finalPrice(it)*it.qty} ج</div></div><button class="text-red-500">حذف</button>`; d.querySelector('button').onclick=()=>{cart.splice(idx,1); upd();}; l.appendChild(d);});
+  const l=$('#cartList'); l.innerHTML='';
+  if(!cart.length) l.innerHTML='<div class="py-16 text-center text-[12px] text-zinc-500">السلة فاضية</div>';
+  else cart.forEach((it,idx)=>{
+    const d=document.createElement('div'); d.className='flex gap-2 p-3 border rounded-xl bg-white'; 
+    d.innerHTML=`<img src="${it.image}" class="w-12 h-12 object-contain rounded-lg border bg-white"><div class="flex-1"><div class="text-[12px] font-bold line-clamp-1">${it.name}</div><div class="text-[10px] text-zinc-500">${finalPrice(it)} × ${it.qty} = ${finalPrice(it)*it.qty} ج</div></div><button class="text-[11px] text-red-500 font-bold">حذف</button>`;
+    d.querySelector('button').onclick=()=>{cart.splice(idx,1); upd();}; l.appendChild(d);
+  });
 }
-function toast(t){const e=$('#toast'); e.textContent=t; e.classList.remove('hidden'); setTimeout(()=>e.classList.add('hidden'),2000);}
+function toast(t){const e=$('#toast'); e.textContent=t; e.classList.remove('hidden'); setTimeout(()=>e.classList.add('hidden'),2200);}
 $('#searchDesktop').oninput=e=>{q=e.target.value; renderGrid();};
 $('#searchMobile').oninput=e=>{q=e.target.value; renderGrid();};
 $('#cartBtn').onclick=()=>$('#cartDrawer').classList.remove('hidden');
 $('#cartClose').onclick=$('#cartBg').onclick=()=>$('#cartDrawer').classList.add('hidden');
 $('#mClose').onclick=$('#modalBg').onclick=()=>$('#modal').classList.add('hidden');
-$('#checkoutBtn').onclick=()=>{
-  if(!cart.length) return;
-  let msg="طلب جديد:%0A"; cart.forEach(it=>msg+=`- ${it.name} x${it.qty}%0A`);
-  window.open(`https://wa.me/201025532663?text=${msg}`,'_blank');
-};
+$('#checkoutBtn').onclick=()=>{ orderCartWhatsApp(); };
 $('#clearFilters').onclick=()=>{level1='الكل';level2='الكل';level3='الكل';q='';$('#searchDesktop').value='';$('#searchMobile').value='';initFilters();renderGrid();updateSummary();};
 loadSheet();
 </script>
