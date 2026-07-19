@@ -1,138 +1,59 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صيدلية د. خالد سالم</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<style>
-*{font-family:'Tajawal',sans-serif}
-:root{--primary:#E14A4A;--bg:#F2F5F9;--navy:#1E2142;}
-body{background:var(--bg)}
-.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
-.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-</style>
+    <meta charset="UTF-8">
+    <title>صيدلية د. خالد سالم</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-[#F2F5F9] text-[#1E293B]">
-<header class="sticky top-0 z-40 bg-[#13375C] border-b border-[#2E2E5D] shadow-[0_8px_24px_rgba(0,0,0,0.12)] rounded-b-[20px]">
-  <div class="max-w-[1280px] mx-auto px-4 md:px-6 h-[64px] flex items-center justify-between gap-3">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-white text-[#13375C] flex items-center justify-center font-black text-[18px] shadow-sm">خ</div>
-      <div>
-        <div class="font-black leading-none text-[15px] text-white">صيدلية د. خالد سالم</div>
-        <div class="text-[11px] text-white/60 mt-0.5"><a href="https://maps.app.goo.gl/4CHGc5azwNdFxJ3g6" target="_blank" class="hover:text-white">📍 ميدان زينهم بلوك 5 - السيدة زينب • خدمه 24 ساعه</a></div>
-      </div>
-    </div>
-    <div class="flex-1 max-w-[480px] hidden md:block">
-      <div class="relative"><input id="searchDesktop" placeholder="ابحث بالاسم أو المادة الفعالة..." class="w-full h-11 pr-11 pl-4 rounded-full bg-white border border-white text-[#1E293B] placeholder:text-[#94A3B8] text-[13px] focus:outline-none focus:bg-white focus:text-zinc-900"><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/50">🔍</span></div>
-    </div>
-    <button id="cartBtn" class="relative h-11 px-4 rounded-full bg-[#0EB77F] text-white text-[13px] font-bold flex items-center gap-2 shadow-lg">🛒 السلة <span id="cartCount" class="bg-white text-zinc-900 min-w-[20px] h-5 rounded-full text-[11px] font-black flex items-center justify-center px-1">0</span></button>
-  </div>
-  <div class="md:hidden px-4 pb-3"><div class="relative"><input id="searchMobile" placeholder="ابحث..." class="w-full h-11 pr-11 pl-4 rounded-full bg-white border border-white text-[#1E293B] placeholder:text-[#94A3B8] text-[13px]"><span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/50">🔍</span></div></div>
-</header>
+<body class="bg-gray-100 p-4">
 
-<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-3">
-  <div class="mx-auto w-fit rounded-full bg-[#13375C] border border-white/10 text-white px-4 py-1.5 text-center shadow-sm">
-    <span class="text-[10px]">💡 لو الدواء ناقص، اضغط على <b class="bg-[#0EB77F] text-white px-2 py-0.5 rounded-full text-[9px]">يوجد بدائل</b> نفس المادة أرخص</span>
-  </div>
-</section>
+    <h1 class="text-center font-bold text-2xl mb-6">قائمة الأدوية</h1>
+    <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
 
-<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-4 space-y-2">
-  <div class="bg-[#FFFEFB] rounded-full border border-[#E2E8F0] p-1 flex items-center gap-1 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-    <div id="level1" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div>
-    <button id="clearFilters" class="shrink-0 h-[26px] px-3 rounded-full bg-[#F2F5F9] border border-[#E2E8F0] text-[10px] font-bold">مسح</button>
-  </div>
-  <div id="subFilters" class="hidden space-y-1.5">
-    <div class="bg-[#FFFEFB]/90 backdrop-blur rounded-full border border-[#E2E8F0]/70 p-1 flex items-center gap-1"><span class="text-[9px] text-zinc-500 mr-2 hidden md:block">تصنيف:</span><div id="level2" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div></div>
-    <div class="bg-[#FFFEFB]/90 backdrop-blur rounded-full border border-[#E2E8F0]/70 p-1 flex items-center gap-1"><span class="text-[9px] text-zinc-500 mr-2 hidden md:block">فلتر:</span><div id="level3" class="flex gap-1 overflow-x-auto no-scrollbar flex-1"></div></div>
-  </div>
-</section>
+    <script>
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfLEsFdxl_lZIRBBwoVI30rAhd4G82kB8Ji4bndsOW48marqrlVon7wY4yBxib94boPXm626ZO44Ts/pub?output=csv";
 
-<section class="max-w-[1280px] mx-auto px-4 md:px-6 mt-5 pb-24">
-  <div class="flex items-center justify-between mb-3"><span id="filterSummary" class="text-[11px] text-zinc-600"></span><span id="statusText" class="hidden"></span></div>
-  <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"></div>
-  <div id="empty" class="hidden py-16 text-center bg-[#FFFEFB] rounded-[20px] border border-[#E2E8F0] mt-6 text-[13px]">لا توجد نتائج</div>
-</section>
+        async function loadData() {
+            try {
+                const response = await fetch(CSV_URL);
+                const csvText = await response.text();
+                
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        render(results.data);
+                    }
+                });
+            } catch (err) {
+                console.error("Error:", err);
+            }
+        }
 
-<div id="modal" class="fixed inset-0 z-50 hidden"><div id="modalBg" class="absolute inset-0 bg-[#13375C]/60 backdrop-blur-sm"></div><div class="relative w-full md:max-w-[560px] mx-auto mt-auto md:mt-[8vh] bg-[#FFFEFB] rounded-t-[24px] md:rounded-[24px] shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"><div class="flex items-center justify-between p-4 border-b border-[#E2E8F0] shrink-0 bg-[#FFFEFB]"><div class="flex items-center gap-2"><div class="w-9 h-9 rounded-full bg-[#13375C] text-white flex items-center justify-center">💊</div><div><div id="mName" class="font-black text-[14px]"></div><div id="mSub" class="text-[11px] text-zinc-500"></div></div></div><button id="mClose" class="w-9 h-9 rounded-full bg-[#F2F5F9]">✕</button></div><div class="flex gap-2 p-3 bg-[#F5F1EB] border-b border-[#E2E8F0] shrink-0"><button id="tabDetails" class="flex-1 h-10 rounded-full text-[13px] font-bold border bg-[#0EB77F] border-[#0EB77F] text-white">التفاصيل</button><button id="tabAlts" class="flex-1 h-10 rounded-full text-[13px] font-bold border bg-white border-[#E2E8F0]">البدائل <span id="altBadge" class="text-[11px] px-1.5 py-0.5 rounded-full bg-zinc-100 mr-1">0</span></button></div><div id="mBody" class="flex-1 overflow-auto p-5 bg-[#FFFEFB]"></div></div></div>
+        function render(data) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            
+            data.forEach(item => {
+                // بنجيب الأسماء بالظبط زي ما هي في الشيت
+                const name = item['الاسم'] || 'بدون اسم';
+                const price = item['السعر بعد العرض'] || item['سعر العلبة'] || '0';
+                const img = item['الصورة'] || 'https://via.placeholder.com/150';
 
-<div id="cartDrawer" class="fixed inset-0 z-[60] hidden"><div id="cartBg" class="absolute inset-0 bg-[#13375C]/50"></div><div class="absolute left-0 top-0 bottom-0 w-full max-w-[380px] bg-[#FFFEFB] shadow-2xl flex flex-col"><div class="h-[60px] px-5 flex items-center justify-between border-b border-[#E2E8F0] shrink-0 bg-[#13375C] text-white"><div class="font-black">السلة</div><button id="cartClose" class="w-9 h-9 rounded-full bg-white/10">✕</button></div><div id="cartList" class="flex-1 overflow-auto p-4 space-y-3 bg-[#F2F5F9]"></div><div class="p-4 border-t border-[#E2E8F0] bg-[#FFFEFB] space-y-3"><div class="bg-white rounded-2xl border border-[#E2E8F0] p-3 text-[13px] space-y-2"><div class="flex justify-between"><span class="text-zinc-500">المجموع</span><span id="cSub">0 ج</span></div><div class="flex justify-between"><span class="text-zinc-500">التوصيل</span><span>15 ج</span></div><div class="flex justify-between font-black text-[16px] border-t border-[#E2E8F0] pt-2"><span>الإجمالي</span><span id="cTotal">0 ج</span></div></div><button id="checkoutBtn" class="w-full h-12 rounded-full bg-[#0EB77F] text-white font-black shadow-lg">إتمام الطلب</button></div></div></div>
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-lg shadow-md";
+                card.innerHTML = `
+                    <img src="${img}" class="w-full h-32 object-cover mb-2 rounded">
+                    <h2 class="font-bold text-sm">${name}</h2>
+                    <p class="text-red-600 font-black my-2">${price} ج.م</p>
+                    <button class="w-full bg-green-600 text-white py-1 rounded">طلب</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 hidden bg-[#13375C] text-white px-4 py-2.5 rounded-full text-[13px] z-[80] shadow-xl"></div>
-
-<script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfLEsFdxl_lZIRBBwoVI30rAhd4G82kB8Ji4bndsOW48marqrlVon7wY4yBxib94boPXm626ZO44Ts/pub?output=csv";
-let SHEET_DATA=[], level1='الكل', level2='الكل', level3='الكل', q='', cart=[], selected=null, tab='details';
-const $=s=>document.querySelector(s);
-
-// دالة تحويل الأسعار
-const toNum=v=>{if(v==null) return 0; let s=String(v).replace(/[^0-9.]/g,''); return Number(s)||0;};
-
-// دالة تحديد السعر الفعلي
-const finalPrice=p=>{
-  let d=toNum(p.priceDiscount);
-  let c=toNum(p.priceCurrent);
-  if(d>0 && d<c) return d;
-  return c;
-};
-
-// دالة تحديد السعر القديم (للتخفيض)
-const oldPrice=p=>{
-  let d=toNum(p.priceDiscount);
-  let c=toNum(p.priceCurrent);
-  if(d>0 && d<c) return c;
-  return null;
-};
-
-// دالة جلب البدائل (بناءً على المادة الفعالة)
-const getAlts=p=>{
-  if(p.active && p.active.trim()){
-    const a=SHEET_DATA.filter(x=>x.active && x.active.trim().toLowerCase()===p.active.trim().toLowerCase() && x.name!==p.name);
-    if(a.length>0) return a;
-  }
-  return [];
-};
-
-function showSub(){$('#subFilters')?.classList.remove('hidden');}
-function hideSub(){if(level1==='الكل'&&level2==='الكل'&&level3==='الكل') $('#subFilters')?.classList.add('hidden');}
-
-// تحديث ملخص الفلتر
-function updateSummary(){let a=[]; if(level1!=='الكل') a.push(level1); if(level2!=='الكل') a.push(level2); if(level3!=='الكل') a.push(level3); const el=$('#filterSummary'); if(el) el.textContent=a.join(' • ');}
-
-// دالة قراءة الشيت المحدثة (بناءً على ترتيبك)
-function parseSheet(csvText){
-  let results = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-  if(!results.data.length) return [];
-
-  return results.data.map(r => ({
-    name: r['الاسم'] || '',
-    category: r['القسم'] || '',
-    subCategory: 'مسكن', // قيمة افتراضية لـ level2
-    active: r['المادة الفعالة'] || '',
-    mostSold: r['الاكثر طلبا'] === 'نعم',
-    offer: r['عرض'] === 'نعم',
-    isNew: r['جديد'] === 'نعم',
-    priceCurrent: r['سعر العلبة'],
-    priceDiscount: r['السعر بعد العرض'],
-    box: r['نوع التجزئة'] || '',
-    shortDesc: r['الوصف'] || '',
-    image: r['الصورة'] || 'https://via.placeholder.com/200'
-  })).filter(r=>r.name); // التأكد من وجود اسم
-}
-
-async function loadSheet(){
-  const st=$('#statusText'); if(st) st.textContent='⏳ تحميل...';
-  try{
-    const res=await fetch(CSV_URL+'&t='+Date.now(),{cache:'no-store'});
-    const txt=await res.text();
-    const parsed=parseSheet(txt);
-    if(!parsed.length) throw new Error('empty');
-    SHEET_DATA=parsed;
-    if(st) st.textContent=`✅ ${SHEET_DATA.length} صنف`;
-  }catch(e){
-    if(st) st.textContent='⚠️ تجريبي';
-    // بيانات تجريبية في حالة فشل التحميل
-    SHEET_DATA=[
-      {name:"بنادول إكسترا 24 قرص",category:"دواء",subCategory:"مسكن",active:"Paracetamol + Caffeine",mostSold:true,offer:false,isNew:false,priceCurrent:48,priceDiscount:30,box:"علبة 24 قرص",shortDesc:"مسكن سريع وقوي للصداع",image:"
+        loadData();
+    </script>
+</body>
+</html>
