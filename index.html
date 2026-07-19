@@ -1,59 +1,41 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>صيدلية د. خالد سالم</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-gray-100 p-4">
+<body class="bg-[#F2F5F9]">
 
-    <h1 class="text-center font-bold text-2xl mb-6">قائمة الأدوية</h1>
-    <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+<div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4"></div>
 
-    <script>
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfLEsFdxl_lZIRBBwoVI30rAhd4G82kB8Ji4bndsOW48marqrlVon7wY4yBxib94boPXm626ZO44Ts/pub?output=csv";
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfLEsFdxl_lZIRBBwoVI30rAhd4G82kB8Ji4bndsOW48marqrlVon7wY4yBxib94boPXm626ZO44Ts/pub?output=csv";
 
-        async function loadData() {
-            try {
-                const response = await fetch(CSV_URL);
-                const csvText = await response.text();
-                
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        render(results.data);
-                    }
-                });
-            } catch (err) {
-                console.error("Error:", err);
-            }
-        }
-
-        function render(data) {
+async function loadData() {
+    const res = await fetch(CSV_URL);
+    const data = await res.text();
+    Papa.parse(data, {
+        header: true,
+        complete: function(results) {
             const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            
-            data.forEach(item => {
-                // بنجيب الأسماء بالظبط زي ما هي في الشيت
-                const name = item['الاسم'] || 'بدون اسم';
-                const price = item['السعر بعد العرض'] || item['سعر العلبة'] || '0';
-                const img = item['الصورة'] || 'https://via.placeholder.com/150';
-
+            results.data.forEach(item => {
+                if(!item['الاسم']) return;
+                
                 const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-lg shadow-md";
+                card.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center";
                 card.innerHTML = `
-                    <img src="${img}" class="w-full h-32 object-cover mb-2 rounded">
-                    <h2 class="font-bold text-sm">${name}</h2>
-                    <p class="text-red-600 font-black my-2">${price} ج.م</p>
-                    <button class="w-full bg-green-600 text-white py-1 rounded">طلب</button>
+                    <img src="${item['الصورة']}" class="w-full h-32 object-contain mb-3">
+                    <h2 class="font-bold text-[13px] mb-1">${item['الاسم']}</h2>
+                    <p class="text-[#13375C] font-black text-[15px] mb-3">${item['السعر بعد العرض'] || item['سعر العلبة']} ج.م</p>
+                    <button class="w-full bg-[#10B981] text-white py-2 rounded-lg text-sm font-bold">طلب</button>
                 `;
                 grid.appendChild(card);
             });
         }
-
-        loadData();
-    </script>
+    });
+}
+loadData();
+</script>
 </body>
 </html>
