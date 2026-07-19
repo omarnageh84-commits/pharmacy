@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { background: #121212; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
         .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
@@ -11,8 +12,9 @@
         .active { display: block; }
         .card { background: #1e1e1e; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #333; }
         input { width: 90%; padding: 10px; margin: 5px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px; }
-        button.save { background: #00a884; border: none; padding: 10px; color: #fff; width: 100%; border-radius: 5px; cursor: pointer; }
-        h3 { color: #00a884; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        button.save { background: #00a884; border: none; padding: 10px; color: #fff; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        h3 { color: #00a884; margin-top: 0; }
+        a { color: #00a884; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -24,15 +26,28 @@
     </div>
 
     <div id="pharmacy" class="page active">
+        <!-- كارت التسجيل -->
         <div class="card">
             <h3>تسجيل اليومية</h3>
             <input type="number" id="sales" placeholder="المبيعات">
             <input type="number" id="expenses" placeholder="المصاريف">
-            <button class="save" onclick="saveData()">حفظ البيانات</button>
+            <button class="save" onclick="saveData()">حفظ البيانات 💾</button>
         </div>
+
+        <!-- كارت الملخص -->
         <div class="card">
             <h3>ملخص اليوم</h3>
             <p id="status">جاري تحميل البيانات...</p>
+        </div>
+
+        <!-- كارت الدفع والتواصل -->
+        <div class="card">
+            <h3>وسائل الدفع والتواصل</h3>
+            <p>💰 فودافون كاش: 01099478956</p>
+            <p>📱 إنستا باي: 01007036085</p>
+            <hr style="border: 0; border-top: 1px solid #333;">
+            <p>للطلبات والاستفسارات:</p>
+            <a href="https://wa.me/201007036085" target="_blank">💬 واتساب: 01007036085</a>
         </div>
     </div>
 
@@ -45,7 +60,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "YOUR_NEW_DEPLOYED_URL_HERE"; // حط الرابط الجديد بعد الـ Deploy
+        const SCRIPT_URL = "ضع_رابط_الـ_Web_App_هنا"; 
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -74,8 +89,8 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(() => {
-                alert("تم الحفظ يا دكتور!");
-                updateSummary(); // تحديث الملخص فوراً
+                alert("تم الحفظ يا دكتور! ✅");
+                updateSummary();
             });
         }
 
